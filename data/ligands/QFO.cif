@@ -1,0 +1,235 @@
+data_QFO
+# 
+_chem_comp.id                                    QFO 
+_chem_comp.name                                  "(3S,4R)-3-fluoro-1-(4-{[8-{3-[(methanesulfonyl)methyl]azetidin-1-yl}-5-(propan-2-yl)-2,7-naphthyridin-3-yl]amino}pyrimidin-2-yl)-3-methylpiperidin-4-ol" 
+_chem_comp.type                                  non-polymer 
+_chem_comp.pdbx_type                             HETAIN 
+_chem_comp.formula                               "C26 H34 F N7 O3 S" 
+_chem_comp.mon_nstd_parent_comp_id               ? 
+_chem_comp.pdbx_synonyms                         ? 
+_chem_comp.pdbx_formal_charge                    0 
+_chem_comp.pdbx_initial_date                     2022-06-08 
+_chem_comp.pdbx_modified_date                    2022-07-22 
+_chem_comp.pdbx_ambiguous_flag                   N 
+_chem_comp.pdbx_release_status                   REL 
+_chem_comp.pdbx_replaced_by                      ? 
+_chem_comp.pdbx_replaces                         ? 
+_chem_comp.formula_weight                        543.657 
+_chem_comp.one_letter_code                       ? 
+_chem_comp.three_letter_code                     QFO 
+_chem_comp.pdbx_model_coordinates_details        ? 
+_chem_comp.pdbx_model_coordinates_missing_flag   N 
+_chem_comp.pdbx_ideal_coordinates_details        Corina 
+_chem_comp.pdbx_ideal_coordinates_missing_flag   N 
+_chem_comp.pdbx_model_coordinates_db_code        8D76 
+_chem_comp.pdbx_subcomponent_list                ? 
+_chem_comp.pdbx_processing_site                  RCSB 
+# 
+loop_
+_chem_comp_atom.comp_id 
+_chem_comp_atom.atom_id 
+_chem_comp_atom.alt_atom_id 
+_chem_comp_atom.type_symbol 
+_chem_comp_atom.charge 
+_chem_comp_atom.pdbx_align 
+_chem_comp_atom.pdbx_aromatic_flag 
+_chem_comp_atom.pdbx_leaving_atom_flag 
+_chem_comp_atom.pdbx_stereo_config 
+_chem_comp_atom.model_Cartn_x 
+_chem_comp_atom.model_Cartn_y 
+_chem_comp_atom.model_Cartn_z 
+_chem_comp_atom.pdbx_model_Cartn_x_ideal 
+_chem_comp_atom.pdbx_model_Cartn_y_ideal 
+_chem_comp_atom.pdbx_model_Cartn_z_ideal 
+_chem_comp_atom.pdbx_component_atom_id 
+_chem_comp_atom.pdbx_component_comp_id 
+_chem_comp_atom.pdbx_ordinal 
+QFO C1  C1  C 0 1 N N N -11.837 18.601 3.012  3.395  -5.627 -1.074 C1  QFO 1  
+QFO C2  C2  C 0 1 N N N -12.452 18.637 1.609  2.490  -5.237 0.095  C2  QFO 2  
+QFO C3  C3  C 0 1 N N N -13.408 19.822 1.447  3.020  -5.869 1.384  C3  QFO 3  
+QFO C4  C4  C 0 1 Y N N -13.075 17.302 1.232  2.474  -3.737 0.241  C4  QFO 4  
+QFO C5  C5  C 0 1 Y N N -14.444 17.132 1.344  3.625  -3.052 0.484  C5  QFO 5  
+QFO N1  N1  N 0 1 Y N N -15.056 15.985 1.043  3.643  -1.732 0.617  N1  QFO 6  
+QFO C6  C6  C 0 1 Y N N -14.347 14.933 0.605  2.555  -0.989 0.524  C6  QFO 7  
+QFO N2  N2  N 0 1 N N N -15.127 13.783 0.299  2.635  0.383  0.671  N2  QFO 8  
+QFO C7  C7  C 0 1 N N N -14.769 12.549 -0.375 2.648  1.058  -0.645 C7  QFO 9  
+QFO C8  C8  C 0 1 N N N -16.284 12.170 -0.117 3.748  1.960  -0.056 C8  QFO 10 
+QFO C9  C9  C 0 1 N N N -17.132 11.879 -1.348 4.900  2.239  -1.024 C9  QFO 11 
+QFO S1  S1  S 0 1 N N N -16.777 10.301 -2.083 6.049  3.424  -0.271 S1  QFO 12 
+QFO O1  O1  O 0 1 N N N -17.423 10.261 -3.355 5.379  4.668  -0.117 O1  QFO 13 
+QFO O2  O2  O 0 1 N N N -17.075 9.296  -1.110 6.650  2.814  0.862  O2  QFO 14 
+QFO C10 C10 C 0 1 N N N -15.055 10.260 -2.366 7.306  3.601  -1.567 C10 QFO 15 
+QFO C11 C11 C 0 1 N N N -16.559 13.572 0.529  4.029  0.809  0.926  C11 QFO 16 
+QFO C12 C12 C 0 1 Y N N -12.920 14.988 0.451  1.310  -1.605 0.273  C12 QFO 17 
+QFO C13 C13 C 0 1 Y N N -12.105 13.916 -0.006 0.118  -0.882 0.162  C13 QFO 18 
+QFO N3  N3  N 0 1 Y N N -10.792 13.986 -0.121 -1.012 -1.509 -0.073 N3  QFO 19 
+QFO C14 C14 C 0 1 Y N N -10.148 15.135 0.153  -1.086 -2.831 -0.215 C14 QFO 20 
+QFO N4  N4  N 0 1 N N N -8.768  15.081 -0.054 -2.323 -3.420 -0.462 N4  QFO 21 
+QFO C15 C15 C 0 1 Y N N -7.733  15.872 0.432  -3.474 -2.647 -0.450 C15 QFO 22 
+QFO N5  N5  N 0 1 Y N N -7.967  17.145 0.767  -3.399 -1.327 -0.311 N5  QFO 23 
+QFO C16 C16 C 0 1 Y N N -6.938  17.879 1.257  -4.497 -0.586 -0.299 C16 QFO 24 
+QFO N6  N6  N 0 1 Y N N -5.698  17.401 1.451  -5.701 -1.125 -0.422 N6  QFO 25 
+QFO C17 C17 C 0 1 Y N N -5.484  16.133 1.089  -5.849 -2.434 -0.564 C17 QFO 26 
+QFO C18 C18 C 0 1 Y N N -6.459  15.323 0.574  -4.729 -3.243 -0.589 C18 QFO 27 
+QFO N7  N7  N 0 1 N N N -7.168  19.161 1.601  -4.384 0.786  -0.152 N7  QFO 28 
+QFO C19 C19 C 0 1 N N N -6.101  20.037 2.089  -3.638 1.125  1.067  C19 QFO 29 
+QFO C20 C20 C 0 1 N N N -6.195  21.451 1.552  -3.407 2.637  1.121  C20 QFO 30 
+QFO C21 C21 C 0 1 N N R -7.578  22.014 1.791  -4.759 3.356  1.110  C21 QFO 31 
+QFO O3  O3  O 0 1 N N N -7.634  23.360 1.308  -4.548 4.769  1.104  O3  QFO 32 
+QFO C22 C22 C 0 1 N N S -8.620  21.122 1.115  -5.535 2.948  -0.146 C22 QFO 33 
+QFO C23 C23 C 0 1 N N N -10.036 21.641 1.335  -6.912 3.615  -0.135 C23 QFO 34 
+QFO F1  F1  F 0 1 N N N -8.324  21.081 -0.284 -4.829 3.352  -1.284 F1  QFO 35 
+QFO C24 C24 C 0 1 N N N -8.527  19.717 1.677  -5.705 1.427  -0.163 C24 QFO 36 
+QFO C25 C25 C 0 1 Y N N -10.855 16.282 0.611  0.036  -3.631 -0.122 C25 QFO 37 
+QFO C26 C26 C 0 1 Y N N -12.266 16.207 0.776  1.272  -3.018 0.122  C26 QFO 38 
+QFO H1  H1  H 0 1 N N N -11.398 19.582 3.246  3.406  -6.712 -1.179 H1  QFO 39 
+QFO H2  H2  H 0 1 N N N -12.619 18.364 3.749  3.017  -5.177 -1.992 H2  QFO 40 
+QFO H3  H3  H 0 1 N N N -11.053 17.831 3.049  4.408  -5.270 -0.885 H3  QFO 41 
+QFO H4  H4  H 0 1 N N N -11.622 18.807 0.908  1.477  -5.594 -0.094 H4  QFO 42 
+QFO H5  H5  H 0 1 N N N -12.894 20.751 1.736  2.375  -5.591 2.217  H5  QFO 43 
+QFO H6  H6  H 0 1 N N N -13.730 19.892 0.398  3.031  -6.954 1.279  H6  QFO 44 
+QFO H7  H7  H 0 1 N N N -14.287 19.674 2.091  4.032  -5.512 1.574  H7  QFO 45 
+QFO H8  H8  H 0 1 N N N -15.042 17.962 1.689  4.552  -3.599 0.572  H8  QFO 46 
+QFO H9  H9  H 0 1 N N N -14.030 11.923 0.146  2.992  0.422  -1.461 H9  QFO 47 
+QFO H10 H10 H 0 1 N N N -14.481 12.654 -1.432 1.724  1.587  -0.877 H10 QFO 48 
+QFO H11 H11 H 0 1 N N N -16.365 11.368 0.631  3.366  2.862  0.422  H11 QFO 49 
+QFO H12 H12 H 0 1 N N N -16.944 12.664 -2.096 5.426  1.309  -1.240 H12 QFO 50 
+QFO H13 H13 H 0 1 N N N -18.192 11.898 -1.055 4.503  2.655  -1.951 H13 QFO 51 
+QFO H14 H14 H 0 1 N N N -14.524 10.290 -1.403 6.839  3.978  -2.477 H14 QFO 52 
+QFO H15 H15 H 0 1 N N N -14.793 9.335  -2.901 8.072  4.302  -1.236 H15 QFO 53 
+QFO H16 H16 H 0 1 N N N -14.762 11.130 -2.973 7.761  2.632  -1.767 H16 QFO 54 
+QFO H17 H17 H 0 1 N N N -17.231 14.231 -0.040 4.207  1.139  1.949  H17 QFO 55 
+QFO H18 H18 H 0 1 N N N -16.870 13.553 1.584  4.776  0.100  0.570  H18 QFO 56 
+QFO H19 H19 H 0 1 N N N -12.589 12.989 -0.275 0.127  0.192  0.269  H19 QFO 57 
+QFO H20 H20 H 0 1 N N N -8.472  14.342 -0.659 -2.379 -4.371 -0.644 H20 QFO 58 
+QFO H21 H21 H 0 1 N N N -4.491  15.727 1.209  -6.835 -2.864 -0.665 H21 QFO 59 
+QFO H22 H22 H 0 1 N N N -6.251  14.302 0.290  -4.823 -4.312 -0.708 H22 QFO 60 
+QFO H23 H23 H 0 1 N N N -5.133  19.611 1.785  -4.211 0.814  1.941  H23 QFO 61 
+QFO H24 H24 H 0 1 N N N -6.156  20.076 3.187  -2.677 0.611  1.060  H24 QFO 62 
+QFO H25 H25 H 0 1 N N N -5.989  21.443 0.472  -2.868 2.890  2.033  H25 QFO 63 
+QFO H26 H26 H 0 1 N N N -5.453  22.083 2.062  -2.823 2.947  0.254  H26 QFO 64 
+QFO H27 H27 H 0 1 N N N -7.772  22.006 2.874  -5.328 3.076  1.997  H27 QFO 65 
+QFO H28 H28 H 0 1 N N N -6.975  23.883 1.749  -4.058 5.097  1.870  H28 QFO 66 
+QFO H29 H29 H 0 1 N N N -10.254 21.669 2.413  -7.461 3.301  0.753  H29 QFO 67 
+QFO H30 H30 H 0 1 N N N -10.124 22.655 0.917  -6.791 4.698  -0.122 H30 QFO 68 
+QFO H31 H31 H 0 1 N N N -10.753 20.974 0.833  -7.465 3.321  -1.027 H31 QFO 69 
+QFO H32 H32 H 0 1 N N N -8.839  19.739 2.732  -6.244 1.132  -1.063 H32 QFO 70 
+QFO H33 H33 H 0 1 N N N -9.206  19.065 1.107  -6.267 1.114  0.717  H33 QFO 71 
+QFO H34 H34 H 0 1 N N N -10.327 17.198 0.831  -0.036 -4.702 -0.239 H34 QFO 72 
+# 
+loop_
+_chem_comp_bond.comp_id 
+_chem_comp_bond.atom_id_1 
+_chem_comp_bond.atom_id_2 
+_chem_comp_bond.value_order 
+_chem_comp_bond.pdbx_aromatic_flag 
+_chem_comp_bond.pdbx_stereo_config 
+_chem_comp_bond.pdbx_ordinal 
+QFO O1  S1  DOUB N N 1  
+QFO C10 S1  SING N N 2  
+QFO S1  C9  SING N N 3  
+QFO S1  O2  DOUB N N 4  
+QFO C9  C8  SING N N 5  
+QFO C7  C8  SING N N 6  
+QFO C7  N2  SING N N 7  
+QFO F1  C22 SING N N 8  
+QFO N3  C13 DOUB Y N 9  
+QFO N3  C14 SING Y N 10 
+QFO C8  C11 SING N N 11 
+QFO N4  C14 SING N N 12 
+QFO N4  C15 SING N N 13 
+QFO C13 C12 SING Y N 14 
+QFO C14 C25 DOUB Y N 15 
+QFO N2  C11 SING N N 16 
+QFO N2  C6  SING N N 17 
+QFO C15 C18 DOUB Y N 18 
+QFO C15 N5  SING Y N 19 
+QFO C12 C6  DOUB Y N 20 
+QFO C12 C26 SING Y N 21 
+QFO C18 C17 SING Y N 22 
+QFO C6  N1  SING Y N 23 
+QFO C25 C26 SING Y N 24 
+QFO N5  C16 DOUB Y N 25 
+QFO C26 C4  DOUB Y N 26 
+QFO N1  C5  DOUB Y N 27 
+QFO C17 N6  DOUB Y N 28 
+QFO C22 C23 SING N N 29 
+QFO C22 C24 SING N N 30 
+QFO C22 C21 SING N N 31 
+QFO C4  C5  SING Y N 32 
+QFO C4  C2  SING N N 33 
+QFO C16 N6  SING Y N 34 
+QFO C16 N7  SING N N 35 
+QFO O3  C21 SING N N 36 
+QFO C3  C2  SING N N 37 
+QFO C20 C21 SING N N 38 
+QFO C20 C19 SING N N 39 
+QFO N7  C24 SING N N 40 
+QFO N7  C19 SING N N 41 
+QFO C2  C1  SING N N 42 
+QFO C1  H1  SING N N 43 
+QFO C1  H2  SING N N 44 
+QFO C1  H3  SING N N 45 
+QFO C2  H4  SING N N 46 
+QFO C3  H5  SING N N 47 
+QFO C3  H6  SING N N 48 
+QFO C3  H7  SING N N 49 
+QFO C5  H8  SING N N 50 
+QFO C7  H9  SING N N 51 
+QFO C7  H10 SING N N 52 
+QFO C8  H11 SING N N 53 
+QFO C9  H12 SING N N 54 
+QFO C9  H13 SING N N 55 
+QFO C10 H14 SING N N 56 
+QFO C10 H15 SING N N 57 
+QFO C10 H16 SING N N 58 
+QFO C11 H17 SING N N 59 
+QFO C11 H18 SING N N 60 
+QFO C13 H19 SING N N 61 
+QFO N4  H20 SING N N 62 
+QFO C17 H21 SING N N 63 
+QFO C18 H22 SING N N 64 
+QFO C19 H23 SING N N 65 
+QFO C19 H24 SING N N 66 
+QFO C20 H25 SING N N 67 
+QFO C20 H26 SING N N 68 
+QFO C21 H27 SING N N 69 
+QFO O3  H28 SING N N 70 
+QFO C23 H29 SING N N 71 
+QFO C23 H30 SING N N 72 
+QFO C23 H31 SING N N 73 
+QFO C24 H32 SING N N 74 
+QFO C24 H33 SING N N 75 
+QFO C25 H34 SING N N 76 
+# 
+loop_
+_pdbx_chem_comp_descriptor.comp_id 
+_pdbx_chem_comp_descriptor.type 
+_pdbx_chem_comp_descriptor.program 
+_pdbx_chem_comp_descriptor.program_version 
+_pdbx_chem_comp_descriptor.descriptor 
+QFO SMILES           ACDLabs              12.01 "CS(=O)(=O)CC1CN(C1)c1ncc(C(C)C)c2cc(ncc21)Nc1nc(ncc1)N1CCC(O)C(C)(F)C1"                                                                                                                                                 
+QFO InChI            InChI                1.03  "InChI=1S/C26H34FN7O3S/c1-16(2)19-10-30-24(34-12-17(13-34)14-38(4,36)37)20-11-29-23(9-18(19)20)31-22-5-7-28-25(32-22)33-8-6-21(35)26(3,27)15-33/h5,7,9-11,16-17,21,35H,6,8,12-15H2,1-4H3,(H,28,29,31,32)/t21-,26+/m1/s1" 
+QFO InChIKey         InChI                1.03  KBRHRZPPQDIMOA-RLWLMLJZSA-N                                                                                                                                                                                              
+QFO SMILES_CANONICAL CACTVS               3.385 "CC(C)c1cnc(N2CC(C2)C[S](C)(=O)=O)c3cnc(Nc4ccnc(n4)N5CC[C@@H](O)[C@@](C)(F)C5)cc13"                                                                                                                                      
+QFO SMILES           CACTVS               3.385 "CC(C)c1cnc(N2CC(C2)C[S](C)(=O)=O)c3cnc(Nc4ccnc(n4)N5CC[CH](O)[C](C)(F)C5)cc13"                                                                                                                                          
+QFO SMILES_CANONICAL "OpenEye OEToolkits" 2.0.7 "CC(C)c1cnc(c2c1cc(nc2)Nc3ccnc(n3)N4CC[C@H]([C@@](C4)(C)F)O)N5CC(C5)CS(=O)(=O)C"                                                                                                                                         
+QFO SMILES           "OpenEye OEToolkits" 2.0.7 "CC(C)c1cnc(c2c1cc(nc2)Nc3ccnc(n3)N4CCC(C(C4)(C)F)O)N5CC(C5)CS(=O)(=O)C"                                                                                                                                                 
+# 
+loop_
+_pdbx_chem_comp_identifier.comp_id 
+_pdbx_chem_comp_identifier.type 
+_pdbx_chem_comp_identifier.program 
+_pdbx_chem_comp_identifier.program_version 
+_pdbx_chem_comp_identifier.identifier 
+QFO "SYSTEMATIC NAME" ACDLabs              12.01 "(3S,4R)-3-fluoro-1-(4-{[8-{3-[(methanesulfonyl)methyl]azetidin-1-yl}-5-(propan-2-yl)-2,7-naphthyridin-3-yl]amino}pyrimidin-2-yl)-3-methylpiperidin-4-ol"     
+QFO "SYSTEMATIC NAME" "OpenEye OEToolkits" 2.0.7 "(3~{S},4~{R})-3-fluoranyl-3-methyl-1-[4-[[8-[3-(methylsulfonylmethyl)azetidin-1-yl]-5-propan-2-yl-2,7-naphthyridin-3-yl]amino]pyrimidin-2-yl]piperidin-4-ol" 
+# 
+loop_
+_pdbx_chem_comp_audit.comp_id 
+_pdbx_chem_comp_audit.action_type 
+_pdbx_chem_comp_audit.date 
+_pdbx_chem_comp_audit.processing_site 
+QFO "Create component" 2022-06-08 RCSB 
+QFO "Initial release"  2022-07-27 RCSB 
+# 
