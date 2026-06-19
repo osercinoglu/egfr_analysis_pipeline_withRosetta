@@ -1,0 +1,5 @@
+pdb_id,ligand_id,ligand_name,ligand_mw,resolution_A,affinity_type,affinity_pM,unit_raw,source,log10_affinity_pM
+1XKK,FMM,GW572016,,,Kd,3.0,pM,paper,0.47712125471966244
+5EM8,5Q4,5Q4,,,Kd,1090.0,pM,paper,3.037426497940624
+5GMP,F62,XTF-262,,,Kd,0.8,pM,paper,-0.09691001300805639
+5UGB,8BM,8BM,,,Kd,161.0,pM,paper,2.2068258760318495
