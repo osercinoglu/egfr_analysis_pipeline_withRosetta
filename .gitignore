@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data — raw PDBs can be re-downloaded; keep processed data
+data/raw_pdb/
+
+# Checkpoint intermediates (large parquet/pickle files)
+checkpoints/*.parquet
+checkpoints/*.pkl
+checkpoints/*.pickle
+
+# PyRosetta build artifacts
+*.whl
+*.tar.bz2
+
+# Editor / OS
+.DS_Store
+*.swp
+*.swo
+.vscode/
+.idea/
+*~
+
+# Logs
+*.log
