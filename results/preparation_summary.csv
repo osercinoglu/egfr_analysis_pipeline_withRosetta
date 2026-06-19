@@ -1,0 +1,2 @@
+pdb_id,status,processed_pdb,lig_pdb,lig_mol2,params_file,n_protein_atoms,n_ligand_atoms
+7JXM,ok,data/processed/7JXM_clean.pdb,data/ligands/7JXM_9LL.pdb,data/ligands/7JXM_9LL.mol2,data/ligands/params/7JXM_9LL.params,2385,27
