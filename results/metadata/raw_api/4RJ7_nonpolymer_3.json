@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "3R1",
+    "entity_id": "3",
+    "name": "2,6-dichloro-N-{2-[(2-{[(2S)-1-hydroxypropan-2-yl]amino}-6-methylpyrimidin-4-yl)amino]pyridin-4-yl}benzamide"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.447,
+    "pdbx_description": "2,6-dichloro-N-{2-[(2-{[(2S)-1-hydroxypropan-2-yl]amino}-6-methylpyrimidin-4-yl)amino]pyridin-4-yl}benzamide",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "C"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "3R1",
+    "entity_id": "3",
+    "entry_id": "4RJ7",
+    "nonpolymer_comp_id": "3R1",
+    "rcsb_id": "4RJ7_3"
+  },
+  "rcsb_id": "4RJ7_3"
+}

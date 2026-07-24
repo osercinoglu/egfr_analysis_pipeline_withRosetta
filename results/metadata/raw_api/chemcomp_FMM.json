@@ -1,0 +1,374 @@
+{
+  "chem_comp": {
+    "formula": "C29 H26 Cl F N4 O4 S",
+    "formula_weight": 581.058,
+    "id": "FMM",
+    "name": "N-{3-CHLORO-4-[(3-FLUOROBENZYL)OXY]PHENYL}-6-[5-({[2-(METHYLSULFONYL)ETHYL]AMINO}METHYL)-2-FURYL]-4-QUINAZOLINAMINE",
+    "pdbx_ambiguous_flag": "N",
+    "pdbx_formal_charge": 0,
+    "pdbx_initial_date": "2004-10-04T00:00:00.000+00:00",
+    "pdbx_modified_date": "2011-06-04T00:00:00.000+00:00",
+    "pdbx_processing_site": "RCSB",
+    "pdbx_release_status": "REL",
+    "three_letter_code": "FMM",
+    "type": "non-polymer"
+  },
+  "pdbx_chem_comp_audit": [
+    {
+      "action_type": "Create component",
+      "comp_id": "FMM",
+      "date": "2004-10-04T00:00:00.000+00:00",
+      "ordinal": 1
+    },
+    {
+      "action_type": "Modify aromatic_flag",
+      "comp_id": "FMM",
+      "date": "2011-06-04T00:00:00.000+00:00",
+      "ordinal": 2
+    },
+    {
+      "action_type": "Modify descriptor",
+      "comp_id": "FMM",
+      "date": "2011-06-04T00:00:00.000+00:00",
+      "ordinal": 3
+    }
+  ],
+  "pdbx_chem_comp_descriptor": [
+    {
+      "comp_id": "FMM",
+      "descriptor": "Fc1cccc(c1)COc2ccc(cc2Cl)Nc5ncnc4c5cc(c3oc(cc3)CNCCS(=O)(=O)C)cc4",
+      "program": "ACDLabs",
+      "program_version": "10.04",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "FMM",
+      "descriptor": "C[S](=O)(=O)CCNCc1oc(cc1)c2ccc3ncnc(Nc4ccc(OCc5cccc(F)c5)c(Cl)c4)c3c2",
+      "program": "CACTVS",
+      "program_version": "3.341",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "FMM",
+      "descriptor": "C[S](=O)(=O)CCNCc1oc(cc1)c2ccc3ncnc(Nc4ccc(OCc5cccc(F)c5)c(Cl)c4)c3c2",
+      "program": "CACTVS",
+      "program_version": "3.341",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "FMM",
+      "descriptor": "CS(=O)(=O)CCNCc1ccc(o1)c2ccc3c(c2)c(ncn3)Nc4ccc(c(c4)Cl)OCc5cccc(c5)F",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.5.0",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "FMM",
+      "descriptor": "CS(=O)(=O)CCNCc1ccc(o1)c2ccc3c(c2)c(ncn3)Nc4ccc(c(c4)Cl)OCc5cccc(c5)F",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.5.0",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "FMM",
+      "descriptor": "InChI=1S/C29H26ClFN4O4S/c1-40(36,37)12-11-32-16-23-7-10-27(39-23)20-5-8-26-24(14-20)29(34-18-33-26)35-22-6-9-28(25(30)15-22)38-17-19-3-2-4-21(31)13-19/h2-10,13-15,18,32H,11-12,16-17H2,1H3,(H,33,34,35)",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChI"
+    },
+    {
+      "comp_id": "FMM",
+      "descriptor": "BCFGMOOMADDAQU-UHFFFAOYSA-N",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChIKey"
+    }
+  ],
+  "pdbx_chem_comp_identifier": [
+    {
+      "comp_id": "FMM",
+      "identifier": "N-{3-chloro-4-[(3-fluorobenzyl)oxy]phenyl}-6-[5-({[2-(methylsulfonyl)ethyl]amino}methyl)furan-2-yl]quinazolin-4-amine",
+      "program": "ACDLabs",
+      "program_version": "10.04",
+      "type": "SYSTEMATIC NAME"
+    },
+    {
+      "comp_id": "FMM",
+      "identifier": "N-[3-chloro-4-[(3-fluorophenyl)methoxy]phenyl]-6-[5-[(2-methylsulfonylethylamino)methyl]furan-2-yl]quinazolin-4-amine",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.5.0",
+      "type": "SYSTEMATIC NAME"
+    }
+  ],
+  "rcsb_chem_comp_annotation": [
+    {
+      "annotation_id": "L01EH01",
+      "assignment_version": "5.1",
+      "description": "ATC matching InChIKey in DrugBank",
+      "name": "lapatinib",
+      "provenance_source": "DrugBank",
+      "type": "ATC",
+      "annotation_lineage": [
+        {
+          "id": "L",
+          "name": "ANTINEOPLASTIC AND IMMUNOMODULATING AGENTS"
+        },
+        {
+          "depth": 1,
+          "id": "L01",
+          "name": "ANTINEOPLASTIC AGENTS"
+        },
+        {
+          "depth": 2,
+          "id": "L01E",
+          "name": "PROTEIN KINASE INHIBITORS, ANTINEOPLASTIC AND IMMUNOMODULATING AGENTS"
+        },
+        {
+          "depth": 3,
+          "id": "L01EH",
+          "name": "Human epidermal growth factor receptor 2 (HER2) tyrosine kinase inhibitors"
+        },
+        {
+          "depth": 4,
+          "id": "L01EH01",
+          "name": "lapatinib"
+        }
+      ]
+    }
+  ],
+  "rcsb_chem_comp_container_identifiers": {
+    "atc_codes": [
+      "L01EH01"
+    ],
+    "comp_id": "FMM",
+    "drugbank_id": "DB01259",
+    "rcsb_id": "FMM"
+  },
+  "rcsb_chem_comp_descriptor": {
+    "InChI": "InChI=1S/C29H26ClFN4O4S/c1-40(36,37)12-11-32-16-23-7-10-27(39-23)20-5-8-26-24(14-20)29(34-18-33-26)35-22-6-9-28(25(30)15-22)38-17-19-3-2-4-21(31)13-19/h2-10,13-15,18,32H,11-12,16-17H2,1H3,(H,33,34,35)",
+    "InChIKey": "BCFGMOOMADDAQU-UHFFFAOYSA-N",
+    "SMILES": "CS(=O)(=O)CCNCc1ccc(o1)c2ccc3c(c2)c(ncn3)Nc4ccc(c(c4)Cl)OCc5cccc(c5)F",
+    "SMILES_stereo": "CS(=O)(=O)CCNCc1ccc(o1)c2ccc3c(c2)c(ncn3)Nc4ccc(c(c4)Cl)OCc5cccc(c5)F",
+    "comp_id": "FMM"
+  },
+  "rcsb_chem_comp_info": {
+    "atom_count": 66,
+    "atom_count_chiral": 0,
+    "atom_count_heavy": 40,
+    "bond_count": 70,
+    "bond_count_aromatic": 29,
+    "comp_id": "FMM",
+    "initial_deposition_date": "2004-10-04T00:00:00.000+00:00",
+    "initial_release_date": "2004-12-07T00:00:00.000+00:00",
+    "release_status": "REL",
+    "revision_date": "2011-06-04T00:00:00.000+00:00"
+  },
+  "rcsb_chem_comp_related": [
+    {
+      "comp_id": "FMM",
+      "ordinal": 1,
+      "related_mapping_method": "matching InChIKey in DrugBank",
+      "resource_accession_code": "DB01259",
+      "resource_name": "DrugBank"
+    },
+    {
+      "comp_id": "FMM",
+      "ordinal": 2,
+      "related_mapping_method": "assigned by PDB",
+      "resource_accession_code": "OVAYOB",
+      "resource_name": "CCDC/CSD"
+    },
+    {
+      "comp_id": "FMM",
+      "ordinal": 3,
+      "related_mapping_method": "matching InChIKey in PubChem",
+      "resource_accession_code": "208908",
+      "resource_name": "PubChem"
+    },
+    {
+      "comp_id": "FMM",
+      "ordinal": 4,
+      "related_mapping_method": "assigned by PubChem resource",
+      "resource_accession_code": "231277-92-2",
+      "resource_name": "CAS"
+    },
+    {
+      "comp_id": "FMM",
+      "ordinal": 5,
+      "related_mapping_method": "assigned by PubChem resource",
+      "resource_accession_code": "CHEBI:49603",
+      "resource_name": "ChEBI"
+    },
+    {
+      "comp_id": "FMM",
+      "ordinal": 6,
+      "related_mapping_method": "assigned by PubChem resource",
+      "resource_accession_code": "CHEMBL554",
+      "resource_name": "ChEMBL"
+    },
+    {
+      "comp_id": "FMM",
+      "ordinal": 7,
+      "related_mapping_method": "matching ChEMBL ID in Pharos",
+      "resource_accession_code": "CHEMBL554",
+      "resource_name": "Pharos"
+    }
+  ],
+  "rcsb_chem_comp_synonyms": [
+    {
+      "comp_id": "FMM",
+      "name": "N-{3-CHLORO-4-[(3-FLUOROBENZYL)OXY]PHENYL}-6-[5-({[2-(METHYLSULFONYL)ETHYL]AMINO}METHYL)-2-FURYL]-4-QUINAZOLINAMINE",
+      "ordinal": 1,
+      "provenance_source": "PDB Reference Data",
+      "type": "Preferred Name"
+    },
+    {
+      "comp_id": "FMM",
+      "name": "N-{3-chloro-4-[(3-fluorobenzyl)oxy]phenyl}-6-[5-({[2-(methylsulfonyl)ethyl]amino}methyl)furan-2-yl]quinazolin-4-amine",
+      "ordinal": 2,
+      "provenance_source": "ACDLabs",
+      "type": "Systematic Name"
+    },
+    {
+      "comp_id": "FMM",
+      "name": "N-[3-chloro-4-[(3-fluorophenyl)methoxy]phenyl]-6-[5-[(2-methylsulfonylethylamino)methyl]furan-2-yl]quinazolin-4-amine",
+      "ordinal": 3,
+      "provenance_source": "OpenEye OEToolkits",
+      "type": "Systematic Name"
+    },
+    {
+      "comp_id": "FMM",
+      "name": "Lapatinib ditosylate",
+      "ordinal": 4,
+      "provenance_source": "DrugBank",
+      "type": "Synonym"
+    },
+    {
+      "comp_id": "FMM",
+      "name": "Lapatinib",
+      "ordinal": 5,
+      "provenance_source": "DrugBank",
+      "type": "Synonym"
+    },
+    {
+      "comp_id": "FMM",
+      "name": "N-(3-chloro-4-((3-fluorophenyl)methoxy)phenyl)-6-(5-(((2-(methylsulfonyl)ethyl)amino)methyl)-2-furanyl)-4-quinazolinamine",
+      "ordinal": 6,
+      "provenance_source": "DrugBank",
+      "type": "Synonym"
+    }
+  ],
+  "rcsb_chem_comp_target": [
+    {
+      "comp_id": "FMM",
+      "interaction_type": "target",
+      "name": "Epidermal growth factor receptor",
+      "ordinal": 1,
+      "provenance_source": "DrugBank",
+      "reference_database_accession_code": "P00533",
+      "reference_database_name": "UniProt",
+      "target_actions": [
+        "antagonist"
+      ]
+    },
+    {
+      "comp_id": "FMM",
+      "interaction_type": "target",
+      "name": "Receptor tyrosine-protein kinase erbB-2",
+      "ordinal": 2,
+      "provenance_source": "DrugBank",
+      "reference_database_accession_code": "P04626",
+      "reference_database_name": "UniProt",
+      "target_actions": [
+        "antagonist"
+      ]
+    },
+    {
+      "comp_id": "FMM",
+      "interaction_type": "target",
+      "name": "Eukaryotic elongation factor 2 kinase",
+      "ordinal": 3,
+      "provenance_source": "DrugBank",
+      "reference_database_accession_code": "O00418",
+      "reference_database_name": "UniProt",
+      "target_actions": [
+        "inhibitor"
+      ]
+    },
+    {
+      "comp_id": "FMM",
+      "interaction_type": "enzyme",
+      "name": "Cytochrome P450 3A4",
+      "ordinal": 4,
+      "provenance_source": "DrugBank",
+      "reference_database_accession_code": "P08684",
+      "reference_database_name": "UniProt",
+      "target_actions": [
+        "substrate",
+        "inhibitor"
+      ]
+    },
+    {
+      "comp_id": "FMM",
+      "interaction_type": "enzyme",
+      "name": "Cytochrome P450 3A5",
+      "ordinal": 5,
+      "provenance_source": "DrugBank",
+      "reference_database_accession_code": "P20815",
+      "reference_database_name": "UniProt",
+      "target_actions": [
+        "substrate"
+      ]
+    },
+    {
+      "comp_id": "FMM",
+      "interaction_type": "enzyme",
+      "name": "Cytochrome P450 2C8",
+      "ordinal": 6,
+      "provenance_source": "DrugBank",
+      "reference_database_accession_code": "P10632",
+      "reference_database_name": "UniProt",
+      "target_actions": [
+        "substrate",
+        "inhibitor"
+      ]
+    },
+    {
+      "comp_id": "FMM",
+      "interaction_type": "enzyme",
+      "name": "Cytochrome P450 2C19",
+      "ordinal": 7,
+      "provenance_source": "DrugBank",
+      "reference_database_accession_code": "P33261",
+      "reference_database_name": "UniProt",
+      "target_actions": [
+        "substrate"
+      ]
+    },
+    {
+      "comp_id": "FMM",
+      "interaction_type": "transporter",
+      "name": "ATP-dependent translocase ABCB1",
+      "ordinal": 8,
+      "provenance_source": "DrugBank",
+      "reference_database_accession_code": "P08183",
+      "reference_database_name": "UniProt",
+      "target_actions": [
+        "inhibitor"
+      ]
+    },
+    {
+      "comp_id": "FMM",
+      "interaction_type": "transporter",
+      "name": "Antigen peptide transporter 1",
+      "ordinal": 9,
+      "provenance_source": "DrugBank",
+      "reference_database_accession_code": "Q03518",
+      "reference_database_name": "UniProt",
+      "target_actions": [
+        "inhibitor"
+      ]
+    }
+  ],
+  "rcsb_id": "FMM"
+}

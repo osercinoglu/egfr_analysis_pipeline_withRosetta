@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "5Q4",
+    "entity_id": "2",
+    "name": "4-[(2-methoxyphenyl)amino]-~{N}-[4-(4-methylpiperazin-1-yl)phenyl]-2-oxidanylidene-1~{H}-pyridine-3-carboxamide"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.434,
+    "pdbx_description": "4-[(2-methoxyphenyl)amino]-~{N}-[4-(4-methylpiperazin-1-yl)phenyl]-2-oxidanylidene-1~{H}-pyridine-3-carboxamide",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "5Q4",
+    "entity_id": "2",
+    "entry_id": "5EM8",
+    "nonpolymer_comp_id": "5Q4",
+    "rcsb_id": "5EM8_2"
+  },
+  "rcsb_id": "5EM8_2"
+}

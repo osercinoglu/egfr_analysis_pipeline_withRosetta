@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "4ZR",
+    "entity_id": "3",
+    "name": "(1R)-1-{6-({2-[(3S,4R)-3-fluoro-4-methoxypiperidin-1-yl]pyrimidin-4-yl}amino)-1-[(2S)-1,1,1-trifluoropropan-2-yl]-1H-imidazo[4,5-c]pyridin-2-yl}ethanol"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.483,
+    "pdbx_description": "(1R)-1-{6-({2-[(3S,4R)-3-fluoro-4-methoxypiperidin-1-yl]pyrimidin-4-yl}amino)-1-[(2S)-1,1,1-trifluoropropan-2-yl]-1H-imidazo[4,5-c]pyridin-2-yl}ethanol",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "C"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "4ZR",
+    "entity_id": "3",
+    "entry_id": "5CAU",
+    "nonpolymer_comp_id": "4ZR",
+    "rcsb_id": "5CAU_3"
+  },
+  "rcsb_id": "5CAU_3"
+}

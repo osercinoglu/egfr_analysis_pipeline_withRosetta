@@ -1,0 +1,742 @@
+{
+  "audit_author": [
+    {
+      "name": "Eigenbrot, C.",
+      "pdbx_ordinal": 1
+    },
+    {
+      "name": "Yu, C.",
+      "pdbx_ordinal": 2
+    }
+  ],
+  "cell": {
+    "Z_PDB": 24,
+    "angle_alpha": 90.0,
+    "angle_beta": 90.0,
+    "angle_gamma": 90.0,
+    "length_a": 147.661,
+    "length_b": 147.661,
+    "length_c": 147.661
+  },
+  "citation": [
+    {
+      "country": "US",
+      "id": "primary",
+      "journal_abbrev": "Acs Med.Chem.Lett.",
+      "journal_id_ISSN": "1948-5875",
+      "journal_volume": "7",
+      "page_first": "100",
+      "page_last": "104",
+      "pdbx_database_id_DOI": "10.1021/acsmedchemlett.5b00428",
+      "pdbx_database_id_PubMed": 26819674,
+      "rcsb_authors": [
+        "Bryan, M.C.",
+        "Burdick, D.J.",
+        "Chan, B.K.",
+        "Chen, Y.",
+        "Clausen, S.",
+        "Dotson, J.",
+        "Eigenbrot, C.",
+        "Elliott, R.",
+        "Hanan, E.J.",
+        "Heald, R.",
+        "Jackson, P.",
+        "La, H.",
+        "Lainchbury, M.",
+        "Malek, S.",
+        "Mann, S.E.",
+        "Purkey, H.E.",
+        "Schaefer, G.",
+        "Schmidt, S.",
+        "Seward, E.",
+        "Sideris, S.",
+        "Wang, S.",
+        "Yen, I.",
+        "Yu, C.",
+        "Heffron, T.P."
+      ],
+      "rcsb_is_primary": "Y",
+      "rcsb_journal_abbrev": "ACS Med Chem Lett",
+      "title": "Pyridones as Highly Selective, Noncovalent Inhibitors of T790M Double Mutants of EGFR.",
+      "year": 2016
+    }
+  ],
+  "database_2": [
+    {
+      "database_code": "5EM8",
+      "database_id": "PDB",
+      "pdbx_DOI": "10.2210/pdb5em8/pdb",
+      "pdbx_database_accession": "pdb_00005em8"
+    },
+    {
+      "database_code": "D_1000215157",
+      "database_id": "WWPDB"
+    }
+  ],
+  "diffrn": [
+    {
+      "ambient_temp": 110.0,
+      "crystal_id": "1",
+      "id": "1"
+    }
+  ],
+  "diffrn_detector": [
+    {
+      "detector": "CCD",
+      "diffrn_id": "1",
+      "pdbx_collection_date": "2012-04-12T00:00:00.000+00:00",
+      "type": "ADSC QUANTUM 315r"
+    }
+  ],
+  "diffrn_radiation": [
+    {
+      "diffrn_id": "1",
+      "monochromator": "Si(111)",
+      "pdbx_diffrn_protocol": "SINGLE WAVELENGTH",
+      "pdbx_monochromatic_or_laue_m_l": "M",
+      "pdbx_scattering_type": "x-ray",
+      "wavelength_id": "1"
+    }
+  ],
+  "diffrn_source": [
+    {
+      "diffrn_id": "1",
+      "pdbx_synchrotron_beamline": "5.0.2",
+      "pdbx_synchrotron_site": "ALS",
+      "pdbx_wavelength_list": "1.000",
+      "source": "SYNCHROTRON",
+      "type": "ALS BEAMLINE 5.0.2"
+    }
+  ],
+  "entry": {
+    "id": "5EM8"
+  },
+  "exptl": [
+    {
+      "method": "X-RAY DIFFRACTION"
+    }
+  ],
+  "exptl_crystal": [
+    {
+      "density_Matthews": 3.56,
+      "density_percent_sol": 65.48,
+      "id": "1"
+    }
+  ],
+  "exptl_crystal_grow": [
+    {
+      "crystal_id": "1",
+      "method": "VAPOR DIFFUSION, HANGING DROP",
+      "pH": 7.0,
+      "pdbx_details": "sodium/potassium tartrate",
+      "temp": 292.0
+    }
+  ],
+  "pdbx_audit_revision_category": [
+    {
+      "category": "diffrn_detector",
+      "data_content_type": "Structure model",
+      "ordinal": 1,
+      "revision_ordinal": 3
+    },
+    {
+      "category": "pdbx_struct_oper_list",
+      "data_content_type": "Structure model",
+      "ordinal": 2,
+      "revision_ordinal": 3
+    },
+    {
+      "category": "chem_comp_atom",
+      "data_content_type": "Structure model",
+      "ordinal": 3,
+      "revision_ordinal": 4
+    },
+    {
+      "category": "chem_comp_bond",
+      "data_content_type": "Structure model",
+      "ordinal": 4,
+      "revision_ordinal": 4
+    },
+    {
+      "category": "database_2",
+      "data_content_type": "Structure model",
+      "ordinal": 5,
+      "revision_ordinal": 4
+    }
+  ],
+  "pdbx_audit_revision_details": [
+    {
+      "data_content_type": "Structure model",
+      "ordinal": 1,
+      "provider": "repository",
+      "revision_ordinal": 1,
+      "type": "Initial release"
+    }
+  ],
+  "pdbx_audit_revision_group": [
+    {
+      "data_content_type": "Structure model",
+      "group": "Database references",
+      "ordinal": 1,
+      "revision_ordinal": 2
+    },
+    {
+      "data_content_type": "Structure model",
+      "group": "Data collection",
+      "ordinal": 2,
+      "revision_ordinal": 3
+    },
+    {
+      "data_content_type": "Structure model",
+      "group": "Derived calculations",
+      "ordinal": 3,
+      "revision_ordinal": 3
+    },
+    {
+      "data_content_type": "Structure model",
+      "group": "Data collection",
+      "ordinal": 4,
+      "revision_ordinal": 4
+    },
+    {
+      "data_content_type": "Structure model",
+      "group": "Database references",
+      "ordinal": 5,
+      "revision_ordinal": 4
+    }
+  ],
+  "pdbx_audit_revision_history": [
+    {
+      "data_content_type": "Structure model",
+      "major_revision": 1,
+      "minor_revision": 0,
+      "ordinal": 1,
+      "revision_date": "2015-12-30T00:00:00.000+00:00"
+    },
+    {
+      "data_content_type": "Structure model",
+      "major_revision": 1,
+      "minor_revision": 1,
+      "ordinal": 2,
+      "revision_date": "2016-02-10T00:00:00.000+00:00"
+    },
+    {
+      "data_content_type": "Structure model",
+      "major_revision": 1,
+      "minor_revision": 2,
+      "ordinal": 3,
+      "revision_date": "2017-09-06T00:00:00.000+00:00"
+    },
+    {
+      "data_content_type": "Structure model",
+      "major_revision": 1,
+      "minor_revision": 3,
+      "ordinal": 4,
+      "revision_date": "2024-03-06T00:00:00.000+00:00"
+    }
+  ],
+  "pdbx_audit_revision_item": [
+    {
+      "data_content_type": "Structure model",
+      "item": "_diffrn_detector.detector",
+      "ordinal": 1,
+      "revision_ordinal": 3
+    },
+    {
+      "data_content_type": "Structure model",
+      "item": "_pdbx_struct_oper_list.symmetry_operation",
+      "ordinal": 2,
+      "revision_ordinal": 3
+    },
+    {
+      "data_content_type": "Structure model",
+      "item": "_database_2.pdbx_DOI",
+      "ordinal": 3,
+      "revision_ordinal": 4
+    },
+    {
+      "data_content_type": "Structure model",
+      "item": "_database_2.pdbx_database_accession",
+      "ordinal": 4,
+      "revision_ordinal": 4
+    }
+  ],
+  "pdbx_database_related": [
+    {
+      "content_type": "unspecified",
+      "db_id": "5EM5",
+      "db_name": "PDB"
+    },
+    {
+      "content_type": "unspecified",
+      "db_id": "5EM6",
+      "db_name": "PDB"
+    },
+    {
+      "content_type": "unspecified",
+      "db_id": "5EM7",
+      "db_name": "PDB"
+    }
+  ],
+  "pdbx_database_status": {
+    "SG_entry": "N",
+    "deposit_site": "RCSB",
+    "pdb_format_compatible": "Y",
+    "process_site": "RCSB",
+    "recvd_initial_deposition_date": "2015-11-05T00:00:00.000+00:00",
+    "status_code": "REL",
+    "status_code_sf": "REL"
+  },
+  "pdbx_vrpt_summary": {
+    "attempted_validation_steps": "molprobity,validation-pack,xtriage,eds,mogul,buster-report,validation_schema,percentiles,writexml,writecif,writepdf",
+    "ligands_for_buster_report": "Y",
+    "report_creation_date": "2026-03-10T09:08:00.000+00:00"
+  },
+  "pdbx_vrpt_summary_diffraction": [
+    {
+      "B_factor_type": "FULL",
+      "CCP4_version": "9.0.010 (Gargrove)",
+      "DCC_R": 0.1915,
+      "DCC_Rfree": 0.2336,
+      "EDS_R": 0.1921,
+      "EDS_res_high": 2.8,
+      "EDS_res_low": 46.69,
+      "Fo_Fc_correlation": 0.953,
+      "I_over_sigma": "4.11(2.81A)",
+      "Padilla_Yeates_L2_mean": 0.336,
+      "Padilla_Yeates_L_mean": 0.501,
+      "Wilson_B_aniso": "[78.146,78.146,78.146,0.000,0.000,0.000]",
+      "Wilson_B_estimate": 78.146,
+      "acentric_outliers": 0,
+      "bulk_solvent_b": 70.572,
+      "bulk_solvent_k": 0.326,
+      "centric_outliers": 0,
+      "data_anisotropy": 0.0,
+      "data_completeness": 99.78,
+      "density_fitness_version": "1.0.12",
+      "exp_method": "x-ray",
+      "num_miller_indices": 13327,
+      "number_reflns_R_free": 569,
+      "percent_RSRZ_outliers": 4.62,
+      "percent_free_reflections": 4.27,
+      "trans_NCS_details": "The largest off-origin peak in the Patterson function is 3.14% of the height of the origin peak. No significant pseudotranslation is detected.",
+      "twin_fraction": "-l,-k,-h:0.027"
+    }
+  ],
+  "pdbx_vrpt_summary_geometry": [
+    {
+      "angles_RMSZ": 1.24,
+      "bonds_RMSZ": 0.85,
+      "clashscore": 3.24,
+      "num_H_reduce": 2485,
+      "num_angles_RMSZ": 3337,
+      "num_bonds_RMSZ": 2468,
+      "percent_ramachandran_outliers": 0.68,
+      "percent_rotamer_outliers": 4.15
+    }
+  ],
+  "rcsb_accession_info": {
+    "deposit_date": "2015-11-05T00:00:00.000+00:00",
+    "has_released_experimental_data": "Y",
+    "initial_release_date": "2015-12-30T00:00:00.000+00:00",
+    "major_revision": 1,
+    "minor_revision": 3,
+    "revision_date": "2024-03-06T00:00:00.000+00:00",
+    "status_code": "REL"
+  },
+  "rcsb_binding_affinity": [
+    {
+      "comp_id": "5Q4",
+      "link": "https://www.bindingdb.org/rwd/jsp/dbsearch/PrimarySearch_pdbids.jsp?pdbids_submit=Search&pdbids=5EM8",
+      "provenance_code": "BindingDB",
+      "reference_sequence_identity": 100,
+      "type": "Ki",
+      "unit": "nM",
+      "value": 19.0
+    },
+    {
+      "comp_id": "5Q4",
+      "link": "https://www.bindingdb.org/rwd/jsp/dbsearch/PrimarySearch_pdbids.jsp?pdbids_submit=Search&pdbids=5EM8",
+      "provenance_code": "BindingDB",
+      "reference_sequence_identity": 100,
+      "type": "Ki",
+      "unit": "nM",
+      "value": 1090.0
+    },
+    {
+      "comp_id": "5Q4",
+      "link": "https://www.bindingdb.org/rwd/jsp/dbsearch/PrimarySearch_pdbids.jsp?pdbids_submit=Search&pdbids=5EM8",
+      "provenance_code": "BindingDB",
+      "reference_sequence_identity": 100,
+      "type": "EC50",
+      "unit": "nM",
+      "value": 1090.0
+    }
+  ],
+  "rcsb_entry_container_identifiers": {
+    "assembly_ids": [
+      "1"
+    ],
+    "entity_ids": [
+      "1",
+      "2"
+    ],
+    "entry_id": "5EM8",
+    "model_ids": [
+      1
+    ],
+    "non_polymer_entity_ids": [
+      "2"
+    ],
+    "polymer_entity_ids": [
+      "1"
+    ],
+    "pubmed_id": 26819674,
+    "rcsb_id": "5EM8"
+  },
+  "rcsb_entry_info": {
+    "assembly_count": 1,
+    "branched_entity_count": 0,
+    "cis_peptide_count": 0,
+    "deposited_atom_count": 2449,
+    "deposited_deuterated_water_count": 0,
+    "deposited_hydrogen_atom_count": 0,
+    "deposited_model_count": 1,
+    "deposited_modeled_polymer_monomer_count": 303,
+    "deposited_nonpolymer_entity_instance_count": 1,
+    "deposited_polymer_entity_instance_count": 1,
+    "deposited_polymer_monomer_count": 331,
+    "deposited_solvent_atom_count": 0,
+    "deposited_unmodeled_polymer_monomer_count": 28,
+    "diffrn_radiation_wavelength_maximum": 1.0,
+    "diffrn_radiation_wavelength_minimum": 1.0,
+    "disulfide_bond_count": 0,
+    "entity_count": 2,
+    "experimental_method": "X-ray",
+    "experimental_method_count": 1,
+    "inter_mol_covalent_bond_count": 0,
+    "inter_mol_metalic_bond_count": 0,
+    "molecular_weight": 38.08,
+    "na_polymer_entity_types": "Other",
+    "nonpolymer_entity_count": 1,
+    "nonpolymer_molecular_weight_maximum": 0.43,
+    "nonpolymer_molecular_weight_minimum": 0.43,
+    "polymer_composition": "homomeric protein",
+    "polymer_entity_count": 1,
+    "polymer_entity_count_DNA": 0,
+    "polymer_entity_count_RNA": 0,
+    "polymer_entity_count_nucleic_acid": 0,
+    "polymer_entity_count_nucleic_acid_hybrid": 0,
+    "polymer_entity_count_protein": 1,
+    "polymer_entity_taxonomy_count": 1,
+    "polymer_molecular_weight_maximum": 37.65,
+    "polymer_molecular_weight_minimum": 37.65,
+    "polymer_monomer_count_maximum": 331,
+    "polymer_monomer_count_minimum": 331,
+    "resolution_combined": [
+      2.8
+    ],
+    "selected_polymer_entity_types": "Protein (only)",
+    "software_programs_combined": [
+      "BUSTER",
+      "HKL-2000",
+      "PHASER",
+      "SCALEPACK"
+    ],
+    "solvent_entity_count": 0,
+    "structure_determination_methodology": "experimental",
+    "structure_determination_methodology_priority": 10,
+    "diffrn_resolution_high": {
+      "provenance_source": "Depositor assigned",
+      "value": 2.8
+    }
+  },
+  "rcsb_primary_citation": {
+    "country": "US",
+    "id": "primary",
+    "journal_abbrev": "Acs Med.Chem.Lett.",
+    "journal_id_ISSN": "1948-5875",
+    "journal_volume": "7",
+    "page_first": "100",
+    "page_last": "104",
+    "pdbx_database_id_DOI": "10.1021/acsmedchemlett.5b00428",
+    "pdbx_database_id_PubMed": 26819674,
+    "rcsb_ORCID_identifiers": [
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?"
+    ],
+    "rcsb_authors": [
+      "Bryan, M.C.",
+      "Burdick, D.J.",
+      "Chan, B.K.",
+      "Chen, Y.",
+      "Clausen, S.",
+      "Dotson, J.",
+      "Eigenbrot, C.",
+      "Elliott, R.",
+      "Hanan, E.J.",
+      "Heald, R.",
+      "Jackson, P.",
+      "La, H.",
+      "Lainchbury, M.",
+      "Malek, S.",
+      "Mann, S.E.",
+      "Purkey, H.E.",
+      "Schaefer, G.",
+      "Schmidt, S.",
+      "Seward, E.",
+      "Sideris, S.",
+      "Wang, S.",
+      "Yen, I.",
+      "Yu, C.",
+      "Heffron, T.P."
+    ],
+    "rcsb_journal_abbrev": "ACS Med Chem Lett",
+    "title": "Pyridones as Highly Selective, Noncovalent Inhibitors of T790M Double Mutants of EGFR.",
+    "year": 2016
+  },
+  "refine": [
+    {
+      "B_iso_mean": 88.27,
+      "aniso_B_1_1": 0.0,
+      "aniso_B_1_2": 0.0,
+      "aniso_B_1_3": 0.0,
+      "aniso_B_2_2": 0.0,
+      "aniso_B_2_3": 0.0,
+      "aniso_B_3_3": 0.0,
+      "correlation_coeff_Fo_to_Fc": 0.9529,
+      "correlation_coeff_Fo_to_Fc_free": 0.9372,
+      "ls_R_factor_R_free": 0.229,
+      "ls_R_factor_R_work": 0.1894,
+      "ls_R_factor_obs": 0.191,
+      "ls_d_res_high": 2.8,
+      "ls_d_res_low": 46.69,
+      "ls_number_reflns_R_free": 569,
+      "ls_number_reflns_obs": 13327,
+      "ls_percent_reflns_R_free": 4.27,
+      "ls_percent_reflns_obs": 99.82,
+      "overall_SU_R_Cruickshank_DPI": 0.44,
+      "pdbx_R_Free_selection_details": "RANDOM",
+      "pdbx_diffrn_id": [
+        "1"
+      ],
+      "pdbx_ls_cross_valid_method": "THROUGHOUT",
+      "pdbx_ls_sigma_F": 0.0,
+      "pdbx_overall_SU_R_Blow_DPI": 0.412,
+      "pdbx_overall_SU_R_free_Blow_DPI": 0.266,
+      "pdbx_overall_SU_R_free_Cruickshank_DPI": 0.274,
+      "pdbx_refine_id": "X-RAY DIFFRACTION"
+    }
+  ],
+  "refine_analyze": [
+    {
+      "Luzzati_coordinate_error_obs": 0.482,
+      "pdbx_refine_id": "X-RAY DIFFRACTION"
+    }
+  ],
+  "refine_hist": [
+    {
+      "cycle_id": "1",
+      "d_res_high": 2.8,
+      "d_res_low": 46.69,
+      "number_atoms_solvent": 0,
+      "number_atoms_total": 2449,
+      "pdbx_number_atoms_ligand": 32,
+      "pdbx_number_atoms_nucleic_acid": 0,
+      "pdbx_number_atoms_protein": 2417,
+      "pdbx_refine_id": "X-RAY DIFFRACTION"
+    }
+  ],
+  "refine_ls_restr": [
+    {
+      "dev_ideal": 0.01,
+      "number": 2503,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "pdbx_restraint_function": "HARMONIC",
+      "type": "t_bond_d",
+      "weight": 2.0
+    },
+    {
+      "dev_ideal": 1.1,
+      "number": 3385,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "pdbx_restraint_function": "HARMONIC",
+      "type": "t_angle_deg",
+      "weight": 2.0
+    },
+    {
+      "number": 878,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "pdbx_restraint_function": "SINUSOIDAL",
+      "type": "t_dihedral_angle_d",
+      "weight": 2.0
+    },
+    {
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "t_incorr_chiral_ct"
+    },
+    {
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "t_pseud_angle"
+    },
+    {
+      "number": 57,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "pdbx_restraint_function": "HARMONIC",
+      "type": "t_trig_c_planes",
+      "weight": 2.0
+    },
+    {
+      "number": 354,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "pdbx_restraint_function": "HARMONIC",
+      "type": "t_gen_planes",
+      "weight": 5.0
+    },
+    {
+      "number": 2503,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "pdbx_restraint_function": "HARMONIC",
+      "type": "t_it",
+      "weight": 20.0
+    },
+    {
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "t_nbd"
+    },
+    {
+      "dev_ideal": 2.84,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "t_omega_torsion"
+    },
+    {
+      "dev_ideal": 18.95,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "t_other_torsion"
+    },
+    {
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "t_improper_torsion"
+    },
+    {
+      "number": 321,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "pdbx_restraint_function": "SEMIHARMONIC",
+      "type": "t_chiral_improper_torsion",
+      "weight": 5.0
+    },
+    {
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "t_sum_occupancies"
+    },
+    {
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "t_utility_distance"
+    },
+    {
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "t_utility_angle"
+    },
+    {
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "t_utility_torsion"
+    },
+    {
+      "number": 2807,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "pdbx_restraint_function": "SEMIHARMONIC",
+      "type": "t_ideal_dist_contact",
+      "weight": 4.0
+    }
+  ],
+  "reflns": [
+    {
+      "B_iso_Wilson_estimate": 89.9,
+      "d_resolution_high": 2.8,
+      "d_resolution_low": 46.7,
+      "number_all": 13327,
+      "number_obs": 13327,
+      "observed_criterion_sigma_F": 0.0,
+      "observed_criterion_sigma_I": -3.0,
+      "pdbx_Rsym_value": 0.055,
+      "pdbx_diffrn_id": [
+        "1"
+      ],
+      "pdbx_netI_over_sigmaI": 43.2,
+      "pdbx_ordinal": 1,
+      "pdbx_redundancy": 12.9,
+      "percent_possible_obs": 100.0
+    }
+  ],
+  "reflns_shell": [
+    {
+      "Rmerge_I_obs": 0.588,
+      "d_res_high": 2.8,
+      "d_res_low": 2.9,
+      "meanI_over_sigI_obs": 5.0,
+      "pdbx_diffrn_id": [
+        "1"
+      ],
+      "pdbx_ordinal": 1,
+      "pdbx_redundancy": 13.1,
+      "percent_possible_all": 100.0
+    }
+  ],
+  "software": [
+    {
+      "classification": "refinement",
+      "name": "BUSTER",
+      "pdbx_ordinal": 1,
+      "version": "2.11.5"
+    },
+    {
+      "classification": "data reduction",
+      "name": "HKL-2000",
+      "pdbx_ordinal": 2
+    },
+    {
+      "classification": "data scaling",
+      "name": "SCALEPACK",
+      "pdbx_ordinal": 3
+    },
+    {
+      "classification": "phasing",
+      "name": "PHASER",
+      "pdbx_ordinal": 4
+    }
+  ],
+  "struct": {
+    "title": "EGFR kinase domain with pyridone compound 13: 4-[(2-methoxyphenyl)amino]-~{N}-[4-(4-methylpiperazin-1-yl)phenyl]-2-oxidanylidene-1~{H}-pyridine-3-carboxamide"
+  },
+  "struct_keywords": {
+    "pdbx_keywords": "TRANSFERASE/TRANSFERASE INHIBITOR",
+    "text": "protein kinase, inhibitor, TRANSFERASE-TRANSFERASE INHIBITOR complex"
+  },
+  "symmetry": {
+    "Int_Tables_number": 197,
+    "space_group_name_H_M": "I 2 3"
+  },
+  "rcsb_id": "5EM8"
+}

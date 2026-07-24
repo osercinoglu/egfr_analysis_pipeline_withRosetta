@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "GOL",
+    "entity_id": "4",
+    "name": "GLYCEROL"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.092,
+    "pdbx_description": "GLYCEROL",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "E"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "GOL",
+    "entity_id": "4",
+    "entry_id": "5HG8",
+    "nonpolymer_comp_id": "GOL",
+    "rcsb_id": "5HG8_4"
+  },
+  "rcsb_id": "5HG8_4"
+}

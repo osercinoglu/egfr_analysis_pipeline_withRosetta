@@ -1,0 +1,2 @@
+pdb_id,warnings,status,egfr_chain,ligand_comp_id,protein_atom_count,ligand_atom_count,n_protein_residues,n_missing_residues,missing_residue_ranges,n_altloc_atoms_removed,n_disulfides,disulfide_pairs,is_covalent,covalent_protein_residue,covalent_protein_atom,covalent_ligand_atom,n_bridging_waters
+1XKK,"63 eksik residue (SEQRES vs ATOM): ['734-737', '750-753', '868-875', '988-994', '1005-1009'] | 5 köprü-su adayı (<4Å ligand)",OK,A,FMM,2249,40,289,63,734-737;750-753;868-875;988-994;1005-1009,0,0,,False,,,,5

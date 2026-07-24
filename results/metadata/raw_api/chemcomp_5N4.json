@@ -1,0 +1,146 @@
+{
+  "chem_comp": {
+    "formula": "C19 H19 N7 O",
+    "formula_weight": 361.4,
+    "id": "5N4",
+    "name": "~{N}-(1~{H}-indazol-3-yl)-7,7-dimethyl-2-(2-methylpyrazol-3-yl)-5~{H}-furo[3,4-d]pyrimidin-4-amine",
+    "pdbx_ambiguous_flag": "N",
+    "pdbx_formal_charge": 0,
+    "pdbx_initial_date": "2015-10-26T00:00:00.000+00:00",
+    "pdbx_modified_date": "2015-11-27T00:00:00.000+00:00",
+    "pdbx_processing_site": "RCSB",
+    "pdbx_release_status": "REL",
+    "three_letter_code": "5N4",
+    "type": "non-polymer"
+  },
+  "pdbx_chem_comp_audit": [
+    {
+      "action_type": "Create component",
+      "comp_id": "5N4",
+      "date": "2015-10-26T00:00:00.000+00:00",
+      "ordinal": 1
+    },
+    {
+      "action_type": "Initial release",
+      "comp_id": "5N4",
+      "date": "2015-12-02T00:00:00.000+00:00",
+      "ordinal": 2
+    }
+  ],
+  "pdbx_chem_comp_descriptor": [
+    {
+      "comp_id": "5N4",
+      "descriptor": "InChI=1S/C19H19N7O/c1-19(2)15-12(10-27-19)16(23-18(21-15)14-8-9-20-26(14)3)22-17-11-6-4-5-7-13(11)24-25-17/h4-9H,10H2,1-3H3,(H2,21,22,23,24,25)",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChI"
+    },
+    {
+      "comp_id": "5N4",
+      "descriptor": "HMWMAHXTIWOHMD-UHFFFAOYSA-N",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChIKey"
+    },
+    {
+      "comp_id": "5N4",
+      "descriptor": "Cn1nccc1c2nc(Nc3n[nH]c4ccccc34)c5COC(C)(C)c5n2",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "5N4",
+      "descriptor": "Cn1nccc1c2nc(Nc3n[nH]c4ccccc34)c5COC(C)(C)c5n2",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "5N4",
+      "descriptor": "CC1(c2c(c(nc(n2)c3ccnn3C)Nc4c5ccccc5[nH]n4)CO1)C",
+      "program": "OpenEye OEToolkits",
+      "program_version": "2.0.4",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "5N4",
+      "descriptor": "CC1(c2c(c(nc(n2)c3ccnn3C)Nc4c5ccccc5[nH]n4)CO1)C",
+      "program": "OpenEye OEToolkits",
+      "program_version": "2.0.4",
+      "type": "SMILES"
+    }
+  ],
+  "pdbx_chem_comp_identifier": [
+    {
+      "comp_id": "5N4",
+      "identifier": "~{N}-(1~{H}-indazol-3-yl)-7,7-dimethyl-2-(2-methylpyrazol-3-yl)-5~{H}-furo[3,4-d]pyrimidin-4-amine",
+      "program": "OpenEye OEToolkits",
+      "program_version": "2.0.4",
+      "type": "SYSTEMATIC NAME"
+    }
+  ],
+  "rcsb_chem_comp_container_identifiers": {
+    "comp_id": "5N4",
+    "rcsb_id": "5N4"
+  },
+  "rcsb_chem_comp_descriptor": {
+    "InChI": "InChI=1S/C19H19N7O/c1-19(2)15-12(10-27-19)16(23-18(21-15)14-8-9-20-26(14)3)22-17-11-6-4-5-7-13(11)24-25-17/h4-9H,10H2,1-3H3,(H2,21,22,23,24,25)",
+    "InChIKey": "HMWMAHXTIWOHMD-UHFFFAOYSA-N",
+    "SMILES": "CC1(c2c(c(nc(n2)c3ccnn3C)Nc4c5ccccc5[nH]n4)CO1)C",
+    "SMILES_stereo": "CC1(c2c(c(nc(n2)c3ccnn3C)Nc4c5ccccc5[nH]n4)CO1)C",
+    "comp_id": "5N4"
+  },
+  "rcsb_chem_comp_info": {
+    "atom_count": 46,
+    "atom_count_chiral": 0,
+    "atom_count_heavy": 27,
+    "bond_count": 50,
+    "bond_count_aromatic": 21,
+    "comp_id": "5N4",
+    "initial_deposition_date": "2015-10-26T00:00:00.000+00:00",
+    "initial_release_date": "2015-12-02T00:00:00.000+00:00",
+    "release_status": "REL",
+    "revision_date": "2015-12-02T00:00:00.000+00:00"
+  },
+  "rcsb_chem_comp_related": [
+    {
+      "comp_id": "5N4",
+      "ordinal": 1,
+      "related_mapping_method": "matching InChIKey in PubChem",
+      "resource_accession_code": "92132733",
+      "resource_name": "PubChem"
+    },
+    {
+      "comp_id": "5N4",
+      "ordinal": 2,
+      "related_mapping_method": "assigned by PubChem resource",
+      "resource_accession_code": "CHEMBL3759096",
+      "resource_name": "ChEMBL"
+    },
+    {
+      "comp_id": "5N4",
+      "ordinal": 3,
+      "related_mapping_method": "matching ChEMBL ID in Pharos",
+      "resource_accession_code": "CHEMBL3759096",
+      "resource_name": "Pharos"
+    }
+  ],
+  "rcsb_chem_comp_synonyms": [
+    {
+      "comp_id": "5N4",
+      "name": "~{N}-(1~{H}-indazol-3-yl)-7,7-dimethyl-2-(2-methylpyrazol-3-yl)-5~{H}-furo[3,4-d]pyrimidin-4-amine",
+      "ordinal": 1,
+      "provenance_source": "PDB Reference Data",
+      "type": "Preferred Name"
+    },
+    {
+      "comp_id": "5N4",
+      "name": "~{N}-(1~{H}-indazol-3-yl)-7,7-dimethyl-2-(2-methylpyrazol-3-yl)-5~{H}-furo[3,4-d]pyrimidin-4-amine",
+      "ordinal": 2,
+      "provenance_source": "OpenEye OEToolkits",
+      "type": "Systematic Name"
+    }
+  ],
+  "rcsb_id": "5N4"
+}

@@ -1,0 +1,44 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "EDO",
+    "entity_id": "4",
+    "name": "1,2-ETHANEDIOL"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.062,
+    "pdbx_description": "1,2-ETHANEDIOL",
+    "pdbx_number_of_molecules": 19
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "AA",
+      "BA",
+      "EA",
+      "GA",
+      "HA",
+      "L",
+      "M",
+      "N",
+      "O",
+      "P",
+      "R",
+      "S",
+      "T",
+      "U",
+      "V",
+      "W",
+      "X",
+      "Y",
+      "Z"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "EDO",
+    "entity_id": "4",
+    "entry_id": "5GNK",
+    "nonpolymer_comp_id": "EDO",
+    "rcsb_id": "5GNK_4"
+  },
+  "rcsb_id": "5GNK_4"
+}

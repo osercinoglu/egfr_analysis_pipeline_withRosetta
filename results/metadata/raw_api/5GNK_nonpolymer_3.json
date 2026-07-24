@@ -1,0 +1,36 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "NO3",
+    "entity_id": "3",
+    "name": "NITRATE ION"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.062,
+    "pdbx_description": "NITRATE ION",
+    "pdbx_number_of_molecules": 11
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "C",
+      "D",
+      "DA",
+      "E",
+      "F",
+      "FA",
+      "G",
+      "H",
+      "I",
+      "J",
+      "K"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "NO3",
+    "entity_id": "3",
+    "entry_id": "5GNK",
+    "nonpolymer_comp_id": "NO3",
+    "rcsb_id": "5GNK_3"
+  },
+  "rcsb_id": "5GNK_3"
+}

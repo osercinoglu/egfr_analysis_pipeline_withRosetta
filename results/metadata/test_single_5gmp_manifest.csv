@@ -1,0 +1,2 @@
+pdb_id,ligand_comp_id,download_timestamp_utc,pdb_downloaded,pdb_http_status,pdb_sha256,pdb_bytes,pdb_atom_count,pdb_id_match,pdb_ligand_found,cif_downloaded,cif_http_status,cif_sha256,cif_bytes,cif_atom_count,cif_id_match,cif_ligand_found,status,notes
+5GMP,F62,2026-07-23T22:12:41.957653+00:00,True,200,3abc610d54e745b565950901ceb588fbc361d0f73e48f753664c338690984433,240570,2437,True,True,True,200,b9b6537677d127079f2bf2bbd8bb90820155a8c7a78a57a6a0500595aff67438,310567,2437,True,True,OK,

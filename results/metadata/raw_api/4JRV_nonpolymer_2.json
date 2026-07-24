@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "KJV",
+    "entity_id": "2",
+    "name": "4-(dimethylamino)-N-[3-(4-{[(1S)-2-hydroxy-1-phenylethyl]amino}-6-phenylfuro[2,3-d]pyrimidin-5-yl)phenyl]butanamide"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.536,
+    "pdbx_description": "4-(dimethylamino)-N-[3-(4-{[(1S)-2-hydroxy-1-phenylethyl]amino}-6-phenylfuro[2,3-d]pyrimidin-5-yl)phenyl]butanamide",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "KJV",
+    "entity_id": "2",
+    "entry_id": "4JRV",
+    "nonpolymer_comp_id": "KJV",
+    "rcsb_id": "4JRV_2"
+  },
+  "rcsb_id": "4JRV_2"
+}

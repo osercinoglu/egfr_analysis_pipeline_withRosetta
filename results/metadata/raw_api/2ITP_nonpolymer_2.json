@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "AEE",
+    "entity_id": "2",
+    "name": "6-{4-[(4-ETHYLPIPERAZIN-1-YL)METHYL]PHENYL}-N-[(1R)-1-PHENYLETHYL]-7H-PYRROLO[2,3-D]PYRIMIDIN-4-AMINE"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.441,
+    "pdbx_description": "6-{4-[(4-ETHYLPIPERAZIN-1-YL)METHYL]PHENYL}-N-[(1R)-1-PHENYLETHYL]-7H-PYRROLO[2,3-D]PYRIMIDIN-4-AMINE",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "AEE",
+    "entity_id": "2",
+    "entry_id": "2ITP",
+    "nonpolymer_comp_id": "AEE",
+    "rcsb_id": "2ITP_2"
+  },
+  "rcsb_id": "2ITP_2"
+}

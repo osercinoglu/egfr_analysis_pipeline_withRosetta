@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "IRE",
+    "entity_id": "2",
+    "name": "Gefitinib"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.447,
+    "pdbx_description": "Gefitinib",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "IRE",
+    "entity_id": "2",
+    "entry_id": "2ITO",
+    "nonpolymer_comp_id": "IRE",
+    "rcsb_id": "2ITO_2"
+  },
+  "rcsb_id": "2ITO_2"
+}

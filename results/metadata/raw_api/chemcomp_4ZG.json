@@ -1,0 +1,160 @@
+{
+  "chem_comp": {
+    "formula": "C19 H27 N7 O2 S",
+    "formula_weight": 417.528,
+    "id": "4ZG",
+    "name": "N~2~-[2-methyl-2-(methylsulfonyl)propyl]-N~4~-[2-methyl-1-(propan-2-yl)-1H-imidazo[4,5-c]pyridin-6-yl]pyrimidine-2,4-diamine",
+    "pdbx_ambiguous_flag": "N",
+    "pdbx_formal_charge": 0,
+    "pdbx_initial_date": "2015-07-01T00:00:00.000+00:00",
+    "pdbx_modified_date": "2015-10-23T00:00:00.000+00:00",
+    "pdbx_processing_site": "RCSB",
+    "pdbx_release_status": "REL",
+    "three_letter_code": "4ZG",
+    "type": "non-polymer"
+  },
+  "pdbx_chem_comp_audit": [
+    {
+      "action_type": "Create component",
+      "comp_id": "4ZG",
+      "date": "2015-07-01T00:00:00.000+00:00",
+      "ordinal": 1
+    },
+    {
+      "action_type": "Initial release",
+      "comp_id": "4ZG",
+      "date": "2015-10-28T00:00:00.000+00:00",
+      "ordinal": 2
+    }
+  ],
+  "pdbx_chem_comp_descriptor": [
+    {
+      "comp_id": "4ZG",
+      "descriptor": "c21nc(C)n(C(C)C)c1cc(nc2)Nc3ccnc(n3)NCC(C)(C)S(=O)(=O)C",
+      "program": "ACDLabs",
+      "program_version": "12.01",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "4ZG",
+      "descriptor": "InChI=1S/C19H27N7O2S/c1-12(2)26-13(3)23-14-10-21-17(9-15(14)26)24-16-7-8-20-18(25-16)22-11-19(4,5)29(6,27)28/h7-10,12H,11H2,1-6H3,(H2,20,21,22,24,25)",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChI"
+    },
+    {
+      "comp_id": "4ZG",
+      "descriptor": "FYQBREXHKBTBID-UHFFFAOYSA-N",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChIKey"
+    },
+    {
+      "comp_id": "4ZG",
+      "descriptor": "CC(C)n1c(C)nc2cnc(Nc3ccnc(NCC(C)(C)[S](C)(=O)=O)n3)cc12",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "4ZG",
+      "descriptor": "CC(C)n1c(C)nc2cnc(Nc3ccnc(NCC(C)(C)[S](C)(=O)=O)n3)cc12",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "4ZG",
+      "descriptor": "Cc1nc2cnc(cc2n1C(C)C)Nc3ccnc(n3)NCC(C)(C)S(=O)(=O)C",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.9.2",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "4ZG",
+      "descriptor": "Cc1nc2cnc(cc2n1C(C)C)Nc3ccnc(n3)NCC(C)(C)S(=O)(=O)C",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.9.2",
+      "type": "SMILES"
+    }
+  ],
+  "pdbx_chem_comp_identifier": [
+    {
+      "comp_id": "4ZG",
+      "identifier": "N~2~-[2-methyl-2-(methylsulfonyl)propyl]-N~4~-[2-methyl-1-(propan-2-yl)-1H-imidazo[4,5-c]pyridin-6-yl]pyrimidine-2,4-diamine",
+      "program": "ACDLabs",
+      "program_version": "12.01",
+      "type": "SYSTEMATIC NAME"
+    },
+    {
+      "comp_id": "4ZG",
+      "identifier": "N2-(2-methyl-2-methylsulfonyl-propyl)-N4-(2-methyl-1-propan-2-yl-imidazo[4,5-c]pyridin-6-yl)pyrimidine-2,4-diamine",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.9.2",
+      "type": "SYSTEMATIC NAME"
+    }
+  ],
+  "rcsb_chem_comp_container_identifiers": {
+    "comp_id": "4ZG",
+    "rcsb_id": "4ZG"
+  },
+  "rcsb_chem_comp_descriptor": {
+    "InChI": "InChI=1S/C19H27N7O2S/c1-12(2)26-13(3)23-14-10-21-17(9-15(14)26)24-16-7-8-20-18(25-16)22-11-19(4,5)29(6,27)28/h7-10,12H,11H2,1-6H3,(H2,20,21,22,24,25)",
+    "InChIKey": "FYQBREXHKBTBID-UHFFFAOYSA-N",
+    "SMILES": "Cc1nc2cnc(cc2n1C(C)C)Nc3ccnc(n3)NCC(C)(C)S(=O)(=O)C",
+    "SMILES_stereo": "Cc1nc2cnc(cc2n1C(C)C)Nc3ccnc(n3)NCC(C)(C)S(=O)(=O)C",
+    "comp_id": "4ZG"
+  },
+  "rcsb_chem_comp_info": {
+    "atom_count": 56,
+    "atom_count_chiral": 0,
+    "atom_count_heavy": 29,
+    "bond_count": 58,
+    "bond_count_aromatic": 16,
+    "comp_id": "4ZG",
+    "initial_deposition_date": "2015-07-01T00:00:00.000+00:00",
+    "initial_release_date": "2015-10-28T00:00:00.000+00:00",
+    "release_status": "REL",
+    "revision_date": "2015-10-28T00:00:00.000+00:00"
+  },
+  "rcsb_chem_comp_related": [
+    {
+      "comp_id": "4ZG",
+      "ordinal": 1,
+      "related_mapping_method": "matching InChIKey in PubChem",
+      "resource_accession_code": "90183696",
+      "resource_name": "PubChem"
+    },
+    {
+      "comp_id": "4ZG",
+      "ordinal": 2,
+      "related_mapping_method": "assigned by PubChem resource",
+      "resource_accession_code": "CHEMBL3735782",
+      "resource_name": "ChEMBL"
+    }
+  ],
+  "rcsb_chem_comp_synonyms": [
+    {
+      "comp_id": "4ZG",
+      "name": "N~2~-[2-methyl-2-(methylsulfonyl)propyl]-N~4~-[2-methyl-1-(propan-2-yl)-1H-imidazo[4,5-c]pyridin-6-yl]pyrimidine-2,4-diamine",
+      "ordinal": 1,
+      "provenance_source": "PDB Reference Data",
+      "type": "Preferred Name"
+    },
+    {
+      "comp_id": "4ZG",
+      "name": "N~2~-[2-methyl-2-(methylsulfonyl)propyl]-N~4~-[2-methyl-1-(propan-2-yl)-1H-imidazo[4,5-c]pyridin-6-yl]pyrimidine-2,4-diamine",
+      "ordinal": 2,
+      "provenance_source": "ACDLabs",
+      "type": "Systematic Name"
+    },
+    {
+      "comp_id": "4ZG",
+      "name": "N2-(2-methyl-2-methylsulfonyl-propyl)-N4-(2-methyl-1-propan-2-yl-imidazo[4,5-c]pyridin-6-yl)pyrimidine-2,4-diamine",
+      "ordinal": 3,
+      "provenance_source": "OpenEye OEToolkits",
+      "type": "Systematic Name"
+    }
+  ],
+  "rcsb_id": "4ZG"
+}

@@ -1,0 +1,193 @@
+{
+  "chem_comp": {
+    "formula": "C25 H27 Cl N6 O3",
+    "formula_weight": 494.973,
+    "id": "0UN",
+    "name": "N-{3-[(5-chloro-2-{[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino}pyrimidin-4-yl)oxy]phenyl}prop-2-enamide",
+    "pdbx_ambiguous_flag": "N",
+    "pdbx_formal_charge": 0,
+    "pdbx_initial_date": "2009-08-06T00:00:00.000+00:00",
+    "pdbx_modified_date": "2024-09-27T00:00:00.000+00:00",
+    "pdbx_processing_site": "RCSB",
+    "pdbx_release_status": "REL",
+    "three_letter_code": "0UN",
+    "type": "non-polymer"
+  },
+  "pdbx_chem_comp_audit": [
+    {
+      "action_type": "Create component",
+      "comp_id": "0UN",
+      "date": "2009-08-06T00:00:00.000+00:00",
+      "ordinal": 1
+    },
+    {
+      "action_type": "Modify aromatic_flag",
+      "comp_id": "0UN",
+      "date": "2011-06-04T00:00:00.000+00:00",
+      "ordinal": 2
+    },
+    {
+      "action_type": "Modify descriptor",
+      "comp_id": "0UN",
+      "date": "2011-06-04T00:00:00.000+00:00",
+      "ordinal": 3
+    },
+    {
+      "action_type": "Modify PCM",
+      "comp_id": "0UN",
+      "date": "2024-09-27T00:00:00.000+00:00",
+      "ordinal": 4
+    }
+  ],
+  "pdbx_chem_comp_descriptor": [
+    {
+      "comp_id": "0UN",
+      "descriptor": "O=C(\\C=C)Nc4cccc(Oc1nc(ncc1Cl)Nc2ccc(cc2OC)N3CCN(C)CC3)c4",
+      "program": "ACDLabs",
+      "program_version": "11.02",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "0UN",
+      "descriptor": "COc1cc(ccc1Nc2ncc(Cl)c(Oc3cccc(NC(=O)C=C)c3)n2)N4CCN(C)CC4",
+      "program": "CACTVS",
+      "program_version": "3.352",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "0UN",
+      "descriptor": "COc1cc(ccc1Nc2ncc(Cl)c(Oc3cccc(NC(=O)C=C)c3)n2)N4CCN(C)CC4",
+      "program": "CACTVS",
+      "program_version": "3.352",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "0UN",
+      "descriptor": "CN1CCN(CC1)c2ccc(c(c2)OC)Nc3ncc(c(n3)Oc4cccc(c4)NC(=O)C=C)Cl",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.7.0",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "0UN",
+      "descriptor": "CN1CCN(CC1)c2ccc(c(c2)OC)Nc3ncc(c(n3)Oc4cccc(c4)NC(=O)C=C)Cl",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.7.0",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "0UN",
+      "descriptor": "InChI=1S/C25H27ClN6O3/c1-4-23(33)28-17-6-5-7-19(14-17)35-24-20(26)16-27-25(30-24)29-21-9-8-18(15-22(21)34-3)32-12-10-31(2)11-13-32/h4-9,14-16H,1,10-13H2,2-3H3,(H,28,33)(H,27,29,30)",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChI"
+    },
+    {
+      "comp_id": "0UN",
+      "descriptor": "ITTRLTNMFYIYPA-UHFFFAOYSA-N",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChIKey"
+    }
+  ],
+  "pdbx_chem_comp_identifier": [
+    {
+      "comp_id": "0UN",
+      "identifier": "N-{3-[(5-chloro-2-{[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino}pyrimidin-4-yl)oxy]phenyl}prop-2-enamide",
+      "program": "ACDLabs",
+      "program_version": "11.02",
+      "type": "SYSTEMATIC NAME"
+    },
+    {
+      "comp_id": "0UN",
+      "identifier": "N-[3-[5-chloro-2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]pyrimidin-4-yl]oxyphenyl]prop-2-enamide",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.6.1",
+      "type": "SYSTEMATIC NAME"
+    }
+  ],
+  "rcsb_chem_comp_container_identifiers": {
+    "comp_id": "0UN",
+    "rcsb_id": "0UN"
+  },
+  "rcsb_chem_comp_descriptor": {
+    "InChI": "InChI=1S/C25H27ClN6O3/c1-4-23(33)28-17-6-5-7-19(14-17)35-24-20(26)16-27-25(30-24)29-21-9-8-18(15-22(21)34-3)32-12-10-31(2)11-13-32/h4-9,14-16H,1,10-13H2,2-3H3,(H,28,33)(H,27,29,30)",
+    "InChIKey": "ITTRLTNMFYIYPA-UHFFFAOYSA-N",
+    "SMILES": "CN1CCN(CC1)c2ccc(c(c2)OC)Nc3ncc(c(n3)Oc4cccc(c4)NC(=O)C=C)Cl",
+    "SMILES_stereo": "CN1CCN(CC1)c2ccc(c(c2)OC)Nc3ncc(c(n3)Oc4cccc(c4)NC(=O)C=C)Cl",
+    "comp_id": "0UN"
+  },
+  "rcsb_chem_comp_info": {
+    "atom_count": 62,
+    "atom_count_chiral": 0,
+    "atom_count_heavy": 35,
+    "bond_count": 65,
+    "bond_count_aromatic": 18,
+    "comp_id": "0UN",
+    "initial_deposition_date": "2009-08-06T00:00:00.000+00:00",
+    "initial_release_date": "2010-01-12T00:00:00.000+00:00",
+    "release_status": "REL",
+    "revision_date": "2024-09-27T00:00:00.000+00:00"
+  },
+  "rcsb_chem_comp_related": [
+    {
+      "comp_id": "0UN",
+      "ordinal": 1,
+      "related_mapping_method": "matching InChIKey in PubChem",
+      "resource_accession_code": "44607530",
+      "resource_name": "PubChem"
+    },
+    {
+      "comp_id": "0UN",
+      "ordinal": 2,
+      "related_mapping_method": "assigned by PubChem resource",
+      "resource_accession_code": "1213269-23-8",
+      "resource_name": "CAS"
+    },
+    {
+      "comp_id": "0UN",
+      "ordinal": 3,
+      "related_mapping_method": "assigned by PubChem resource",
+      "resource_accession_code": "CHEBI:61400",
+      "resource_name": "ChEBI"
+    },
+    {
+      "comp_id": "0UN",
+      "ordinal": 4,
+      "related_mapping_method": "assigned by PubChem resource",
+      "resource_accession_code": "CHEMBL1229592",
+      "resource_name": "ChEMBL"
+    },
+    {
+      "comp_id": "0UN",
+      "ordinal": 5,
+      "related_mapping_method": "matching ChEMBL ID in Pharos",
+      "resource_accession_code": "CHEMBL1229592",
+      "resource_name": "Pharos"
+    }
+  ],
+  "rcsb_chem_comp_synonyms": [
+    {
+      "comp_id": "0UN",
+      "name": "N-{3-[(5-chloro-2-{[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino}pyrimidin-4-yl)oxy]phenyl}prop-2-enamide",
+      "ordinal": 1,
+      "provenance_source": "PDB Reference Data",
+      "type": "Preferred Name"
+    },
+    {
+      "comp_id": "0UN",
+      "name": "N-{3-[(5-chloro-2-{[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino}pyrimidin-4-yl)oxy]phenyl}prop-2-enamide",
+      "ordinal": 2,
+      "provenance_source": "ACDLabs",
+      "type": "Systematic Name"
+    },
+    {
+      "comp_id": "0UN",
+      "name": "N-[3-[5-chloro-2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]pyrimidin-4-yl]oxyphenyl]prop-2-enamide",
+      "ordinal": 3,
+      "provenance_source": "OpenEye OEToolkits",
+      "type": "Systematic Name"
+    }
+  ],
+  "rcsb_id": "0UN"
+}

@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "3QY",
+    "entity_id": "2",
+    "name": "N-[2-(4-methoxypiperidin-1-yl)pyrimidin-4-yl]-2-(1H-pyrazol-4-yl)-1H-pyrrolo[3,2-c]pyridin-6-amine"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.39,
+    "pdbx_description": "N-[2-(4-methoxypiperidin-1-yl)pyrimidin-4-yl]-2-(1H-pyrazol-4-yl)-1H-pyrrolo[3,2-c]pyridin-6-amine",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "3QY",
+    "entity_id": "2",
+    "entry_id": "4RJ5",
+    "nonpolymer_comp_id": "3QY",
+    "rcsb_id": "4RJ5_2"
+  },
+  "rcsb_id": "4RJ5_2"
+}

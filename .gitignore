@@ -17,8 +17,9 @@ htmlcov/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# Data — raw PDBs can be re-downloaded; keep processed data
+# Data — raw PDB/CIF can be re-downloaded; keep processed data
 data/raw_pdb/
+data/raw_cif/
 
 # Checkpoint intermediates (large parquet/pickle files)
 checkpoints/*.parquet

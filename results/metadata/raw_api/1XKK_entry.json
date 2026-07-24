@@ -1,0 +1,668 @@
+{
+  "audit_author": [
+    {
+      "name": "Wood, E.R.",
+      "pdbx_ordinal": 1
+    },
+    {
+      "name": "Truesdale, A.T.",
+      "pdbx_ordinal": 2
+    },
+    {
+      "name": "McDonald, O.B.",
+      "pdbx_ordinal": 3
+    },
+    {
+      "name": "Yuan, D.",
+      "pdbx_ordinal": 4
+    },
+    {
+      "name": "Hassell, A.",
+      "pdbx_ordinal": 5
+    },
+    {
+      "name": "Dickerson, S.H.",
+      "pdbx_ordinal": 6
+    },
+    {
+      "name": "Ellis, B.",
+      "pdbx_ordinal": 7
+    },
+    {
+      "name": "Pennisi, C.",
+      "pdbx_ordinal": 8
+    },
+    {
+      "name": "Horne, E.",
+      "pdbx_ordinal": 9
+    },
+    {
+      "name": "Lackey, K.",
+      "pdbx_ordinal": 10
+    },
+    {
+      "name": "Alligood, K.J.",
+      "pdbx_ordinal": 11
+    },
+    {
+      "name": "Rusnak, D.W.",
+      "pdbx_ordinal": 12
+    },
+    {
+      "name": "Gilmer, T.M.",
+      "pdbx_ordinal": 13
+    },
+    {
+      "name": "Shewchuk, L.M.",
+      "pdbx_ordinal": 14
+    }
+  ],
+  "cell": {
+    "Z_PDB": 4,
+    "angle_alpha": 90.0,
+    "angle_beta": 90.0,
+    "angle_gamma": 90.0,
+    "length_a": 45.653,
+    "length_b": 67.144,
+    "length_c": 102.88
+  },
+  "citation": [
+    {
+      "country": "US",
+      "id": "primary",
+      "journal_abbrev": "Cancer Res.",
+      "journal_id_ASTM": "CNREA8",
+      "journal_id_CSD": "0400",
+      "journal_id_ISSN": "0008-5472",
+      "journal_volume": "64",
+      "page_first": "6652",
+      "page_last": "6659",
+      "pdbx_database_id_DOI": "10.1158/0008-5472.CAN-04-1168",
+      "pdbx_database_id_PubMed": 15374980,
+      "rcsb_authors": [
+        "Wood, E.R.",
+        "Truesdale, A.T.",
+        "McDonald, O.B.",
+        "Yuan, D.",
+        "Hassell, A.",
+        "Dickerson, S.H.",
+        "Ellis, B.",
+        "Pennisi, C.",
+        "Horne, E.",
+        "Lackey, K.",
+        "Alligood, K.J.",
+        "Rusnak, D.W.",
+        "Gilmer, T.M.",
+        "Shewchuk, L."
+      ],
+      "rcsb_is_primary": "Y",
+      "rcsb_journal_abbrev": "Cancer Res",
+      "title": "A unique structure for epidermal growth factor receptor bound to GW572016 (Lapatinib): relationships among protein conformation, inhibitor off-rate, and receptor activity in tumor cells.",
+      "year": 2004
+    }
+  ],
+  "database_2": [
+    {
+      "database_code": "1XKK",
+      "database_id": "PDB",
+      "pdbx_DOI": "10.2210/pdb1xkk/pdb",
+      "pdbx_database_accession": "pdb_00001xkk"
+    },
+    {
+      "database_code": "RCSB030459",
+      "database_id": "RCSB"
+    },
+    {
+      "database_code": "D_1000030459",
+      "database_id": "WWPDB"
+    }
+  ],
+  "diffrn": [
+    {
+      "ambient_temp": 93.0,
+      "crystal_id": "1",
+      "id": "1"
+    }
+  ],
+  "diffrn_detector": [
+    {
+      "detector": "CCD",
+      "diffrn_id": "1",
+      "pdbx_collection_date": "2003-07-01T00:00:00.000+00:00",
+      "type": "ADSC QUANTUM 4"
+    }
+  ],
+  "diffrn_radiation": [
+    {
+      "diffrn_id": "1",
+      "pdbx_diffrn_protocol": "SINGLE WAVELENGTH",
+      "pdbx_monochromatic_or_laue_m_l": "M",
+      "pdbx_scattering_type": "x-ray",
+      "wavelength_id": "1"
+    }
+  ],
+  "diffrn_source": [
+    {
+      "diffrn_id": "1",
+      "pdbx_synchrotron_beamline": "17-ID",
+      "pdbx_synchrotron_site": "APS",
+      "pdbx_wavelength_list": "1.00",
+      "source": "SYNCHROTRON",
+      "type": "APS BEAMLINE 17-ID"
+    }
+  ],
+  "entry": {
+    "id": "1XKK"
+  },
+  "exptl": [
+    {
+      "crystals_number": 1,
+      "method": "X-RAY DIFFRACTION"
+    }
+  ],
+  "exptl_crystal": [
+    {
+      "density_Matthews": 2.09,
+      "density_percent_sol": 38.9,
+      "id": "1"
+    }
+  ],
+  "exptl_crystal_grow": [
+    {
+      "crystal_id": "1",
+      "method": "VAPOR DIFFUSION, HANGING DROP",
+      "pH": 9.0,
+      "pdbx_details": "100 mM CAPS, 200 mM LiSO4, 2M NaKPO4, pH 9, VAPOR DIFFUSION, HANGING DROP, temperature 293K",
+      "temp": 293.0
+    }
+  ],
+  "pdbx_audit_revision_category": [
+    {
+      "category": "chem_comp_atom",
+      "data_content_type": "Structure model",
+      "ordinal": 1,
+      "revision_ordinal": 4
+    },
+    {
+      "category": "chem_comp_bond",
+      "data_content_type": "Structure model",
+      "ordinal": 2,
+      "revision_ordinal": 4
+    },
+    {
+      "category": "database_2",
+      "data_content_type": "Structure model",
+      "ordinal": 3,
+      "revision_ordinal": 4
+    },
+    {
+      "category": "pdbx_initial_refinement_model",
+      "data_content_type": "Structure model",
+      "ordinal": 4,
+      "revision_ordinal": 4
+    },
+    {
+      "category": "struct_ref_seq_dif",
+      "data_content_type": "Structure model",
+      "ordinal": 5,
+      "revision_ordinal": 4
+    },
+    {
+      "category": "struct_site",
+      "data_content_type": "Structure model",
+      "ordinal": 6,
+      "revision_ordinal": 4
+    }
+  ],
+  "pdbx_audit_revision_details": [
+    {
+      "data_content_type": "Structure model",
+      "ordinal": 1,
+      "provider": "repository",
+      "revision_ordinal": 1,
+      "type": "Initial release"
+    }
+  ],
+  "pdbx_audit_revision_group": [
+    {
+      "data_content_type": "Structure model",
+      "group": "Version format compliance",
+      "ordinal": 1,
+      "revision_ordinal": 2
+    },
+    {
+      "data_content_type": "Structure model",
+      "group": "Version format compliance",
+      "ordinal": 2,
+      "revision_ordinal": 3
+    },
+    {
+      "data_content_type": "Structure model",
+      "group": "Data collection",
+      "ordinal": 3,
+      "revision_ordinal": 4
+    },
+    {
+      "data_content_type": "Structure model",
+      "group": "Database references",
+      "ordinal": 4,
+      "revision_ordinal": 4
+    },
+    {
+      "data_content_type": "Structure model",
+      "group": "Derived calculations",
+      "ordinal": 5,
+      "revision_ordinal": 4
+    },
+    {
+      "data_content_type": "Structure model",
+      "group": "Refinement description",
+      "ordinal": 6,
+      "revision_ordinal": 4
+    }
+  ],
+  "pdbx_audit_revision_history": [
+    {
+      "data_content_type": "Structure model",
+      "major_revision": 1,
+      "minor_revision": 0,
+      "ordinal": 1,
+      "revision_date": "2004-12-07T00:00:00.000+00:00"
+    },
+    {
+      "data_content_type": "Structure model",
+      "major_revision": 1,
+      "minor_revision": 1,
+      "ordinal": 2,
+      "revision_date": "2008-04-30T00:00:00.000+00:00"
+    },
+    {
+      "data_content_type": "Structure model",
+      "major_revision": 1,
+      "minor_revision": 2,
+      "ordinal": 3,
+      "revision_date": "2011-07-13T00:00:00.000+00:00"
+    },
+    {
+      "data_content_type": "Structure model",
+      "major_revision": 1,
+      "minor_revision": 3,
+      "ordinal": 4,
+      "revision_date": "2023-08-23T00:00:00.000+00:00"
+    }
+  ],
+  "pdbx_audit_revision_item": [
+    {
+      "data_content_type": "Structure model",
+      "item": "_database_2.pdbx_DOI",
+      "ordinal": 1,
+      "revision_ordinal": 4
+    },
+    {
+      "data_content_type": "Structure model",
+      "item": "_database_2.pdbx_database_accession",
+      "ordinal": 2,
+      "revision_ordinal": 4
+    },
+    {
+      "data_content_type": "Structure model",
+      "item": "_struct_ref_seq_dif.details",
+      "ordinal": 3,
+      "revision_ordinal": 4
+    },
+    {
+      "data_content_type": "Structure model",
+      "item": "_struct_site.pdbx_auth_asym_id",
+      "ordinal": 4,
+      "revision_ordinal": 4
+    },
+    {
+      "data_content_type": "Structure model",
+      "item": "_struct_site.pdbx_auth_comp_id",
+      "ordinal": 5,
+      "revision_ordinal": 4
+    },
+    {
+      "data_content_type": "Structure model",
+      "item": "_struct_site.pdbx_auth_seq_id",
+      "ordinal": 6,
+      "revision_ordinal": 4
+    }
+  ],
+  "pdbx_database_status": {
+    "deposit_site": "RCSB",
+    "pdb_format_compatible": "Y",
+    "process_site": "RCSB",
+    "recvd_initial_deposition_date": "2004-09-29T00:00:00.000+00:00",
+    "status_code": "REL",
+    "status_code_sf": "REL"
+  },
+  "pdbx_initial_refinement_model": [
+    {
+      "accession_code": "1M14",
+      "details": "PDB entry 1M14",
+      "id": 1,
+      "source_name": "PDB",
+      "type": "experimental model"
+    }
+  ],
+  "pdbx_vrpt_summary": {
+    "attempted_validation_steps": "molprobity,validation-pack,xtriage,eds,mogul,buster-report,validation_schema,percentiles,writexml,writecif,writepdf",
+    "ligands_for_buster_report": "Y",
+    "report_creation_date": "2026-03-05T07:15:00.000+00:00"
+  },
+  "pdbx_vrpt_summary_diffraction": [
+    {
+      "B_factor_type": "FULL",
+      "CCP4_version": "9.0.010 (Gargrove)",
+      "DCC_R": 0.2195,
+      "DCC_Rfree": 0.2259,
+      "EDS_R": 0.2213,
+      "EDS_res_high": 2.4,
+      "EDS_res_low": 35.44,
+      "Fo_Fc_correlation": 0.934,
+      "I_over_sigma": "5.04(2.34A)",
+      "Padilla_Yeates_L2_mean": 0.328,
+      "Padilla_Yeates_L_mean": 0.493,
+      "Wilson_B_aniso": "[44.756,44.415,32.596,0.000,0.000,0.000]",
+      "Wilson_B_estimate": 40.35,
+      "acentric_outliers": 0,
+      "bulk_solvent_b": 44.78,
+      "bulk_solvent_k": 0.332,
+      "centric_outliers": 0,
+      "data_anisotropy": 0.3,
+      "data_completeness": 96.95,
+      "density_fitness_version": "1.0.12",
+      "exp_method": "x-ray",
+      "num_miller_indices": 13295,
+      "number_reflns_R_free": 667,
+      "percent_RSRZ_outliers": 3.81,
+      "percent_free_reflections": 5.02,
+      "trans_NCS_details": "The largest off-origin peak in the Patterson function is 5.98% of the height of the origin peak. No significant pseudotranslation is detected."
+    }
+  ],
+  "pdbx_vrpt_summary_geometry": [
+    {
+      "angles_RMSZ": 1.1,
+      "bonds_RMSZ": 0.43,
+      "clashscore": 13.85,
+      "num_H_reduce": 2251,
+      "num_angles_RMSZ": 3109,
+      "num_bonds_RMSZ": 2294,
+      "percent_ramachandran_outliers": 1.08,
+      "percent_rotamer_outliers": 0.0
+    }
+  ],
+  "rcsb_accession_info": {
+    "deposit_date": "2004-09-29T00:00:00.000+00:00",
+    "has_released_experimental_data": "Y",
+    "initial_release_date": "2004-12-07T00:00:00.000+00:00",
+    "major_revision": 1,
+    "minor_revision": 3,
+    "revision_date": "2023-08-23T00:00:00.000+00:00",
+    "status_code": "REL"
+  },
+  "rcsb_entry_container_identifiers": {
+    "assembly_ids": [
+      "1"
+    ],
+    "entity_ids": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "entry_id": "1XKK",
+    "model_ids": [
+      1
+    ],
+    "non_polymer_entity_ids": [
+      "2",
+      "3"
+    ],
+    "polymer_entity_ids": [
+      "1"
+    ],
+    "pubmed_id": 15374980,
+    "rcsb_id": "1XKK"
+  },
+  "rcsb_entry_info": {
+    "assembly_count": 1,
+    "branched_entity_count": 0,
+    "cis_peptide_count": 0,
+    "deposited_atom_count": 2376,
+    "deposited_deuterated_water_count": 0,
+    "deposited_hydrogen_atom_count": 0,
+    "deposited_model_count": 1,
+    "deposited_modeled_polymer_monomer_count": 289,
+    "deposited_nonpolymer_entity_instance_count": 3,
+    "deposited_polymer_entity_instance_count": 1,
+    "deposited_polymer_monomer_count": 352,
+    "deposited_solvent_atom_count": 77,
+    "deposited_unmodeled_polymer_monomer_count": 63,
+    "diffrn_radiation_wavelength_maximum": 1.0,
+    "diffrn_radiation_wavelength_minimum": 1.0,
+    "disulfide_bond_count": 0,
+    "entity_count": 4,
+    "experimental_method": "X-ray",
+    "experimental_method_count": 1,
+    "inter_mol_covalent_bond_count": 0,
+    "inter_mol_metalic_bond_count": 0,
+    "molecular_weight": 41.1,
+    "na_polymer_entity_types": "Other",
+    "nonpolymer_entity_count": 2,
+    "nonpolymer_molecular_weight_maximum": 0.58,
+    "nonpolymer_molecular_weight_minimum": 0.09,
+    "polymer_composition": "homomeric protein",
+    "polymer_entity_count": 1,
+    "polymer_entity_count_DNA": 0,
+    "polymer_entity_count_RNA": 0,
+    "polymer_entity_count_nucleic_acid": 0,
+    "polymer_entity_count_nucleic_acid_hybrid": 0,
+    "polymer_entity_count_protein": 1,
+    "polymer_entity_taxonomy_count": 1,
+    "polymer_molecular_weight_maximum": 40.32,
+    "polymer_molecular_weight_minimum": 40.32,
+    "polymer_monomer_count_maximum": 352,
+    "polymer_monomer_count_minimum": 352,
+    "resolution_combined": [
+      2.4
+    ],
+    "selected_polymer_entity_types": "Protein (only)",
+    "software_programs_combined": [
+      "CNS",
+      "HKL-2000",
+      "SCALEPACK"
+    ],
+    "solvent_entity_count": 1,
+    "structure_determination_methodology": "experimental",
+    "structure_determination_methodology_priority": 10,
+    "diffrn_resolution_high": {
+      "provenance_source": "Depositor assigned",
+      "value": 2.4
+    }
+  },
+  "rcsb_primary_citation": {
+    "country": "US",
+    "id": "primary",
+    "journal_abbrev": "Cancer Res.",
+    "journal_id_ASTM": "CNREA8",
+    "journal_id_CSD": "0400",
+    "journal_id_ISSN": "0008-5472",
+    "journal_volume": "64",
+    "page_first": "6652",
+    "page_last": "6659",
+    "pdbx_database_id_DOI": "10.1158/0008-5472.CAN-04-1168",
+    "pdbx_database_id_PubMed": 15374980,
+    "rcsb_ORCID_identifiers": [
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?",
+      "?"
+    ],
+    "rcsb_authors": [
+      "Wood, E.R.",
+      "Truesdale, A.T.",
+      "McDonald, O.B.",
+      "Yuan, D.",
+      "Hassell, A.",
+      "Dickerson, S.H.",
+      "Ellis, B.",
+      "Pennisi, C.",
+      "Horne, E.",
+      "Lackey, K.",
+      "Alligood, K.J.",
+      "Rusnak, D.W.",
+      "Gilmer, T.M.",
+      "Shewchuk, L."
+    ],
+    "rcsb_journal_abbrev": "Cancer Res",
+    "title": "A unique structure for epidermal growth factor receptor bound to GW572016 (Lapatinib): relationships among protein conformation, inhibitor off-rate, and receptor activity in tumor cells.",
+    "year": 2004
+  },
+  "refine": [
+    {
+      "details": "Structure refined using mask method for bulk solvent correction",
+      "ls_R_factor_R_free": 0.255,
+      "ls_R_factor_R_work": 0.209,
+      "ls_d_res_high": 2.4,
+      "ls_d_res_low": 35.44,
+      "ls_number_reflns_R_free": 1240,
+      "ls_number_reflns_all": 13337,
+      "ls_number_reflns_obs": 12199,
+      "ls_percent_reflns_obs": 94.6,
+      "pdbx_R_Free_selection_details": "random",
+      "pdbx_diffrn_id": [
+        "1"
+      ],
+      "pdbx_ls_cross_valid_method": "THROUGHOUT",
+      "pdbx_ls_sigma_F": 0.0,
+      "pdbx_ls_sigma_I": 0.0,
+      "pdbx_method_to_determine_struct": "MOLECULAR REPLACEMENT",
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "pdbx_starting_model": "PDB entry 1M14",
+      "pdbx_stereochemistry_target_values": "Engh & Huber"
+    }
+  ],
+  "refine_analyze": [
+    {
+      "Luzzati_coordinate_error_obs": 0.35,
+      "Luzzati_d_res_low_obs": 5.0,
+      "Luzzati_sigma_a_obs": 0.2,
+      "pdbx_refine_id": "X-RAY DIFFRACTION"
+    }
+  ],
+  "refine_hist": [
+    {
+      "cycle_id": "LAST",
+      "d_res_high": 2.4,
+      "d_res_low": 35.44,
+      "number_atoms_solvent": 77,
+      "number_atoms_total": 2376,
+      "pdbx_number_atoms_ligand": 50,
+      "pdbx_number_atoms_nucleic_acid": 0,
+      "pdbx_number_atoms_protein": 2249,
+      "pdbx_refine_id": "X-RAY DIFFRACTION"
+    }
+  ],
+  "refine_ls_restr": [
+    {
+      "dev_ideal": 0.008,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "c_bond_d"
+    },
+    {
+      "dev_ideal": 1.4,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "c_angle_d"
+    },
+    {
+      "dev_ideal": 21.9,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "c_dihedral_angle_d"
+    },
+    {
+      "dev_ideal": 0.74,
+      "pdbx_refine_id": "X-RAY DIFFRACTION",
+      "type": "c_improper_angle_d"
+    }
+  ],
+  "reflns": [
+    {
+      "d_resolution_high": 2.4,
+      "d_resolution_low": 35.44,
+      "number_all": 13337,
+      "number_obs": 12199,
+      "observed_criterion_sigma_F": 2.0,
+      "observed_criterion_sigma_I": 2.0,
+      "pdbx_Rmerge_I_obs": 0.067,
+      "pdbx_diffrn_id": [
+        "1"
+      ],
+      "pdbx_ordinal": 1,
+      "pdbx_redundancy": 4.6,
+      "percent_possible_obs": 94.6
+    }
+  ],
+  "reflns_shell": [
+    {
+      "Rmerge_I_obs": 0.19,
+      "d_res_high": 2.4,
+      "d_res_low": 2.55,
+      "meanI_over_sigI_obs": 6.6,
+      "number_unique_all": 1737,
+      "pdbx_ordinal": 1,
+      "pdbx_redundancy": 4.8,
+      "percent_possible_all": 93.1
+    }
+  ],
+  "software": [
+    {
+      "classification": "data collection",
+      "name": "HKL-2000",
+      "pdbx_ordinal": 1
+    },
+    {
+      "classification": "data scaling",
+      "name": "SCALEPACK",
+      "pdbx_ordinal": 2
+    },
+    {
+      "classification": "refinement",
+      "name": "CNS",
+      "pdbx_ordinal": 3
+    },
+    {
+      "classification": "data reduction",
+      "name": "HKL-2000",
+      "pdbx_ordinal": 4
+    },
+    {
+      "classification": "phasing",
+      "name": "CNS",
+      "pdbx_ordinal": 5
+    }
+  ],
+  "struct": {
+    "title": "EGFR kinase domain complexed with a quinazoline inhibitor- GW572016"
+  },
+  "struct_keywords": {
+    "pdbx_keywords": "TRANSFERASE",
+    "text": "EGFR, epidermal growth factor receptor, kinase, Transferase"
+  },
+  "symmetry": {
+    "Int_Tables_number": 19,
+    "space_group_name_H_M": "P 21 21 21"
+  },
+  "rcsb_id": "1XKK"
+}

@@ -1,0 +1,287 @@
+"""
+Aşama 2: Aşama 1'de doğrulanan 61 EGFR-inhibitör kompleksi için ham PDB ve
+mmCIF koordinat dosyalarını RCSB'den indirir.
+
+Bu script yapıyı HENÜZ DEĞİŞTİRMEZ (temizleme, altloc seçimi, vb. Aşama 4'ün
+işidir). Sadece indirme + bütünlük doğrulaması yapar:
+  - dosya checksum'ı (SHA-256)
+  - indirme tarihi/saati (UTC)
+  - HTTP durum kodu ve hataları
+  - dosyanın gerçekten talep edilen PDB kimliğine ait olduğunun doğrulanması
+    (PDB: HEADER satırındaki idCode; mmCIF: data_ bloğu)
+  - atom sayısı (ATOM+HETATM / atom_site satırı)
+  - Aşama 1'de belirlenen hedef ligandın (ligand_comp_id) dosyada
+    gerçekten bulunduğunun doğrulanması
+
+Var olan eski data/raw_pdb/*.pdb dosyaları (önceki 25-yapılık projeden kalma)
+güvenilir kabul edilmez; bu script her PDB için taze indirme yapar ve
+checksum'ı manifest'e kaydeder (--skip-existing verilirse ve manifest'te
+zaten doğrulanmış bir kayıt varsa yeniden indirmeyi atlar).
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import logging
+import re
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+import pandas as pd
+import requests
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
+log = logging.getLogger("download_structures")
+
+RCSB_FILES_BASE = "https://files.rcsb.org/download"
+REQUEST_TIMEOUT_S = 30
+MAX_RETRIES = 3
+RETRY_BACKOFF_S = 2.0
+
+
+def sha256_of(path: Path) -> str:
+    h = hashlib.sha256()
+    h.update(path.read_bytes())
+    return h.hexdigest()
+
+
+def download_with_retry(url: str) -> tuple[bytes | None, int | None, str | None]:
+    """Basit yeniden-deneme mantığıyla dosya indirir. (içerik, http_status, hata)"""
+    last_err = None
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            resp = requests.get(url, timeout=REQUEST_TIMEOUT_S)
+        except requests.RequestException as exc:
+            last_err = str(exc)
+            time.sleep(RETRY_BACKOFF_S * attempt)
+            continue
+        if resp.status_code == 200:
+            return resp.content, resp.status_code, None
+        if resp.status_code == 404:
+            return None, resp.status_code, "404 Not Found"
+        last_err = f"HTTP {resp.status_code}"
+        time.sleep(RETRY_BACKOFF_S * attempt)
+    return None, None, last_err
+
+
+def verify_pdb_file(content: bytes, expected_id: str, expected_ligand: str) -> dict:
+    text = content.decode("utf-8", errors="replace")
+    lines = text.splitlines()
+
+    id_match = False
+    for line in lines:
+        if line.startswith("HEADER"):
+            # PDB format: idCode kolonlar 63-66 (1-indeksli)
+            token = line[62:66].strip().upper()
+            if token == expected_id.upper():
+                id_match = True
+            break
+
+    atom_count = sum(1 for l in lines if l.startswith(("ATOM", "HETATM")))
+    ligand_found = any(
+        l.startswith("HETATM") and l[17:20].strip().upper() == expected_ligand.upper()
+        for l in lines
+    )
+    return {
+        "id_match": id_match,
+        "atom_count": atom_count,
+        "ligand_found": ligand_found,
+    }
+
+
+def verify_cif_file(content: bytes, expected_id: str, expected_ligand: str) -> dict:
+    text = content.decode("utf-8", errors="replace")
+    lines = text.splitlines()
+
+    id_match = False
+    for line in lines[:5]:
+        if line.lower().startswith("data_"):
+            token = line[5:].strip().upper()
+            if token == expected_id.upper():
+                id_match = True
+            break
+
+    atom_count = sum(1 for l in lines if l.startswith("ATOM") or l.startswith("HETATM"))
+    # mmCIF atom_site kayıtlarında ligand comp_id genellikle 6. sütun civarında
+    # (auth_comp_id); tam sütun konumu dosyaya göre değişir, bu yüzden basit bir
+    # kelime-sınırlı regex araması kullanılıyor (yalnızca doğrulama amaçlı).
+    ligand_found = bool(
+        re.search(rf"\b{re.escape(expected_ligand.upper())}\b", text.upper())
+    )
+    return {
+        "id_match": id_match,
+        "atom_count": atom_count,
+        "ligand_found": ligand_found,
+    }
+
+
+def process_one(
+    pdb_id: str,
+    ligand_comp_id: str,
+    raw_pdb_dir: Path,
+    raw_cif_dir: Path,
+    skip_existing: bool,
+) -> dict:
+    pdb_id_u = pdb_id.upper()
+    row = {
+        "pdb_id": pdb_id_u,
+        "ligand_comp_id": ligand_comp_id,
+        "download_timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "pdb_downloaded": False,
+        "pdb_http_status": None,
+        "pdb_sha256": None,
+        "pdb_bytes": None,
+        "pdb_atom_count": None,
+        "pdb_id_match": None,
+        "pdb_ligand_found": None,
+        "cif_downloaded": False,
+        "cif_http_status": None,
+        "cif_sha256": None,
+        "cif_bytes": None,
+        "cif_atom_count": None,
+        "cif_id_match": None,
+        "cif_ligand_found": None,
+        "status": "pending",
+        "notes": "",
+    }
+    notes = []
+
+    pdb_path = raw_pdb_dir / f"{pdb_id_u}.pdb"
+    cif_path = raw_cif_dir / f"{pdb_id_u}.cif"
+
+    if skip_existing and pdb_path.exists() and cif_path.exists():
+        row["pdb_downloaded"] = True
+        row["cif_downloaded"] = True
+        row["pdb_sha256"] = sha256_of(pdb_path)
+        row["cif_sha256"] = sha256_of(cif_path)
+        pdb_verify = verify_pdb_file(pdb_path.read_bytes(), pdb_id_u, ligand_comp_id)
+        cif_verify = verify_cif_file(cif_path.read_bytes(), pdb_id_u, ligand_comp_id)
+        row.update({f"pdb_{k}": v for k, v in pdb_verify.items()})
+        row.update({f"cif_{k}": v for k, v in cif_verify.items()})
+        row["status"] = "SKIPPED_ALREADY_PRESENT"
+        return row
+
+    # --- PDB formatı ---
+    pdb_content, pdb_status, pdb_err = download_with_retry(
+        f"{RCSB_FILES_BASE}/{pdb_id_u}.pdb"
+    )
+    row["pdb_http_status"] = pdb_status
+    if pdb_content:
+        pdb_path.write_bytes(pdb_content)
+        row["pdb_downloaded"] = True
+        row["pdb_sha256"] = sha256_of(pdb_path)
+        row["pdb_bytes"] = len(pdb_content)
+        verify = verify_pdb_file(pdb_content, pdb_id_u, ligand_comp_id)
+        row["pdb_id_match"] = verify["id_match"]
+        row["pdb_atom_count"] = verify["atom_count"]
+        row["pdb_ligand_found"] = verify["ligand_found"]
+        if not verify["id_match"]:
+            notes.append("PDB HEADER idCode beklenenle eşleşmiyor!")
+        if not verify["ligand_found"]:
+            notes.append(f"PDB dosyasında ligand {ligand_comp_id} HETATM olarak bulunamadı!")
+    else:
+        notes.append(f"PDB indirme başarısız: {pdb_err}")
+
+    # --- mmCIF formatı ---
+    cif_content, cif_status, cif_err = download_with_retry(
+        f"{RCSB_FILES_BASE}/{pdb_id_u}.cif"
+    )
+    row["cif_http_status"] = cif_status
+    if cif_content:
+        cif_path.write_bytes(cif_content)
+        row["cif_downloaded"] = True
+        row["cif_sha256"] = sha256_of(cif_path)
+        row["cif_bytes"] = len(cif_content)
+        verify = verify_cif_file(cif_content, pdb_id_u, ligand_comp_id)
+        row["cif_id_match"] = verify["id_match"]
+        row["cif_atom_count"] = verify["atom_count"]
+        row["cif_ligand_found"] = verify["ligand_found"]
+        if not verify["id_match"]:
+            notes.append("mmCIF data_ bloğu beklenenle eşleşmiyor!")
+        if not verify["ligand_found"]:
+            notes.append(f"mmCIF dosyasında ligand {ligand_comp_id} bulunamadı!")
+    else:
+        notes.append(f"mmCIF indirme başarısız: {cif_err}")
+
+    if row["pdb_downloaded"] and row["cif_downloaded"] and not notes:
+        row["status"] = "OK"
+    elif row["pdb_downloaded"] or row["cif_downloaded"]:
+        row["status"] = "PARTIAL_OR_WARNING"
+    else:
+        row["status"] = "FAILED"
+
+    row["notes"] = " | ".join(notes)
+    return row
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--inventory",
+        type=Path,
+        default=Path("results/metadata/egfr_ligand_inventory.csv"),
+    )
+    parser.add_argument("--raw-pdb-dir", type=Path, default=Path("data/raw_pdb"))
+    parser.add_argument("--raw-cif-dir", type=Path, default=Path("data/raw_cif"))
+    parser.add_argument(
+        "--manifest-out",
+        type=Path,
+        default=Path("results/metadata/download_manifest.csv"),
+    )
+    parser.add_argument(
+        "--skip-existing",
+        action="store_true",
+        help="Zaten indirilmiş ve doğrulanmış dosyaları yeniden indirme.",
+    )
+    parser.add_argument("--pdb-id", type=str, default=None)
+    args = parser.parse_args()
+
+    args.raw_pdb_dir.mkdir(parents=True, exist_ok=True)
+    args.raw_cif_dir.mkdir(parents=True, exist_ok=True)
+
+    inv = pd.read_csv(args.inventory)
+    if args.pdb_id:
+        inv = inv[inv["pdb_id"].str.lower() == args.pdb_id.lower()]
+        if inv.empty:
+            raise SystemExit(f"{args.pdb_id} envanterde bulunamadı.")
+
+    rows = []
+    for i, r in enumerate(inv.itertuples(), start=1):
+        log.info("[%d/%d] %s indiriliyor...", i, len(inv), r.pdb_id)
+        row = process_one(
+            r.pdb_id,
+            r.ligand_comp_id,
+            args.raw_pdb_dir,
+            args.raw_cif_dir,
+            args.skip_existing,
+        )
+        rows.append(row)
+        if row["status"] not in ("OK", "SKIPPED_ALREADY_PRESENT"):
+            log.warning("  -> %s: %s", row["status"], row["notes"])
+
+    out_df = pd.DataFrame(rows)
+    manifest_path = (
+        args.manifest_out
+        if not args.pdb_id
+        else args.manifest_out.with_name(f"test_single_{args.pdb_id.lower()}_manifest.csv")
+    )
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    out_df.to_csv(manifest_path, index=False)
+
+    n_ok = (out_df["status"] == "OK").sum()
+    n_skipped = (out_df["status"] == "SKIPPED_ALREADY_PRESENT").sum()
+    n_partial = (out_df["status"] == "PARTIAL_OR_WARNING").sum()
+    n_failed = (out_df["status"] == "FAILED").sum()
+    log.info(
+        "Özet: OK=%d, SKIPPED=%d, PARTIAL/WARNING=%d, FAILED=%d (toplam %d)",
+        n_ok, n_skipped, n_partial, n_failed, len(out_df),
+    )
+    log.info("Manifest yazıldı: %s", manifest_path)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "KJR",
+    "entity_id": "2",
+    "name": "N-[3-(4-{[(1S)-2-hydroxy-1-phenylethyl]amino}-6-phenylfuro[2,3-d]pyrimidin-5-yl)phenyl]acetamide"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.465,
+    "pdbx_description": "N-[3-(4-{[(1S)-2-hydroxy-1-phenylethyl]amino}-6-phenylfuro[2,3-d]pyrimidin-5-yl)phenyl]acetamide",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "KJR",
+    "entity_id": "2",
+    "entry_id": "4JR3",
+    "nonpolymer_comp_id": "KJR",
+    "rcsb_id": "4JR3_2"
+  },
+  "rcsb_id": "4JR3_2"
+}

@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "POX",
+    "entity_id": "3",
+    "name": "4-amino-6-{[1-(3-fluorobenzyl)-1H-indazol-5-yl]amino}pyrimidine-5-carbaldehyde O-(2-methoxyethyl)oxime"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.435,
+    "pdbx_description": "4-amino-6-{[1-(3-fluorobenzyl)-1H-indazol-5-yl]amino}pyrimidine-5-carbaldehyde O-(2-methoxyethyl)oxime",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "D"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "POX",
+    "entity_id": "3",
+    "entry_id": "3BEL",
+    "nonpolymer_comp_id": "POX",
+    "rcsb_id": "3BEL_3"
+  },
+  "rcsb_id": "3BEL_3"
+}

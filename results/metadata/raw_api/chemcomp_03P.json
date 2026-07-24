@@ -1,0 +1,192 @@
+{
+  "chem_comp": {
+    "formula": "C26 H25 Cl F3 N5 O3",
+    "formula_weight": 547.957,
+    "id": "03P",
+    "name": "N-{2-[4-({3-chloro-4-[3-(trifluoromethyl)phenoxy]phenyl}amino)-5H-pyrrolo[3,2-d]pyrimidin-5-yl]ethyl}-3-hydroxy-3-methylbutanamide",
+    "pdbx_ambiguous_flag": "N",
+    "pdbx_formal_charge": 0,
+    "pdbx_initial_date": "2010-11-30T00:00:00.000+00:00",
+    "pdbx_modified_date": "2021-03-01T00:00:00.000+00:00",
+    "pdbx_processing_site": "RCSB",
+    "pdbx_release_status": "REL",
+    "three_letter_code": "03P",
+    "type": "non-polymer"
+  },
+  "pdbx_chem_comp_audit": [
+    {
+      "action_type": "Create component",
+      "comp_id": "03P",
+      "date": "2010-11-30T00:00:00.000+00:00",
+      "ordinal": 1
+    },
+    {
+      "action_type": "Modify aromatic_flag",
+      "comp_id": "03P",
+      "date": "2011-06-04T00:00:00.000+00:00",
+      "ordinal": 2
+    },
+    {
+      "action_type": "Modify descriptor",
+      "comp_id": "03P",
+      "date": "2011-06-04T00:00:00.000+00:00",
+      "ordinal": 3
+    },
+    {
+      "action_type": "Modify synonyms",
+      "comp_id": "03P",
+      "date": "2011-07-31T00:00:00.000+00:00",
+      "ordinal": 4
+    },
+    {
+      "action_type": "Modify synonyms",
+      "comp_id": "03P",
+      "date": "2021-03-01T00:00:00.000+00:00",
+      "ordinal": 5
+    }
+  ],
+  "pdbx_chem_comp_descriptor": [
+    {
+      "comp_id": "03P",
+      "descriptor": "FC(F)(F)c4cc(Oc1ccc(cc1Cl)Nc2ncnc3c2n(cc3)CCNC(=O)CC(O)(C)C)ccc4",
+      "program": "ACDLabs",
+      "program_version": "12.01",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "03P",
+      "descriptor": "InChI=1S/C26H25ClF3N5O3/c1-25(2,37)14-22(36)31-9-11-35-10-8-20-23(35)24(33-15-32-20)34-17-6-7-21(19(27)13-17)38-18-5-3-4-16(12-18)26(28,29)30/h3-8,10,12-13,15,37H,9,11,14H2,1-2H3,(H,31,36)(H,32,33,34)",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChI"
+    },
+    {
+      "comp_id": "03P",
+      "descriptor": "ZYQXEVJIFYIBHZ-UHFFFAOYSA-N",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChIKey"
+    },
+    {
+      "comp_id": "03P",
+      "descriptor": "CC(C)(O)CC(=O)NCCn1ccc2ncnc(Nc3ccc(Oc4cccc(c4)C(F)(F)F)c(Cl)c3)c12",
+      "program": "CACTVS",
+      "program_version": "3.370",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "03P",
+      "descriptor": "CC(C)(O)CC(=O)NCCn1ccc2ncnc(Nc3ccc(Oc4cccc(c4)C(F)(F)F)c(Cl)c3)c12",
+      "program": "CACTVS",
+      "program_version": "3.370",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "03P",
+      "descriptor": "CC(C)(CC(=O)NCCn1ccc2c1c(ncn2)Nc3ccc(c(c3)Cl)Oc4cccc(c4)C(F)(F)F)O",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.7.2",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "03P",
+      "descriptor": "CC(C)(CC(=O)NCCn1ccc2c1c(ncn2)Nc3ccc(c(c3)Cl)Oc4cccc(c4)C(F)(F)F)O",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.7.2",
+      "type": "SMILES"
+    }
+  ],
+  "pdbx_chem_comp_identifier": [
+    {
+      "comp_id": "03P",
+      "identifier": "N-{2-[4-({3-chloro-4-[3-(trifluoromethyl)phenoxy]phenyl}amino)-5H-pyrrolo[3,2-d]pyrimidin-5-yl]ethyl}-3-hydroxy-3-methylbutanamide",
+      "program": "ACDLabs",
+      "program_version": "12.01",
+      "type": "SYSTEMATIC NAME"
+    },
+    {
+      "comp_id": "03P",
+      "identifier": "N-[2-[4-[[3-chloranyl-4-[3-(trifluoromethyl)phenoxy]phenyl]amino]pyrrolo[3,2-d]pyrimidin-5-yl]ethyl]-3-methyl-3-oxidanyl-butanamide",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.7.2",
+      "type": "SYSTEMATIC NAME"
+    }
+  ],
+  "rcsb_chem_comp_container_identifiers": {
+    "comp_id": "03P",
+    "rcsb_id": "03P"
+  },
+  "rcsb_chem_comp_descriptor": {
+    "InChI": "InChI=1S/C26H25ClF3N5O3/c1-25(2,37)14-22(36)31-9-11-35-10-8-20-23(35)24(33-15-32-20)34-17-6-7-21(19(27)13-17)38-18-5-3-4-16(12-18)26(28,29)30/h3-8,10,12-13,15,37H,9,11,14H2,1-2H3,(H,31,36)(H,32,33,34)",
+    "InChIKey": "ZYQXEVJIFYIBHZ-UHFFFAOYSA-N",
+    "SMILES": "CC(C)(CC(=O)NCCn1ccc2c1c(ncn2)Nc3ccc(c(c3)Cl)Oc4cccc(c4)C(F)(F)F)O",
+    "SMILES_stereo": "CC(C)(CC(=O)NCCn1ccc2c1c(ncn2)Nc3ccc(c(c3)Cl)Oc4cccc(c4)C(F)(F)F)O",
+    "comp_id": "03P"
+  },
+  "rcsb_chem_comp_info": {
+    "atom_count": 63,
+    "atom_count_chiral": 0,
+    "atom_count_heavy": 38,
+    "bond_count": 66,
+    "bond_count_aromatic": 22,
+    "comp_id": "03P",
+    "initial_deposition_date": "2010-11-30T00:00:00.000+00:00",
+    "initial_release_date": "2011-03-30T00:00:00.000+00:00",
+    "release_status": "REL",
+    "revision_date": "2021-03-01T00:00:00.000+00:00"
+  },
+  "rcsb_chem_comp_related": [
+    {
+      "comp_id": "03P",
+      "ordinal": 1,
+      "related_mapping_method": "matching InChIKey in PubChem",
+      "resource_accession_code": "11620908",
+      "resource_name": "PubChem"
+    },
+    {
+      "comp_id": "03P",
+      "ordinal": 2,
+      "related_mapping_method": "assigned by PubChem resource",
+      "resource_accession_code": "CHEMBL1614725",
+      "resource_name": "ChEMBL"
+    },
+    {
+      "comp_id": "03P",
+      "ordinal": 3,
+      "related_mapping_method": "matching ChEMBL ID in Pharos",
+      "resource_accession_code": "CHEMBL1614725",
+      "resource_name": "Pharos"
+    }
+  ],
+  "rcsb_chem_comp_synonyms": [
+    {
+      "comp_id": "03P",
+      "name": "N-{2-[4-({3-chloro-4-[3-(trifluoromethyl)phenoxy]phenyl}amino)-5H-pyrrolo[3,2-d]pyrimidin-5-yl]ethyl}-3-hydroxy-3-methylbutanamide",
+      "ordinal": 1,
+      "provenance_source": "PDB Reference Data",
+      "type": "Preferred Name"
+    },
+    {
+      "comp_id": "03P",
+      "name": "TAK-285",
+      "ordinal": 2,
+      "provenance_source": "PDB Reference Data",
+      "type": "Synonym"
+    },
+    {
+      "comp_id": "03P",
+      "name": "N-{2-[4-({3-chloro-4-[3-(trifluoromethyl)phenoxy]phenyl}amino)-5H-pyrrolo[3,2-d]pyrimidin-5-yl]ethyl}-3-hydroxy-3-methylbutanamide",
+      "ordinal": 3,
+      "provenance_source": "ACDLabs",
+      "type": "Systematic Name"
+    },
+    {
+      "comp_id": "03P",
+      "name": "N-[2-[4-[[3-chloranyl-4-[3-(trifluoromethyl)phenoxy]phenyl]amino]pyrrolo[3,2-d]pyrimidin-5-yl]ethyl]-3-methyl-3-oxidanyl-butanamide",
+      "ordinal": 4,
+      "provenance_source": "OpenEye OEToolkits",
+      "type": "Systematic Name"
+    }
+  ],
+  "rcsb_id": "03P"
+}

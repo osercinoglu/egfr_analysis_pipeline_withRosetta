@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "F62",
+    "entity_id": "2",
+    "name": "N-[3-[2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]-5-methyl-7-oxidanylidene-pyrido[2,3-d]pyrimidin-8-yl]phenyl]prop-2-enamide"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.526,
+    "pdbx_description": "N-[3-[2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]-5-methyl-7-oxidanylidene-pyrido[2,3-d]pyrimidin-8-yl]phenyl]prop-2-enamide",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "F62",
+    "entity_id": "2",
+    "entry_id": "5GMP",
+    "nonpolymer_comp_id": "F62",
+    "rcsb_id": "5GMP_2"
+  },
+  "rcsb_id": "5GMP_2"
+}

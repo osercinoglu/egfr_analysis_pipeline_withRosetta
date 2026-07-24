@@ -1,0 +1,2 @@
+pdb_id,n_protein_chains,n_ligand_copies,motif_summary,selected_chain,selected_ligand_chain,selected_ligand_resnum,selection_status,reason,n_pocket_ligand_copies,n_valid_motif_chains
+5GMP,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.84 Å), en yakın protein zinciri A.",1,1

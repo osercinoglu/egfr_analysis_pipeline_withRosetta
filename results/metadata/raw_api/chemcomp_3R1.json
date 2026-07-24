@@ -1,0 +1,173 @@
+{
+  "chem_comp": {
+    "formula": "C20 H20 Cl2 N6 O2",
+    "formula_weight": 447.318,
+    "id": "3R1",
+    "name": "2,6-dichloro-N-{2-[(2-{[(2S)-1-hydroxypropan-2-yl]amino}-6-methylpyrimidin-4-yl)amino]pyridin-4-yl}benzamide",
+    "pdbx_ambiguous_flag": "N",
+    "pdbx_formal_charge": 0,
+    "pdbx_initial_date": "2014-10-10T00:00:00.000+00:00",
+    "pdbx_modified_date": "2014-11-21T00:00:00.000+00:00",
+    "pdbx_processing_site": "RCSB",
+    "pdbx_release_status": "REL",
+    "three_letter_code": "3R1",
+    "type": "non-polymer"
+  },
+  "pdbx_chem_comp_audit": [
+    {
+      "action_type": "Create component",
+      "comp_id": "3R1",
+      "date": "2014-10-10T00:00:00.000+00:00",
+      "ordinal": 1
+    },
+    {
+      "action_type": "Modify atom id",
+      "comp_id": "3R1",
+      "date": "2014-11-21T00:00:00.000+00:00",
+      "ordinal": 2
+    },
+    {
+      "action_type": "Initial release",
+      "comp_id": "3R1",
+      "date": "2014-11-26T00:00:00.000+00:00",
+      "ordinal": 3
+    }
+  ],
+  "pdbx_chem_comp_descriptor": [
+    {
+      "comp_id": "3R1",
+      "descriptor": "Clc1cccc(Cl)c1C(=O)Nc2cc(ncc2)Nc3nc(nc(c3)C)NC(CO)C",
+      "program": "ACDLabs",
+      "program_version": "12.01",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "3R1",
+      "descriptor": "InChI=1S/C20H20Cl2N6O2/c1-11-8-17(28-20(24-11)25-12(2)10-29)27-16-9-13(6-7-23-16)26-19(30)18-14(21)4-3-5-15(18)22/h3-9,12,29H,10H2,1-2H3,(H3,23,24,25,26,27,28,30)/t12-/m0/s1",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChI"
+    },
+    {
+      "comp_id": "3R1",
+      "descriptor": "SMUCRZPXLSRBNU-LBPRGKRZSA-N",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChIKey"
+    },
+    {
+      "comp_id": "3R1",
+      "descriptor": "C[C@@H](CO)Nc1nc(C)cc(Nc2cc(NC(=O)c3c(Cl)cccc3Cl)ccn2)n1",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "3R1",
+      "descriptor": "C[CH](CO)Nc1nc(C)cc(Nc2cc(NC(=O)c3c(Cl)cccc3Cl)ccn2)n1",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "3R1",
+      "descriptor": "Cc1cc(nc(n1)N[C@@H](C)CO)Nc2cc(ccn2)NC(=O)c3c(cccc3Cl)Cl",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.7.6",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "3R1",
+      "descriptor": "Cc1cc(nc(n1)NC(C)CO)Nc2cc(ccn2)NC(=O)c3c(cccc3Cl)Cl",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.7.6",
+      "type": "SMILES"
+    }
+  ],
+  "pdbx_chem_comp_identifier": [
+    {
+      "comp_id": "3R1",
+      "identifier": "2,6-dichloro-N-{2-[(2-{[(2S)-1-hydroxypropan-2-yl]amino}-6-methylpyrimidin-4-yl)amino]pyridin-4-yl}benzamide",
+      "program": "ACDLabs",
+      "program_version": "12.01",
+      "type": "SYSTEMATIC NAME"
+    },
+    {
+      "comp_id": "3R1",
+      "identifier": "2,6-bis(chloranyl)-N-[2-[[6-methyl-2-[[(2S)-1-oxidanylpropan-2-yl]amino]pyrimidin-4-yl]amino]pyridin-4-yl]benzamide",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.7.6",
+      "type": "SYSTEMATIC NAME"
+    }
+  ],
+  "rcsb_chem_comp_container_identifiers": {
+    "comp_id": "3R1",
+    "rcsb_id": "3R1"
+  },
+  "rcsb_chem_comp_descriptor": {
+    "InChI": "InChI=1S/C20H20Cl2N6O2/c1-11-8-17(28-20(24-11)25-12(2)10-29)27-16-9-13(6-7-23-16)26-19(30)18-14(21)4-3-5-15(18)22/h3-9,12,29H,10H2,1-2H3,(H3,23,24,25,26,27,28,30)/t12-/m0/s1",
+    "InChIKey": "SMUCRZPXLSRBNU-LBPRGKRZSA-N",
+    "SMILES": "Cc1cc(nc(n1)NC(C)CO)Nc2cc(ccn2)NC(=O)c3c(cccc3Cl)Cl",
+    "SMILES_stereo": "Cc1cc(nc(n1)N[C@@H](C)CO)Nc2cc(ccn2)NC(=O)c3c(cccc3Cl)Cl",
+    "comp_id": "3R1"
+  },
+  "rcsb_chem_comp_info": {
+    "atom_count": 50,
+    "atom_count_chiral": 1,
+    "atom_count_heavy": 30,
+    "bond_count": 52,
+    "bond_count_aromatic": 18,
+    "comp_id": "3R1",
+    "initial_deposition_date": "2014-10-10T00:00:00.000+00:00",
+    "initial_release_date": "2014-11-26T00:00:00.000+00:00",
+    "release_status": "REL",
+    "revision_date": "2014-11-26T00:00:00.000+00:00"
+  },
+  "rcsb_chem_comp_related": [
+    {
+      "comp_id": "3R1",
+      "ordinal": 1,
+      "related_mapping_method": "matching InChIKey in PubChem",
+      "resource_accession_code": "68672618",
+      "resource_name": "PubChem"
+    },
+    {
+      "comp_id": "3R1",
+      "ordinal": 2,
+      "related_mapping_method": "assigned by PubChem resource",
+      "resource_accession_code": "CHEMBL3354183",
+      "resource_name": "ChEMBL"
+    },
+    {
+      "comp_id": "3R1",
+      "ordinal": 3,
+      "related_mapping_method": "matching ChEMBL ID in Pharos",
+      "resource_accession_code": "CHEMBL3354183",
+      "resource_name": "Pharos"
+    }
+  ],
+  "rcsb_chem_comp_synonyms": [
+    {
+      "comp_id": "3R1",
+      "name": "2,6-dichloro-N-{2-[(2-{[(2S)-1-hydroxypropan-2-yl]amino}-6-methylpyrimidin-4-yl)amino]pyridin-4-yl}benzamide",
+      "ordinal": 1,
+      "provenance_source": "PDB Reference Data",
+      "type": "Preferred Name"
+    },
+    {
+      "comp_id": "3R1",
+      "name": "2,6-dichloro-N-{2-[(2-{[(2S)-1-hydroxypropan-2-yl]amino}-6-methylpyrimidin-4-yl)amino]pyridin-4-yl}benzamide",
+      "ordinal": 2,
+      "provenance_source": "ACDLabs",
+      "type": "Systematic Name"
+    },
+    {
+      "comp_id": "3R1",
+      "name": "2,6-bis(chloranyl)-N-[2-[[6-methyl-2-[[(2S)-1-oxidanylpropan-2-yl]amino]pyrimidin-4-yl]amino]pyridin-4-yl]benzamide",
+      "ordinal": 3,
+      "provenance_source": "OpenEye OEToolkits",
+      "type": "Systematic Name"
+    }
+  ],
+  "rcsb_id": "3R1"
+}

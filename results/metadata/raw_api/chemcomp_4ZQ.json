@@ -1,0 +1,153 @@
+{
+  "chem_comp": {
+    "formula": "C21 H25 F4 N7 O2",
+    "formula_weight": 483.463,
+    "id": "4ZQ",
+    "name": "(1R)-1-{6-({2-[(3R,4S)-3-fluoro-4-methoxypiperidin-1-yl]pyrimidin-4-yl}amino)-1-[(2S)-1,1,1-trifluoropropan-2-yl]-1H-imidazo[4,5-c]pyridin-2-yl}ethanol",
+    "pdbx_ambiguous_flag": "N",
+    "pdbx_formal_charge": 0,
+    "pdbx_initial_date": "2015-07-02T00:00:00.000+00:00",
+    "pdbx_modified_date": "2015-10-23T00:00:00.000+00:00",
+    "pdbx_processing_site": "RCSB",
+    "pdbx_release_status": "REL",
+    "three_letter_code": "4ZQ",
+    "type": "non-polymer"
+  },
+  "pdbx_chem_comp_audit": [
+    {
+      "action_type": "Create component",
+      "comp_id": "4ZQ",
+      "date": "2015-07-02T00:00:00.000+00:00",
+      "ordinal": 1
+    },
+    {
+      "action_type": "Initial release",
+      "comp_id": "4ZQ",
+      "date": "2015-10-28T00:00:00.000+00:00",
+      "ordinal": 2
+    }
+  ],
+  "pdbx_chem_comp_descriptor": [
+    {
+      "comp_id": "4ZQ",
+      "descriptor": "C(F)(C(n1c2c(nc1C(C)O)cnc(c2)Nc3ccnc(n3)N4CCC(C(C4)F)OC)C)(F)F",
+      "program": "ACDLabs",
+      "program_version": "12.01",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "4ZQ",
+      "descriptor": "InChI=1S/C21H25F4N7O2/c1-11(33)19-28-14-9-27-18(8-15(14)32(19)12(2)21(23,24)25)29-17-4-6-26-20(30-17)31-7-5-16(34-3)13(22)10-31/h4,6,8-9,11-13,16,33H,5,7,10H2,1-3H3,(H,26,27,29,30)/t11-,12+,13-,16+/m1/s1",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChI"
+    },
+    {
+      "comp_id": "4ZQ",
+      "descriptor": "BOPSHQJEVUOWPS-IATRGZMQSA-N",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChIKey"
+    },
+    {
+      "comp_id": "4ZQ",
+      "descriptor": "CO[C@H]1CCN(C[C@H]1F)c2nccc(Nc3cc4n([C@@H](C)C(F)(F)F)c(nc4cn3)[C@@H](C)O)n2",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "4ZQ",
+      "descriptor": "CO[CH]1CCN(C[CH]1F)c2nccc(Nc3cc4n([CH](C)C(F)(F)F)c(nc4cn3)[CH](C)O)n2",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "4ZQ",
+      "descriptor": "C[C@H](c1nc2cnc(cc2n1[C@@H](C)C(F)(F)F)Nc3ccnc(n3)N4CC[C@@H]([C@@H](C4)F)OC)O",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.9.2",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "4ZQ",
+      "descriptor": "CC(c1nc2cnc(cc2n1C(C)C(F)(F)F)Nc3ccnc(n3)N4CCC(C(C4)F)OC)O",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.9.2",
+      "type": "SMILES"
+    }
+  ],
+  "pdbx_chem_comp_identifier": [
+    {
+      "comp_id": "4ZQ",
+      "identifier": "(1R)-1-{6-({2-[(3R,4S)-3-fluoro-4-methoxypiperidin-1-yl]pyrimidin-4-yl}amino)-1-[(2S)-1,1,1-trifluoropropan-2-yl]-1H-imidazo[4,5-c]pyridin-2-yl}ethanol",
+      "program": "ACDLabs",
+      "program_version": "12.01",
+      "type": "SYSTEMATIC NAME"
+    },
+    {
+      "comp_id": "4ZQ",
+      "identifier": "(1R)-1-[6-[[2-[(3R,4S)-3-fluoranyl-4-methoxy-piperidin-1-yl]pyrimidin-4-yl]amino]-1-[(2S)-1,1,1-tris(fluoranyl)propan-2-yl]imidazo[4,5-c]pyridin-2-yl]ethanol",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.9.2",
+      "type": "SYSTEMATIC NAME"
+    }
+  ],
+  "rcsb_chem_comp_container_identifiers": {
+    "comp_id": "4ZQ",
+    "rcsb_id": "4ZQ"
+  },
+  "rcsb_chem_comp_descriptor": {
+    "InChI": "InChI=1S/C21H25F4N7O2/c1-11(33)19-28-14-9-27-18(8-15(14)32(19)12(2)21(23,24)25)29-17-4-6-26-20(30-17)31-7-5-16(34-3)13(22)10-31/h4,6,8-9,11-13,16,33H,5,7,10H2,1-3H3,(H,26,27,29,30)/t11-,12+,13-,16+/m1/s1",
+    "InChIKey": "BOPSHQJEVUOWPS-IATRGZMQSA-N",
+    "SMILES": "CC(c1nc2cnc(cc2n1C(C)C(F)(F)F)Nc3ccnc(n3)N4CCC(C(C4)F)OC)O",
+    "SMILES_stereo": "C[C@H](c1nc2cnc(cc2n1[C@@H](C)C(F)(F)F)Nc3ccnc(n3)N4CC[C@@H]([C@@H](C4)F)OC)O",
+    "comp_id": "4ZQ"
+  },
+  "rcsb_chem_comp_info": {
+    "atom_count": 59,
+    "atom_count_chiral": 4,
+    "atom_count_heavy": 34,
+    "bond_count": 62,
+    "bond_count_aromatic": 16,
+    "comp_id": "4ZQ",
+    "initial_deposition_date": "2015-07-02T00:00:00.000+00:00",
+    "initial_release_date": "2015-10-28T00:00:00.000+00:00",
+    "release_status": "REL",
+    "revision_date": "2015-10-28T00:00:00.000+00:00"
+  },
+  "rcsb_chem_comp_related": [
+    {
+      "comp_id": "4ZQ",
+      "ordinal": 1,
+      "related_mapping_method": "matching InChIKey in PubChem",
+      "resource_accession_code": "90183462",
+      "resource_name": "PubChem"
+    }
+  ],
+  "rcsb_chem_comp_synonyms": [
+    {
+      "comp_id": "4ZQ",
+      "name": "(1R)-1-{6-({2-[(3R,4S)-3-fluoro-4-methoxypiperidin-1-yl]pyrimidin-4-yl}amino)-1-[(2S)-1,1,1-trifluoropropan-2-yl]-1H-imidazo[4,5-c]pyridin-2-yl}ethanol",
+      "ordinal": 1,
+      "provenance_source": "PDB Reference Data",
+      "type": "Preferred Name"
+    },
+    {
+      "comp_id": "4ZQ",
+      "name": "(1R)-1-{6-({2-[(3R,4S)-3-fluoro-4-methoxypiperidin-1-yl]pyrimidin-4-yl}amino)-1-[(2S)-1,1,1-trifluoropropan-2-yl]-1H-imidazo[4,5-c]pyridin-2-yl}ethanol",
+      "ordinal": 2,
+      "provenance_source": "ACDLabs",
+      "type": "Systematic Name"
+    },
+    {
+      "comp_id": "4ZQ",
+      "name": "(1R)-1-[6-[[2-[(3R,4S)-3-fluoranyl-4-methoxy-piperidin-1-yl]pyrimidin-4-yl]amino]-1-[(2S)-1,1,1-tris(fluoranyl)propan-2-yl]imidazo[4,5-c]pyridin-2-yl]ethanol",
+      "ordinal": 3,
+      "provenance_source": "OpenEye OEToolkits",
+      "type": "Systematic Name"
+    }
+  ],
+  "rcsb_id": "4ZQ"
+}

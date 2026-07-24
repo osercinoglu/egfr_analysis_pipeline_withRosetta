@@ -1,0 +1,503 @@
+1XKK:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: FMM
+  ligand_resnum: '91'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 91) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.34 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+2ITO:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: IRE
+  ligand_resnum: '2020'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 2020) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.87 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+2ITP:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: AEE
+  ligand_resnum: '2019'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 2019) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.88 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+2ITT:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: AEE
+  ligand_resnum: '2020'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 2020) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.10 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+2ITY:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: IRE
+  ligand_resnum: '2020'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 2020) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.70 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+2ITZ:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: IRE
+  ligand_resnum: '2021'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 2021) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.53 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+2J6M:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: AEE
+  ligand_resnum: '2021'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 2021) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.83 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+2JIU:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: AEE
+  ligand_resnum: '2017'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 2017) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.95 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+2RGP:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: HYZ
+  ligand_resnum: '1'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.30 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+3BEL:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: POX
+  ligand_resnum: '1'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.23 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+3IKA:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 0UN
+  ligand_resnum: '1797'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1797) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 6.92 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+3POZ:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 03P
+  ligand_resnum: '1023'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1023) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.85 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+3W2O:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 03P
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.19 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+3W2P:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: W2P
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.24 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+3W2Q:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: HKI
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.20 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+3W2R:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: W2R
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.09 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+3W2S:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: W2R
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.62 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+3W32:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: W32
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.15 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+3W33:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: W19
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.38 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+4JQ7:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: KJQ
+  ligand_resnum: '1001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.46 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+4JQ8:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: KJ8
+  ligand_resnum: '1001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 3.54 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+4JR3:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: KJR
+  ligand_resnum: '1001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.09 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+4JRV:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: KJV
+  ligand_resnum: '1001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 3.38 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+4LI5:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 1WY
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 6.07 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+4RJ4:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 3QW
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.43 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+4RJ5:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 3QY
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.48 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+4RJ6:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 3R0
+  ligand_resnum: '1102'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1102) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.22 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+4RJ7:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 3R1
+  ligand_resnum: '1102'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1102) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.85 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5C8K:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 4YV
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.31 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5C8M:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 4YW
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.32 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5C8N:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 4YX
+  ligand_resnum: '1102'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1102) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 3.62 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5CAL:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 4Z8
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.16 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5CAN:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 4ZB
+  ligand_resnum: '1102'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1102) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.01 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5CAO:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 4ZG
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.19 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5CAP:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 4ZH
+  ligand_resnum: '1103'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1103) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 3.98 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5CAQ:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 4ZJ
+  ligand_resnum: '1102'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1102) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.25 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5CAS:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 4ZQ
+  ligand_resnum: '1102'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1102) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.25 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5CAU:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 4ZR
+  ligand_resnum: '1102'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1102) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.18 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5CAV:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 4ZQ
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.22 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5EDQ:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 5N3
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.07 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5EDR:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 5N4
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.05 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5EM5:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 5Q2
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.31 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5EM6:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 5Q3
+  ligand_resnum: '1102'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1102) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.03 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5EM7:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 5Q4
+  ligand_resnum: '1102'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1102) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.45 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5EM8:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 5Q4
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.67 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5GMP:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: F62
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.84 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5GNK:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 80U
+  ligand_resnum: '1001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.24 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5GTY:
+  egfr_chain: C
+  ligand_chain: C
+  ligand_comp_id: '816'
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir C, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.21 \xC5), en yak\u0131n\
+    \ protein zinciri C. 8 kopya mesafe bak\u0131m\u0131ndan e\u015Fde\u011Ferdi (\xB1\
+    \ 1 \xC5); taml\u0131k (eksik CA: 0), occupancy (1.00) ve altloc (0 atom) ile\
+    \ ay\u0131rt edildi. Di\u011Fer cep-i\xE7i kopyalar (kullan\u0131lmad\u0131):\
+    \ A/1101 (5.70 \xC5), B/1101 (5.43 \xC5), D/1101 (5.29 \xC5), E/1101 (5.40 \xC5\
+    ), F/1101 (5.44 \xC5), G/1101 (5.40 \xC5), H/1101 (5.40 \xC5)."
+5HCX:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 60B
+  ligand_resnum: '1102'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1102) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 3.89 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5HCY:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 60D
+  ligand_resnum: '1102'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1102) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.00 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5HG7:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: '630'
+  ligand_resnum: '9001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 9001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 7.34 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5HG8:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: '634'
+  ligand_resnum: '9001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 9001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 7.88 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+  rosetta_ligand_code: 'Z34'
+  rosetta_ligand_code_reason: "Ger\xE7ek CCD kodu '634', Rosetta'n\u0131n dahili\
+    \ peptoid rezid\u00fc k\xFCt\xFCphanesindeki '633' baz rezid\xFCs\xFCnden patch'lenerek\
+    \ \xFCretilen bir varyantla ayn\u0131 isme sahip oldu\u011fu i\xE7in\
+    \ ResidueTypeSetCache \xE7ak\u0131\u015fmas\u0131na (633 -> patch -> 634) yol\
+    \ a\xE7\u0131yor. Ger\xE7ek PDB/CCD kimli\u011fi '634' olarak kal\u0131r; yaln\u0131zca\
+    \ Rosetta'n\u0131n g\xF6rd\xFC\u011f\xFC clean_pdb HETATM ad\u0131 ve .params NAME/IO_STRING\
+    \ 'Z34' ile de\u011fi\u015ftirilir."
+5HG9:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 63A
+  ligand_resnum: '9001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 9001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 7.73 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5J9Y:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 6HL
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.91 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5J9Z:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 6HJ
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 4.78 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5UG8:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 8BP
+  ligand_resnum: '9001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 9001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 7.53 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5UG9:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 8AM
+  ligand_resnum: '9001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 9001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 7.57 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5UGA:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 8BM
+  ligand_resnum: '9001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 9001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 6.90 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5UGB:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 8BM
+  ligand_resnum: '9001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 9001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.90 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5UGC:
+  egfr_chain: A
+  ligand_chain: A
+  ligand_comp_id: 8BS
+  ligand_resnum: '9001'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir A, resnum 9001) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 8.12 \xC5), en yak\u0131n\
+    \ protein zinciri A."
+5YU9:
+  egfr_chain: D
+  ligand_chain: D
+  ligand_comp_id: 1E8
+  ligand_resnum: '1101'
+  selection_reason: "Se\xE7ilen ligand kopyas\u0131 (zincir D, resnum 1101) ATP cebi\
+    \ referans noktalar\u0131na en yak\u0131n (ortalama 5.67 \xC5), en yak\u0131n\
+    \ protein zinciri D. 4 kopya mesafe bak\u0131m\u0131ndan e\u015Fde\u011Ferdi (\xB1\
+    \ 1 \xC5); taml\u0131k (eksik CA: 0), occupancy (1.00) ve altloc (0 atom) ile\
+    \ ay\u0131rt edildi. Di\u011Fer cep-i\xE7i kopyalar (kullan\u0131lmad\u0131):\
+    \ A/1101 (5.68 \xC5), B/1101 (5.74 \xC5), C/1101 (5.70 \xC5)."

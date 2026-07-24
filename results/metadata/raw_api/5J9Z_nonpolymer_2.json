@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "6HJ",
+    "entity_id": "2",
+    "name": "(R)-1-(3-(4-amino-3-(1-methyl-1H-indol-3-yl)-1H-pyrazolo[3,4-d]pyrimidin-1-yl)piperidin-1-yl)prop-2-en-1-one"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.401,
+    "pdbx_description": "(R)-1-(3-(4-amino-3-(1-methyl-1H-indol-3-yl)-1H-pyrazolo[3,4-d]pyrimidin-1-yl)piperidin-1-yl)prop-2-en-1-one",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "6HJ",
+    "entity_id": "2",
+    "entry_id": "5J9Z",
+    "nonpolymer_comp_id": "6HJ",
+    "rcsb_id": "5J9Z_2"
+  },
+  "rcsb_id": "5J9Z_2"
+}

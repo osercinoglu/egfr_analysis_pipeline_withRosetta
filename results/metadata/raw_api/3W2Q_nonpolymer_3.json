@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "MES",
+    "entity_id": "3",
+    "name": "2-(N-MORPHOLINO)-ETHANESULFONIC ACID"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.195,
+    "pdbx_description": "2-(N-MORPHOLINO)-ETHANESULFONIC ACID",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "C"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "MES",
+    "entity_id": "3",
+    "entry_id": "3W2Q",
+    "nonpolymer_comp_id": "MES",
+    "rcsb_id": "3W2Q_3"
+  },
+  "rcsb_id": "3W2Q_3"
+}

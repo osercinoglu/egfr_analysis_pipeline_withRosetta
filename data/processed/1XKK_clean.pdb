@@ -1,3 +1,5 @@
+REMARK   Aşama 4 ile üretildi. Kaynak: 1XKK.pdb
+REMARK   EGFR zinciri: A, ligand: FMM (zincir A, resnum 91)
 ATOM      1  N   ALA A 702       1.152  36.680  55.595  1.00 52.02           N  
 ATOM      2  CA  ALA A 702       2.604  36.822  55.923  1.00 52.96           C  
 ATOM      3  C   ALA A 702       3.382  37.308  54.707  1.00 52.45           C  
@@ -2247,7 +2249,7 @@ ATOM   2246  CA  ILE A1018      -4.272  38.577  43.383  1.00 76.18           C
 ATOM   2247  C   ILE A1018      -5.102  38.930  44.613  1.00 76.69           C  
 ATOM   2248  O   ILE A1018      -5.085  38.141  45.581  1.00 77.13           O  
 ATOM   2249  CB  ILE A1018      -5.191  38.240  42.209  1.00 75.50           C  
-TER    2250      ILE A1018                                                      
+TER
 HETATM 2261  C1  FMM A  91      22.604  34.487  31.141  1.00 73.29           C  
 HETATM 2262  S2  FMM A  91      24.036  33.465  31.350  1.00 75.43           S  
 HETATM 2263  O3  FMM A  91      25.053  34.204  32.067  1.00 74.33           O  
@@ -2288,4 +2290,4 @@ HETATM 2297 CL3  FMM A  91      14.784  32.514  44.128  1.00 34.74          CL
 HETATM 2298  C38 FMM A  91      15.607  33.098  41.660  1.00 32.28           C  
 HETATM 2299  C39 FMM A  91      15.053  32.959  37.349  1.00 33.77           C  
 HETATM 2300  C40 FMM A  91      16.220  32.545  36.731  1.00 34.65           C  
-END                                                                             
+END

@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "60B",
+    "entity_id": "3",
+    "name": "~{N}-[2-(1-cyclopropylsulfonylpyrazol-4-yl)pyrimidin-4-yl]-2-methyl-1-propan-2-yl-imidazo[4,5-c]pyridin-6-amine"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.439,
+    "pdbx_description": "~{N}-[2-(1-cyclopropylsulfonylpyrazol-4-yl)pyrimidin-4-yl]-2-methyl-1-propan-2-yl-imidazo[4,5-c]pyridin-6-amine",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "C"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "60B",
+    "entity_id": "3",
+    "entry_id": "5HCX",
+    "nonpolymer_comp_id": "60B",
+    "rcsb_id": "5HCX_3"
+  },
+  "rcsb_id": "5HCX_3"
+}

@@ -1,0 +1,138 @@
+{
+  "chem_comp": {
+    "formula": "C26 H26 Cl N7 O2",
+    "formula_weight": 503.983,
+    "id": "816",
+    "name": "1-[(3R)-3-[4-azanyl-3-[3-chloranyl-4-[(6-methylpyridin-2-yl)methoxy]phenyl]pyrazolo[3,4-d]pyrimidin-1-yl]piperidin-1-yl]prop-2-en-1-one",
+    "pdbx_ambiguous_flag": "N",
+    "pdbx_formal_charge": 0,
+    "pdbx_initial_date": "2017-03-15T00:00:00.000+00:00",
+    "pdbx_modified_date": "2024-09-27T00:00:00.000+00:00",
+    "pdbx_processing_site": "PDBJ",
+    "pdbx_release_status": "REL",
+    "three_letter_code": "816",
+    "type": "non-polymer"
+  },
+  "pdbx_chem_comp_audit": [
+    {
+      "action_type": "Create component",
+      "comp_id": "816",
+      "date": "2017-03-15T00:00:00.000+00:00",
+      "ordinal": 1
+    },
+    {
+      "action_type": "Initial release",
+      "comp_id": "816",
+      "date": "2017-09-06T00:00:00.000+00:00",
+      "ordinal": 2
+    },
+    {
+      "action_type": "Modify PCM",
+      "comp_id": "816",
+      "date": "2024-09-27T00:00:00.000+00:00",
+      "ordinal": 3
+    }
+  ],
+  "pdbx_chem_comp_descriptor": [
+    {
+      "comp_id": "816",
+      "descriptor": "InChI=1S/C26H26ClN7O2/c1-3-22(35)33-11-5-8-19(13-33)34-26-23(25(28)29-15-30-26)24(32-34)17-9-10-21(20(27)12-17)36-14-18-7-4-6-16(2)31-18/h3-4,6-7,9-10,12,15,19H,1,5,8,11,13-14H2,2H3,(H2,28,29,30)/t19-/m1/s1",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChI"
+    },
+    {
+      "comp_id": "816",
+      "descriptor": "IQSSEXXITFEXLL-LJQANCHMSA-N",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChIKey"
+    },
+    {
+      "comp_id": "816",
+      "descriptor": "Cc1cccc(COc2ccc(cc2Cl)c3nn([C@@H]4CCCN(C4)C(=O)C=C)c5ncnc(N)c35)n1",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "816",
+      "descriptor": "Cc1cccc(COc2ccc(cc2Cl)c3nn([CH]4CCCN(C4)C(=O)C=C)c5ncnc(N)c35)n1",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "816",
+      "descriptor": "Cc1cccc(n1)COc2ccc(cc2Cl)c3c4c(ncnc4n(n3)[C@@H]5CCCN(C5)C(=O)C=C)N",
+      "program": "OpenEye OEToolkits",
+      "program_version": "2.0.6",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "816",
+      "descriptor": "Cc1cccc(n1)COc2ccc(cc2Cl)c3c4c(ncnc4n(n3)C5CCCN(C5)C(=O)C=C)N",
+      "program": "OpenEye OEToolkits",
+      "program_version": "2.0.6",
+      "type": "SMILES"
+    }
+  ],
+  "pdbx_chem_comp_identifier": [
+    {
+      "comp_id": "816",
+      "identifier": "1-[(3~{R})-3-[4-azanyl-3-[3-chloranyl-4-[(6-methylpyridin-2-yl)methoxy]phenyl]pyrazolo[3,4-d]pyrimidin-1-yl]piperidin-1-yl]prop-2-en-1-one",
+      "program": "OpenEye OEToolkits",
+      "program_version": "2.0.6",
+      "type": "SYSTEMATIC NAME"
+    }
+  ],
+  "rcsb_chem_comp_container_identifiers": {
+    "comp_id": "816",
+    "rcsb_id": "816"
+  },
+  "rcsb_chem_comp_descriptor": {
+    "InChI": "InChI=1S/C26H26ClN7O2/c1-3-22(35)33-11-5-8-19(13-33)34-26-23(25(28)29-15-30-26)24(32-34)17-9-10-21(20(27)12-17)36-14-18-7-4-6-16(2)31-18/h3-4,6-7,9-10,12,15,19H,1,5,8,11,13-14H2,2H3,(H2,28,29,30)/t19-/m1/s1",
+    "InChIKey": "IQSSEXXITFEXLL-LJQANCHMSA-N",
+    "SMILES": "Cc1cccc(n1)COc2ccc(cc2Cl)c3c4c(ncnc4n(n3)C5CCCN(C5)C(=O)C=C)N",
+    "SMILES_stereo": "Cc1cccc(n1)COc2ccc(cc2Cl)c3c4c(ncnc4n(n3)[C@@H]5CCCN(C5)C(=O)C=C)N",
+    "comp_id": "816"
+  },
+  "rcsb_chem_comp_info": {
+    "atom_count": 62,
+    "atom_count_chiral": 1,
+    "atom_count_heavy": 36,
+    "bond_count": 66,
+    "bond_count_aromatic": 22,
+    "comp_id": "816",
+    "initial_deposition_date": "2017-03-15T00:00:00.000+00:00",
+    "initial_release_date": "2017-09-06T00:00:00.000+00:00",
+    "release_status": "REL",
+    "revision_date": "2024-09-27T00:00:00.000+00:00"
+  },
+  "rcsb_chem_comp_related": [
+    {
+      "comp_id": "816",
+      "ordinal": 1,
+      "related_mapping_method": "matching InChIKey in PubChem",
+      "resource_accession_code": "130203496",
+      "resource_name": "PubChem"
+    }
+  ],
+  "rcsb_chem_comp_synonyms": [
+    {
+      "comp_id": "816",
+      "name": "1-[(3R)-3-[4-azanyl-3-[3-chloranyl-4-[(6-methylpyridin-2-yl)methoxy]phenyl]pyrazolo[3,4-d]pyrimidin-1-yl]piperidin-1-yl]prop-2-en-1-one",
+      "ordinal": 1,
+      "provenance_source": "PDB Reference Data",
+      "type": "Preferred Name"
+    },
+    {
+      "comp_id": "816",
+      "name": "1-[(3~{R})-3-[4-azanyl-3-[3-chloranyl-4-[(6-methylpyridin-2-yl)methoxy]phenyl]pyrazolo[3,4-d]pyrimidin-1-yl]piperidin-1-yl]prop-2-en-1-one",
+      "ordinal": 2,
+      "provenance_source": "OpenEye OEToolkits",
+      "type": "Systematic Name"
+    }
+  ],
+  "rcsb_id": "816"
+}

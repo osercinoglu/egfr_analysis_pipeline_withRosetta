@@ -1,0 +1,167 @@
+{
+  "chem_comp": {
+    "formula": "C22 H32 N8 O",
+    "formula_weight": 424.542,
+    "id": "4YX",
+    "name": "N-{2-[4-(2-aminoethyl)-4-methoxypiperidin-1-yl]pyrimidin-4-yl}-2-methyl-1-(propan-2-yl)-1H-imidazo[4,5-c]pyridin-6-amine",
+    "pdbx_ambiguous_flag": "N",
+    "pdbx_formal_charge": 0,
+    "pdbx_initial_date": "2015-06-26T00:00:00.000+00:00",
+    "pdbx_modified_date": "2015-10-23T00:00:00.000+00:00",
+    "pdbx_processing_site": "RCSB",
+    "pdbx_release_status": "REL",
+    "three_letter_code": "4YX",
+    "type": "non-polymer"
+  },
+  "pdbx_chem_comp_audit": [
+    {
+      "action_type": "Create component",
+      "comp_id": "4YX",
+      "date": "2015-06-26T00:00:00.000+00:00",
+      "ordinal": 1
+    },
+    {
+      "action_type": "Initial release",
+      "comp_id": "4YX",
+      "date": "2015-10-28T00:00:00.000+00:00",
+      "ordinal": 2
+    }
+  ],
+  "pdbx_chem_comp_descriptor": [
+    {
+      "comp_id": "4YX",
+      "descriptor": "c21nc(C)n(C(C)C)c1cc(nc2)Nc3ccnc(n3)N4CCC(CC4)(CCN)OC",
+      "program": "ACDLabs",
+      "program_version": "12.01",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "4YX",
+      "descriptor": "InChI=1S/C22H32N8O/c1-15(2)30-16(3)26-17-14-25-20(13-18(17)30)27-19-5-10-24-21(28-19)29-11-7-22(31-4,6-9-23)8-12-29/h5,10,13-15H,6-9,11-12,23H2,1-4H3,(H,24,25,27,28)",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChI"
+    },
+    {
+      "comp_id": "4YX",
+      "descriptor": "CGDZTEHAPAOWKF-UHFFFAOYSA-N",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChIKey"
+    },
+    {
+      "comp_id": "4YX",
+      "descriptor": "COC1(CCN)CCN(CC1)c2nccc(Nc3cc4n(C(C)C)c(C)nc4cn3)n2",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "4YX",
+      "descriptor": "COC1(CCN)CCN(CC1)c2nccc(Nc3cc4n(C(C)C)c(C)nc4cn3)n2",
+      "program": "CACTVS",
+      "program_version": "3.385",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "4YX",
+      "descriptor": "Cc1nc2cnc(cc2n1C(C)C)Nc3ccnc(n3)N4CCC(CC4)(CCN)OC",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.9.2",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "4YX",
+      "descriptor": "Cc1nc2cnc(cc2n1C(C)C)Nc3ccnc(n3)N4CCC(CC4)(CCN)OC",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.9.2",
+      "type": "SMILES"
+    }
+  ],
+  "pdbx_chem_comp_identifier": [
+    {
+      "comp_id": "4YX",
+      "identifier": "N-{2-[4-(2-aminoethyl)-4-methoxypiperidin-1-yl]pyrimidin-4-yl}-2-methyl-1-(propan-2-yl)-1H-imidazo[4,5-c]pyridin-6-amine",
+      "program": "ACDLabs",
+      "program_version": "12.01",
+      "type": "SYSTEMATIC NAME"
+    },
+    {
+      "comp_id": "4YX",
+      "identifier": "N-[2-[4-(2-azanylethyl)-4-methoxy-piperidin-1-yl]pyrimidin-4-yl]-2-methyl-1-propan-2-yl-imidazo[4,5-c]pyridin-6-amine",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.9.2",
+      "type": "SYSTEMATIC NAME"
+    }
+  ],
+  "rcsb_chem_comp_container_identifiers": {
+    "comp_id": "4YX",
+    "rcsb_id": "4YX"
+  },
+  "rcsb_chem_comp_descriptor": {
+    "InChI": "InChI=1S/C22H32N8O/c1-15(2)30-16(3)26-17-14-25-20(13-18(17)30)27-19-5-10-24-21(28-19)29-11-7-22(31-4,6-9-23)8-12-29/h5,10,13-15H,6-9,11-12,23H2,1-4H3,(H,24,25,27,28)",
+    "InChIKey": "CGDZTEHAPAOWKF-UHFFFAOYSA-N",
+    "SMILES": "Cc1nc2cnc(cc2n1C(C)C)Nc3ccnc(n3)N4CCC(CC4)(CCN)OC",
+    "SMILES_stereo": "Cc1nc2cnc(cc2n1C(C)C)Nc3ccnc(n3)N4CCC(CC4)(CCN)OC",
+    "comp_id": "4YX"
+  },
+  "rcsb_chem_comp_info": {
+    "atom_count": 63,
+    "atom_count_chiral": 0,
+    "atom_count_heavy": 31,
+    "bond_count": 66,
+    "bond_count_aromatic": 16,
+    "comp_id": "4YX",
+    "initial_deposition_date": "2015-06-26T00:00:00.000+00:00",
+    "initial_release_date": "2015-10-28T00:00:00.000+00:00",
+    "release_status": "REL",
+    "revision_date": "2015-10-28T00:00:00.000+00:00"
+  },
+  "rcsb_chem_comp_related": [
+    {
+      "comp_id": "4YX",
+      "ordinal": 1,
+      "related_mapping_method": "matching InChIKey in PubChem",
+      "resource_accession_code": "90183483",
+      "resource_name": "PubChem"
+    },
+    {
+      "comp_id": "4YX",
+      "ordinal": 2,
+      "related_mapping_method": "assigned by PubChem resource",
+      "resource_accession_code": "CHEMBL3736430",
+      "resource_name": "ChEMBL"
+    },
+    {
+      "comp_id": "4YX",
+      "ordinal": 3,
+      "related_mapping_method": "matching ChEMBL ID in Pharos",
+      "resource_accession_code": "CHEMBL3736430",
+      "resource_name": "Pharos"
+    }
+  ],
+  "rcsb_chem_comp_synonyms": [
+    {
+      "comp_id": "4YX",
+      "name": "N-{2-[4-(2-aminoethyl)-4-methoxypiperidin-1-yl]pyrimidin-4-yl}-2-methyl-1-(propan-2-yl)-1H-imidazo[4,5-c]pyridin-6-amine",
+      "ordinal": 1,
+      "provenance_source": "PDB Reference Data",
+      "type": "Preferred Name"
+    },
+    {
+      "comp_id": "4YX",
+      "name": "N-{2-[4-(2-aminoethyl)-4-methoxypiperidin-1-yl]pyrimidin-4-yl}-2-methyl-1-(propan-2-yl)-1H-imidazo[4,5-c]pyridin-6-amine",
+      "ordinal": 2,
+      "provenance_source": "ACDLabs",
+      "type": "Systematic Name"
+    },
+    {
+      "comp_id": "4YX",
+      "name": "N-[2-[4-(2-azanylethyl)-4-methoxy-piperidin-1-yl]pyrimidin-4-yl]-2-methyl-1-propan-2-yl-imidazo[4,5-c]pyridin-6-amine",
+      "ordinal": 3,
+      "provenance_source": "OpenEye OEToolkits",
+      "type": "Systematic Name"
+    }
+  ],
+  "rcsb_id": "4YX"
+}

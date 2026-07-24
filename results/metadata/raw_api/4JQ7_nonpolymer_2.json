@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "KJQ",
+    "entity_id": "2",
+    "name": "(2S)-2-[(5,6-diphenylfuro[2,3-d]pyrimidin-4-yl)amino]-2-phenylethanol"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.407,
+    "pdbx_description": "(2S)-2-[(5,6-diphenylfuro[2,3-d]pyrimidin-4-yl)amino]-2-phenylethanol",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "KJQ",
+    "entity_id": "2",
+    "entry_id": "4JQ7",
+    "nonpolymer_comp_id": "KJQ",
+    "rcsb_id": "4JQ7_2"
+  },
+  "rcsb_id": "4JQ7_2"
+}

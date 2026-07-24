@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "1WY",
+    "entity_id": "2",
+    "name": "N-(3-{[5-chloro-4-(1H-indol-3-yl)pyrimidin-2-yl]amino}-4-methoxyphenyl)propanamide"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.422,
+    "pdbx_description": "N-(3-{[5-chloro-4-(1H-indol-3-yl)pyrimidin-2-yl]amino}-4-methoxyphenyl)propanamide",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "1WY",
+    "entity_id": "2",
+    "entry_id": "4LI5",
+    "nonpolymer_comp_id": "1WY",
+    "rcsb_id": "4LI5_2"
+  },
+  "rcsb_id": "4LI5_2"
+}

@@ -1,0 +1,276 @@
+{
+  "rcsb_nonpolymer_entity_instance_container_identifiers": {
+    "asym_id": "B",
+    "auth_asym_id": "A",
+    "auth_seq_id": "9001",
+    "comp_id": "630",
+    "entity_id": "2",
+    "entry_id": "5HG7",
+    "rcsb_id": "5HG7.B"
+  },
+  "rcsb_nonpolymer_instance_annotation": [
+    {
+      "annotation_id": "COVALENT_LINKAGE_1",
+      "assignment_version": "V1.0",
+      "comp_id": "630",
+      "description": "630 has covalent bond with polymer instance A in model 1",
+      "ordinal": 1,
+      "provenance_source": "Primary Data",
+      "type": "HAS_COVALENT_LINKAGE"
+    }
+  ],
+  "rcsb_nonpolymer_instance_validation_score": [
+    {
+      "RSCC": 0.92,
+      "RSR": 0.1,
+      "average_occupancy": 1.0,
+      "completeness": 1.0,
+      "intermolecular_clashes": 1,
+      "is_best_instance": "Y",
+      "is_subject_of_investigation": "Y",
+      "is_subject_of_investigation_provenance": "RCSB",
+      "mogul_angle_outliers": 7,
+      "mogul_angles_RMSZ": 1.65,
+      "mogul_bond_outliers": 6,
+      "mogul_bonds_RMSZ": 1.63,
+      "natoms_eds": 30,
+      "num_mogul_angles_RMSZ": 33,
+      "num_mogul_bonds_RMSZ": 31,
+      "ranking_model_fit": 0.5952,
+      "ranking_model_geometry": 0.2109,
+      "score_model_fit": -0.5088,
+      "score_model_geometry": 0.8599,
+      "stereo_outliers": 0,
+      "type": "RCSB_LIGAND_QUALITY_SCORE_2021"
+    }
+  ],
+  "rcsb_nonpolymer_struct_conn": [
+    {
+      "connect_type": "covalent bond",
+      "dist_value": 1.801,
+      "id": "covale1",
+      "ordinal_id": 2,
+      "connect_target": {
+        "auth_seq_id": "9001",
+        "label_asym_id": "B",
+        "label_atom_id": "C21",
+        "label_comp_id": "630",
+        "symmetry": "1_555"
+      },
+      "connect_partner": {
+        "label_asym_id": "A",
+        "label_atom_id": "SG",
+        "label_comp_id": "CYS",
+        "label_seq_id": 104,
+        "symmetry": "1_555"
+      }
+    }
+  ],
+  "rcsb_target_neighbors": [
+    {
+      "atom_id": "C21",
+      "comp_id": "630",
+      "distance": 1.801,
+      "target_asym_id": "A",
+      "target_atom_id": "SG",
+      "target_auth_seq_id": 797,
+      "target_comp_id": "CYS",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 104
+    },
+    {
+      "atom_id": "N1",
+      "comp_id": "630",
+      "distance": 2.536,
+      "target_asym_id": "A",
+      "target_atom_id": "O",
+      "target_auth_seq_id": 793,
+      "target_comp_id": "MET",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 100
+    },
+    {
+      "atom_id": "N8",
+      "comp_id": "630",
+      "distance": 2.782,
+      "target_asym_id": "A",
+      "target_atom_id": "O",
+      "target_auth_seq_id": 791,
+      "target_comp_id": "GLN",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 98
+    },
+    {
+      "atom_id": "O22",
+      "comp_id": "630",
+      "distance": 3.176,
+      "target_asym_id": "A",
+      "target_atom_id": "OD1",
+      "target_auth_seq_id": 800,
+      "target_comp_id": "ASP",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 107
+    },
+    {
+      "atom_id": "C20",
+      "comp_id": "630",
+      "distance": 3.265,
+      "target_asym_id": "A",
+      "target_atom_id": "O",
+      "target_auth_seq_id": 841,
+      "target_comp_id": "ARG",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 148
+    },
+    {
+      "atom_id": "C26",
+      "comp_id": "630",
+      "distance": 3.273,
+      "target_asym_id": "A",
+      "target_atom_id": "O",
+      "target_auth_seq_id": 794,
+      "target_comp_id": "PRO",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 101
+    },
+    {
+      "atom_id": "C26",
+      "comp_id": "630",
+      "distance": 3.319,
+      "target_asym_id": "A",
+      "target_atom_id": "N",
+      "target_auth_seq_id": 796,
+      "target_comp_id": "GLY",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 103
+    },
+    {
+      "atom_id": "N8",
+      "comp_id": "630",
+      "distance": 3.406,
+      "target_asym_id": "A",
+      "target_atom_id": "CB",
+      "target_auth_seq_id": 743,
+      "target_comp_id": "ALA",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 50
+    },
+    {
+      "atom_id": "C18",
+      "comp_id": "630",
+      "distance": 3.454,
+      "target_asym_id": "A",
+      "target_atom_id": "O",
+      "target_auth_seq_id": 718,
+      "target_comp_id": "LEU",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 25
+    },
+    {
+      "atom_id": "N8",
+      "comp_id": "630",
+      "distance": 3.481,
+      "target_asym_id": "A",
+      "target_atom_id": "CD1",
+      "target_auth_seq_id": 844,
+      "target_comp_id": "LEU",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 151
+    },
+    {
+      "atom_id": "CL1",
+      "comp_id": "630",
+      "distance": 3.567,
+      "target_asym_id": "A",
+      "target_atom_id": "CZ",
+      "target_auth_seq_id": 856,
+      "target_comp_id": "PHE",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 163
+    },
+    {
+      "atom_id": "CL1",
+      "comp_id": "630",
+      "distance": 3.615,
+      "target_asym_id": "A",
+      "target_atom_id": "CE",
+      "target_auth_seq_id": 790,
+      "target_comp_id": "MET",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 97
+    },
+    {
+      "atom_id": "C24",
+      "comp_id": "630",
+      "distance": 3.625,
+      "target_asym_id": "A",
+      "target_atom_id": "CE2",
+      "target_auth_seq_id": 723,
+      "target_comp_id": "PHE",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 30
+    },
+    {
+      "atom_id": "O12",
+      "comp_id": "630",
+      "distance": 3.701,
+      "target_asym_id": "A",
+      "target_atom_id": "CG1",
+      "target_auth_seq_id": 726,
+      "target_comp_id": "VAL",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 33
+    },
+    {
+      "atom_id": "O23",
+      "comp_id": "630",
+      "distance": 3.771,
+      "target_asym_id": "A",
+      "target_atom_id": "CA",
+      "target_auth_seq_id": 719,
+      "target_comp_id": "GLY",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 26
+    },
+    {
+      "atom_id": "N1",
+      "comp_id": "630",
+      "distance": 3.798,
+      "target_asym_id": "A",
+      "target_atom_id": "CD1",
+      "target_auth_seq_id": 792,
+      "target_comp_id": "LEU",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 99
+    },
+    {
+      "atom_id": "O23",
+      "comp_id": "630",
+      "distance": 3.987,
+      "target_asym_id": "A",
+      "target_atom_id": "N",
+      "target_auth_seq_id": 720,
+      "target_comp_id": "SER",
+      "target_entity_id": "1",
+      "target_model_id": 1,
+      "target_seq_id": 27
+    }
+  ],
+  "rcsb_id": "5HG7.B"
+}

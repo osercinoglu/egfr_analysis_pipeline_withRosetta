@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "W19",
+    "entity_id": "2",
+    "name": "4-{[4-(1-benzothiophen-4-yloxy)-3-chlorophenyl]amino}-N-(2-hydroxyethyl)-8,9-dihydro-7H-pyrimido[4,5-b]azepine-6-carboxamide"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.508,
+    "pdbx_description": "4-{[4-(1-benzothiophen-4-yloxy)-3-chlorophenyl]amino}-N-(2-hydroxyethyl)-8,9-dihydro-7H-pyrimido[4,5-b]azepine-6-carboxamide",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "W19",
+    "entity_id": "2",
+    "entry_id": "3W33",
+    "nonpolymer_comp_id": "W19",
+    "rcsb_id": "3W33_2"
+  },
+  "rcsb_id": "3W33_2"
+}

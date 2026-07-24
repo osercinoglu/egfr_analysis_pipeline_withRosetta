@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "KJ8",
+    "entity_id": "2",
+    "name": "N-[3-(4-{[(1S)-2-hydroxy-1-phenylethyl]amino}-6-phenylfuro[2,3-d]pyrimidin-5-yl)phenyl]-N~3~,N~3~-dimethyl-beta-alaninamide"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.522,
+    "pdbx_description": "N-[3-(4-{[(1S)-2-hydroxy-1-phenylethyl]amino}-6-phenylfuro[2,3-d]pyrimidin-5-yl)phenyl]-N~3~,N~3~-dimethyl-beta-alaninamide",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "B"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "KJ8",
+    "entity_id": "2",
+    "entry_id": "4JQ8",
+    "nonpolymer_comp_id": "KJ8",
+    "rcsb_id": "4JQ8_2"
+  },
+  "rcsb_id": "4JQ8_2"
+}

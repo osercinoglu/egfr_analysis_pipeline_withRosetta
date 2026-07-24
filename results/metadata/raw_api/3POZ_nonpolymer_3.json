@@ -1,0 +1,26 @@
+{
+  "pdbx_entity_nonpoly": {
+    "comp_id": "03P",
+    "entity_id": "3",
+    "name": "N-{2-[4-({3-chloro-4-[3-(trifluoromethyl)phenoxy]phenyl}amino)-5H-pyrrolo[3,2-d]pyrimidin-5-yl]ethyl}-3-hydroxy-3-methylbutanamide"
+  },
+  "rcsb_nonpolymer_entity": {
+    "formula_weight": 0.548,
+    "pdbx_description": "N-{2-[4-({3-chloro-4-[3-(trifluoromethyl)phenoxy]phenyl}amino)-5H-pyrrolo[3,2-d]pyrimidin-5-yl]ethyl}-3-hydroxy-3-methylbutanamide",
+    "pdbx_number_of_molecules": 1
+  },
+  "rcsb_nonpolymer_entity_container_identifiers": {
+    "asym_ids": [
+      "E"
+    ],
+    "auth_asym_ids": [
+      "A"
+    ],
+    "chem_ref_def_id": "03P",
+    "entity_id": "3",
+    "entry_id": "3POZ",
+    "nonpolymer_comp_id": "03P",
+    "rcsb_id": "3POZ_3"
+  },
+  "rcsb_id": "3POZ_3"
+}

@@ -1,0 +1,159 @@
+{
+  "chem_comp": {
+    "formula": "C24 H27 F N8",
+    "formula_weight": 446.523,
+    "id": "HYZ",
+    "name": "N-[1-(3-fluorobenzyl)-1H-indazol-5-yl]-5-[(piperidin-1-ylamino)methyl]pyrimidine-4,6-diamine",
+    "pdbx_ambiguous_flag": "N",
+    "pdbx_formal_charge": 0,
+    "pdbx_initial_date": "2007-12-04T00:00:00.000+00:00",
+    "pdbx_modified_date": "2011-06-04T00:00:00.000+00:00",
+    "pdbx_processing_site": "RCSB",
+    "pdbx_release_status": "REL",
+    "three_letter_code": "HYZ",
+    "type": "non-polymer"
+  },
+  "pdbx_chem_comp_audit": [
+    {
+      "action_type": "Create component",
+      "comp_id": "HYZ",
+      "date": "2007-12-04T00:00:00.000+00:00",
+      "ordinal": 1
+    },
+    {
+      "action_type": "Modify aromatic_flag",
+      "comp_id": "HYZ",
+      "date": "2011-06-04T00:00:00.000+00:00",
+      "ordinal": 2
+    },
+    {
+      "action_type": "Modify descriptor",
+      "comp_id": "HYZ",
+      "date": "2011-06-04T00:00:00.000+00:00",
+      "ordinal": 3
+    }
+  ],
+  "pdbx_chem_comp_descriptor": [
+    {
+      "comp_id": "HYZ",
+      "descriptor": "Fc1cccc(c1)Cn3ncc2cc(ccc23)Nc4ncnc(c4CNN5CCCCC5)N",
+      "program": "ACDLabs",
+      "program_version": "10.04",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "HYZ",
+      "descriptor": "Nc1ncnc(Nc2ccc3n(Cc4cccc(F)c4)ncc3c2)c1CNN5CCCCC5",
+      "program": "CACTVS",
+      "program_version": "3.341",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "HYZ",
+      "descriptor": "Nc1ncnc(Nc2ccc3n(Cc4cccc(F)c4)ncc3c2)c1CNN5CCCCC5",
+      "program": "CACTVS",
+      "program_version": "3.341",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "HYZ",
+      "descriptor": "c1cc(cc(c1)F)Cn2c3ccc(cc3cn2)Nc4c(c(ncn4)N)CNN5CCCCC5",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.5.0",
+      "type": "SMILES_CANONICAL"
+    },
+    {
+      "comp_id": "HYZ",
+      "descriptor": "c1cc(cc(c1)F)Cn2c3ccc(cc3cn2)Nc4c(c(ncn4)N)CNN5CCCCC5",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.5.0",
+      "type": "SMILES"
+    },
+    {
+      "comp_id": "HYZ",
+      "descriptor": "InChI=1S/C24H27FN8/c25-19-6-4-5-17(11-19)15-33-22-8-7-20(12-18(22)13-30-33)31-24-21(23(26)27-16-28-24)14-29-32-9-2-1-3-10-32/h4-8,11-13,16,29H,1-3,9-10,14-15H2,(H3,26,27,28,31)",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChI"
+    },
+    {
+      "comp_id": "HYZ",
+      "descriptor": "IMHOFYWDXRUQBM-UHFFFAOYSA-N",
+      "program": "InChI",
+      "program_version": "1.03",
+      "type": "InChIKey"
+    }
+  ],
+  "pdbx_chem_comp_identifier": [
+    {
+      "comp_id": "HYZ",
+      "identifier": "N-[1-(3-fluorobenzyl)-1H-indazol-5-yl]-5-[(piperidin-1-ylamino)methyl]pyrimidine-4,6-diamine",
+      "program": "ACDLabs",
+      "program_version": "10.04",
+      "type": "SYSTEMATIC NAME"
+    },
+    {
+      "comp_id": "HYZ",
+      "identifier": "N-[1-[(3-fluorophenyl)methyl]indazol-5-yl]-5-[(piperidin-1-ylamino)methyl]pyrimidine-4,6-diamine",
+      "program": "OpenEye OEToolkits",
+      "program_version": "1.5.0",
+      "type": "SYSTEMATIC NAME"
+    }
+  ],
+  "rcsb_chem_comp_container_identifiers": {
+    "comp_id": "HYZ",
+    "rcsb_id": "HYZ"
+  },
+  "rcsb_chem_comp_descriptor": {
+    "InChI": "InChI=1S/C24H27FN8/c25-19-6-4-5-17(11-19)15-33-22-8-7-20(12-18(22)13-30-33)31-24-21(23(26)27-16-28-24)14-29-32-9-2-1-3-10-32/h4-8,11-13,16,29H,1-3,9-10,14-15H2,(H3,26,27,28,31)",
+    "InChIKey": "IMHOFYWDXRUQBM-UHFFFAOYSA-N",
+    "SMILES": "c1cc(cc(c1)F)Cn2c3ccc(cc3cn2)Nc4c(c(ncn4)N)CNN5CCCCC5",
+    "SMILES_stereo": "c1cc(cc(c1)F)Cn2c3ccc(cc3cn2)Nc4c(c(ncn4)N)CNN5CCCCC5",
+    "comp_id": "HYZ"
+  },
+  "rcsb_chem_comp_info": {
+    "atom_count": 60,
+    "atom_count_chiral": 0,
+    "atom_count_heavy": 33,
+    "bond_count": 64,
+    "bond_count_aromatic": 22,
+    "comp_id": "HYZ",
+    "initial_deposition_date": "2007-12-04T00:00:00.000+00:00",
+    "initial_release_date": "2008-08-26T00:00:00.000+00:00",
+    "release_status": "REL",
+    "revision_date": "2011-06-04T00:00:00.000+00:00"
+  },
+  "rcsb_chem_comp_related": [
+    {
+      "comp_id": "HYZ",
+      "ordinal": 1,
+      "related_mapping_method": "matching InChIKey in PubChem",
+      "resource_accession_code": "24880017",
+      "resource_name": "PubChem"
+    }
+  ],
+  "rcsb_chem_comp_synonyms": [
+    {
+      "comp_id": "HYZ",
+      "name": "N-[1-(3-fluorobenzyl)-1H-indazol-5-yl]-5-[(piperidin-1-ylamino)methyl]pyrimidine-4,6-diamine",
+      "ordinal": 1,
+      "provenance_source": "PDB Reference Data",
+      "type": "Preferred Name"
+    },
+    {
+      "comp_id": "HYZ",
+      "name": "N-[1-(3-fluorobenzyl)-1H-indazol-5-yl]-5-[(piperidin-1-ylamino)methyl]pyrimidine-4,6-diamine",
+      "ordinal": 2,
+      "provenance_source": "ACDLabs",
+      "type": "Systematic Name"
+    },
+    {
+      "comp_id": "HYZ",
+      "name": "N-[1-[(3-fluorophenyl)methyl]indazol-5-yl]-5-[(piperidin-1-ylamino)methyl]pyrimidine-4,6-diamine",
+      "ordinal": 3,
+      "provenance_source": "OpenEye OEToolkits",
+      "type": "Systematic Name"
+    }
+  ],
+  "rcsb_id": "HYZ"
+}
