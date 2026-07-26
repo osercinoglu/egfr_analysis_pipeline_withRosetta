@@ -1,15 +1,15 @@
 """
-Aşama 1: PDB yapılarını temizle, ligandları ayıkla, .params üret.
+Stage 1: Clean PDB structures, extract ligands, generate .params.
 
-Her PDB için:
-  1. Hedef zinciri (varsayılan A) + hedef ligandı ayıkla
-  2. Alternatif konformasyonları (altloc) birinci konuma indir
-  3. Su ve kristalleştirme katkılarını çıkar
-  4. Ligandı ayrı .pdb dosyasına yaz → .mol2'ye çevir (obabel)
-  5. molfile_to_params.py ile .params üret
-  6. Temiz kompleks .pdb dosyasını data/processed/ altına yaz
+For every PDB:
+  1. Extract the target chain (default A) + the target ligand
+  2. Collapse alternate conformations (altloc) to the first position
+  3. Remove water and crystallization additives
+  4. Write the ligand to a separate .pdb file → convert to .mol2 (obabel)
+  5. Generate .params with molfile_to_params.py
+  6. Write the clean complex .pdb file under data/processed/
 
-Çalıştırma:
+Usage:
   python src/prepare_structures.py --config config.yaml [--pdb_id 5GMP]
 """
 
@@ -28,7 +28,7 @@ import requests
 _SRC_DIR = str(Path(__file__).parent.resolve())
 
 
-# Kristalleştirme katkıları / buffer bileşenleri
+# Crystallization additives / buffer components
 CRYSTAL_EXCL = {
     "HOH","SO4","GOL","PEG","EDO","MPD","BME","DTT","PO4","MES","TRS",
     "ACE","ACT","FMT","IMD","IPA","DMS","EOH","CIT","TAR","EPE","HED",
@@ -39,7 +39,7 @@ CRYSTAL_EXCL = {
     "TPO","NEP","CSO","KCX","UNL","UNX","CSD","MLY","LLP","NHE","BTB",
     "XPE","SPM","SPD","PUT","TRD","SIN","7PE","15P","OCS","KCX","MLY",
     "LLP","PYL","SEC","FME","CME","M3L","FAD","NAD","NAP","NDP","AMP",
-    "YY3","VNS","Q6K","0WN",  # 특정 yapılardaki ekstra ligandlar
+    "YY3","VNS","Q6K","0WN",  # extra ligands found in specific structures
 }
 
 
@@ -51,8 +51,8 @@ def load_config(config_path: str) -> dict:
 def clean_pdb(raw_pdb: Path, output_pdb: Path, target_chain: str,
               target_ligand: str) -> dict:
     """
-    Ham PDB'yi temizler: hedef zincir + hedef ligand kalır,
-    altloc A/B varsa A alınır, diğer her şey atılır.
+    Cleans the raw PDB: keeps the target chain + target ligand, keeps altloc
+    A if A/B are present, discards everything else.
 
     Returns: summary dict (n_protein_atoms, n_ligand_atoms)
     """
@@ -64,7 +64,7 @@ def clean_pdb(raw_pdb: Path, output_pdb: Path, target_chain: str,
     for line in lines:
         rec = line[:6].strip()
 
-        # ATOM: sadece hedef zincir, sadece ilk altloc (boş veya 'A')
+        # ATOM: target chain only, first altloc only (blank or 'A')
         if rec == "ATOM":
             chain = line[21] if len(line) > 21 else " "
             altloc = line[16] if len(line) > 16 else " "
@@ -72,12 +72,12 @@ def clean_pdb(raw_pdb: Path, output_pdb: Path, target_chain: str,
                 continue
             if altloc not in (" ", "A"):
                 continue
-            # altloc harfini boşluğa çevir
+            # replace the altloc letter with a blank
             clean = line[:16] + " " + line[17:]
             out_lines.append(clean)
             n_prot += 1
 
-        # HETATM: sadece hedef ligand + hedef zincir, ilk kopya
+        # HETATM: target ligand + target chain only, first copy
         elif rec == "HETATM":
             res_name = line[17:20].strip()
             chain    = line[21] if len(line) > 21 else " "
@@ -90,7 +90,7 @@ def clean_pdb(raw_pdb: Path, output_pdb: Path, target_chain: str,
                 out_lines.append(clean)
                 n_lig += 1
 
-        # TER ve END
+        # TER and END
         elif rec in ("TER", "END"):
             out_lines.append(line)
 
@@ -100,7 +100,7 @@ def clean_pdb(raw_pdb: Path, output_pdb: Path, target_chain: str,
 
 
 def extract_ligand_pdb(processed_pdb: Path, lig_pdb: Path, target_ligand: str):
-    """Kompleks PDB'den yalnızca ligandı çıkarıp ayrı bir PDB dosyasına yazar."""
+    """Extracts just the ligand from the complex PDB and writes it to a separate PDB file."""
     lines = processed_pdb.read_text().splitlines()
     lig_lines = [l for l in lines
                  if l[:6].strip() == "HETATM" and l[17:20].strip() == target_ligand]
@@ -287,7 +287,7 @@ def sdf_to_mol2(sdf_path: Path, mol2_path: Path) -> bool:
 
 
 def run_obabel(lig_pdb: Path, lig_mol2: Path) -> bool:
-    """OpenBabel Python API ile PDB → mol2 dönüşümü (fallback)."""
+    """PDB → mol2 conversion via the OpenBabel Python API (fallback)."""
     try:
         from openbabel import openbabel as ob
         conv = ob.OBConversion()
@@ -307,7 +307,7 @@ def run_obabel(lig_pdb: Path, lig_mol2: Path) -> bool:
 
 
 def download_molfile_to_params(dest_dir: Path) -> Path:
-    """RosettaCommons GitHub'dan molfile_to_params.py indir."""
+    """Download molfile_to_params.py from the RosettaCommons GitHub repo."""
     script_path = dest_dir / "molfile_to_params.py"
     if script_path.exists():
         return script_path
@@ -316,23 +316,23 @@ def download_molfile_to_params(dest_dir: Path) -> Path:
     r = requests.get(url, timeout=30)
     if r.status_code == 200:
         script_path.write_text(r.text)
-        print(f"  molfile_to_params.py indirildi: {script_path}")
+        print(f"  molfile_to_params.py downloaded: {script_path}")
     else:
-        # Fallback: daha önceki sürümler
+        # Fallback: an older branch
         url2 = ("https://raw.githubusercontent.com/RosettaCommons/rosetta/"
                 "master/source/scripts/python/public/molfile_to_params.py")
         r2 = requests.get(url2, timeout=30)
         if r2.status_code == 200:
             script_path.write_text(r2.text)
         else:
-            raise RuntimeError("molfile_to_params.py indirilemedi.")
+            raise RuntimeError("Could not download molfile_to_params.py.")
     return script_path
 
 
 def run_molfile_to_params(mol2_path: Path, params_dir: Path,
                            lig_code: str, script_path: Path) -> Path:
     """
-    molfile_to_params.py çalıştır, .params ve _0001.pdb üret.
+    Run molfile_to_params.py to produce .params and _0001.pdb.
     lig_code is either the 3-letter residue code or 'PDBID_LIGID';
     the Rosetta NAME (used as -n flag) is always the 3-letter ligand code
     from the PDB (last segment after '_').
@@ -353,7 +353,7 @@ def run_molfile_to_params(mol2_path: Path, params_dir: Path,
     )
     params_file = params_dir / f"{residue_name}.params"
     if not params_file.exists():
-        print(f"  [!] .params üretilemedi. stdout:\n{result.stdout[:500]}")
+        print(f"  [!] Could not generate .params. stdout:\n{result.stdout[:500]}")
         print(f"  stderr: {result.stderr[:300]}")
     return params_file
 
@@ -361,8 +361,8 @@ def run_molfile_to_params(mol2_path: Path, params_dir: Path,
 def process_structure(pdb_id: str, ligand_id: str, cfg: dict,
                        force: bool = False, chain: str = None) -> dict:
     """
-    Tek bir PDB yapısını tamamen işler.
-    Döndürür: {'pdb_id', 'status', 'processed_pdb', 'params_file', ...}
+    Fully processes a single PDB structure.
+    Returns: {'pdb_id', 'status', 'processed_pdb', 'params_file', ...}
     chain overrides cfg chain_selection.default (for structures where the
     target ligand is not on chain A, e.g. 7JXM with 9LL on chain B).
     """
@@ -377,33 +377,33 @@ def process_structure(pdb_id: str, ligand_id: str, cfg: dict,
     lig_mol2      = lig_dir  / f"{pdb_id}_{ligand_id}.mol2"
     params_file   = params_dir / f"{pdb_id}_{ligand_id}.params"
 
-    # Zaten işlendiyse atla
+    # Skip if already processed
     if not force and processed_pdb.exists() and params_file.exists():
-        print(f"  {pdb_id}: zaten işlenmiş, atlanıyor.")
+        print(f"  {pdb_id}: already processed, skipping.")
         return {"pdb_id": pdb_id, "status": "skipped",
                 "processed_pdb": str(processed_pdb),
                 "params_file": str(params_file)}
 
     target_chain = chain if chain else str(cfg["chain_selection"]["default"])
-    print(f"\n[{pdb_id}] İşleniyor... (ligand={ligand_id}, zincir={target_chain})")
+    print(f"\n[{pdb_id}] Processing... (ligand={ligand_id}, chain={target_chain})")
 
-    # 1. PDB temizle
+    # 1. Clean the PDB
     if not raw_pdb.exists():
         url = f"https://files.rcsb.org/download/{pdb_id}.pdb"
         r = requests.get(url, timeout=30)
         raw_pdb.parent.mkdir(parents=True, exist_ok=True)
         raw_pdb.write_bytes(r.content)
-        print(f"  İndirildi: {raw_pdb}")
+        print(f"  Downloaded: {raw_pdb}")
 
     summary = clean_pdb(raw_pdb, processed_pdb, target_chain, ligand_id)
-    print(f"  Temizlendi: {summary['n_protein_atoms']} protein atomu, "
-          f"{summary['n_ligand_atoms']} ligand atomu")
+    print(f"  Cleaned: {summary['n_protein_atoms']} protein atoms, "
+          f"{summary['n_ligand_atoms']} ligand atoms")
 
     if summary["n_ligand_atoms"] == 0:
-        print(f"  [!] Ligand {ligand_id} bulunamadı!")
+        print(f"  [!] Ligand {ligand_id} not found!")
         return {"pdb_id": pdb_id, "status": "no_ligand"}
 
-    # 2. Ligandı çıkar
+    # 2. Extract the ligand
     n_lig = extract_ligand_pdb(processed_pdb, lig_pdb, ligand_id)
 
     # Input for params: prefer RCSB CIF (has correct CCD atom names matching PDB)
@@ -441,17 +441,17 @@ def process_structure(pdb_id: str, ligand_id: str, cfg: dict,
             src_label = "PDB obabel mol2"
 
     if params_input is None:
-        print(f"  [!] params input üretilemedi")
+        print(f"  [!] Could not generate params input")
         return {"pdb_id": pdb_id, "status": "mol2_failed"}
 
     print(f"  params input: {src_label} → {params_input.name}")
 
-    # 3. molfile_to_params.py indir + çalıştır
+    # 3. Download + run molfile_to_params.py
     script = download_molfile_to_params(base / "src")
     params_out = run_molfile_to_params(params_input, params_dir,
                                         f"{pdb_id}_{ligand_id}", script)
 
-    # params dosyasını standart isme kopyala
+    # Copy the params file to its standard name
     if params_out.exists():
         shutil.copy(params_out, params_file)
 
@@ -474,9 +474,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="config.yaml")
     parser.add_argument("--pdb_id", default=None,
-                        help="Sadece bu PDB'yi işle (test için)")
+                        help="Process only this PDB (for testing)")
     parser.add_argument("--force", action="store_true",
-                        help="Zaten işlenmiş olanları yeniden işle")
+                        help="Reprocess structures that are already processed")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -485,7 +485,7 @@ def main():
     if args.pdb_id:
         df = df[df["pdb_id"] == args.pdb_id]
         if df.empty:
-            print(f"PDB ID {args.pdb_id} aday listesinde bulunamadı.")
+            print(f"PDB ID {args.pdb_id} not found in the candidate list.")
             return
 
     results = []
@@ -497,10 +497,10 @@ def main():
         results.append(res)
 
     summary_df = pd.DataFrame(results)
-    print("\n=== ÖZET ===")
+    print("\n=== SUMMARY ===")
     print(summary_df[["pdb_id","status"]].to_string(index=False))
     ok = (summary_df["status"].isin(["ok","skipped"])).sum()
-    print(f"\nBaşarılı: {ok}/{len(summary_df)}")
+    print(f"\nSucceeded: {ok}/{len(summary_df)}")
 
     summary_df.to_csv("results/preparation_summary.csv", index=False)
 

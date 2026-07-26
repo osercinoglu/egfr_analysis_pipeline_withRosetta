@@ -1,17 +1,18 @@
 """
-Aşama 1: RCSB PDB Data API üzerinden EGFR-inhibitör kompleksleri için
-doğrulanmış metadata envanteri oluşturur.
+Stage 1: Builds a validated metadata inventory for EGFR-inhibitor complexes
+via the RCSB PDB Data API.
 
-Girdi:  config/pdb_reference_table.csv (Supplementary Fig. 14 listesi:
+Input:  config/pdb_reference_table.csv (Supplementary Fig. 14 list:
         pdb_id, paper_minimally_frustrated_contacts,
         paper_highly_frustrated_contacts, affinity_pM)
-Çıktı:  results/metadata/egfr_ligand_inventory.csv
-        results/metadata/raw_api/{PDB_ID}_*.json  (ham API yanıtları, provenance)
-        results/metadata/qc_*.csv  (belirsizlik/uyarı tabloları)
+Output: results/metadata/egfr_ligand_inventory.csv
+        results/metadata/raw_api/{PDB_ID}_*.json  (raw API responses, provenance)
+        results/metadata/qc_*.csv  (ambiguity/warning tables)
 
-Bu script hiçbir PDB koordinat dosyası indirmez; sadece RCSB Data API
-(https://data.rcsb.org/rest/v1/core/...) üzerinden entry/entity/chem_comp
-düzeyinde metadata çeker. Yapı dosyalarının indirilmesi Aşama 2'dir.
+This script does not download any PDB coordinate files; it only fetches
+entry/entity/chem_comp-level metadata via the RCSB Data API
+(https://data.rcsb.org/rest/v1/core/...). Downloading structure files is
+Stage 2.
 """
 
 from __future__ import annotations
@@ -33,14 +34,15 @@ logging.basicConfig(
 log = logging.getLogger("collect_metadata")
 
 RCSB_BASE = "https://data.rcsb.org/rest/v1/core"
-REQUEST_DELAY_S = 0.25  # RCSB'ye nazik davranmak için istekler arası bekleme
+REQUEST_DELAY_S = 0.25  # delay between requests to be polite to RCSB
 REQUEST_TIMEOUT_S = 20
 
 EGFR_UNIPROT_ID = "P00533"
 
-# Kristalizasyon ajanları / tampon molekülleri / iyonlar — hiçbiri "hedef inhibitör"
-# olarak değerlendirilmeyecek. Bu liste yalnızca ADAY ELEME için kullanılıyor;
-# elenen bir bileşen gerçek ligand olamaz demek değil, ama olası değil.
+# Crystallization agents / buffer molecules / ions — none of these are
+# considered "target inhibitors". This list is only used for CANDIDATE
+# FILTERING; a filtered-out component being excluded doesn't mean it can't
+# be a real ligand, just that it's unlikely.
 NON_INHIBITOR_BLOCKLIST = {
     "HOH", "SO4", "PO4", "GOL", "EDO", "PEG", "PGE", "PG4", "1PE", "P6G",
     "DMS", "ACT", "ACY", "MPD", "TRS", "BME", "EPE", "IPA", "IOD", "CL",
@@ -70,7 +72,7 @@ class LigandCandidate:
 
 
 class RcsbClient:
-    """RCSB Data API için basit, cache'li HTTP istemcisi."""
+    """Simple, cached HTTP client for the RCSB Data API."""
 
     def __init__(self, cache_dir: Path, force: bool = False):
         self.cache_dir = cache_dir
@@ -87,7 +89,7 @@ class RcsbClient:
         try:
             resp = self.session.get(url, timeout=REQUEST_TIMEOUT_S)
         except requests.RequestException as exc:
-            log.warning("İstek başarısız: %s (%s)", url, exc)
+            log.warning("Request failed: %s (%s)", url, exc)
             return None
 
         if resp.status_code != 200:
@@ -134,7 +136,7 @@ class RcsbClient:
                     timeout=REQUEST_TIMEOUT_S,
                 )
             except requests.RequestException as exc:
-                log.warning("UniProt isteği başarısız: %s (%s)", uniprot_id, exc)
+                log.warning("UniProt request failed: %s (%s)", uniprot_id, exc)
                 return None
             if resp.status_code != 200:
                 return None
@@ -147,7 +149,7 @@ class RcsbClient:
 def mutation_positions_to_uniprot(
     align_records: list[dict], feature_positions: list[dict]
 ) -> list[int | None]:
-    """Entity seq_id mutasyon konumlarını UniProt numaralandırmasına çevirir."""
+    """Converts entity seq_id mutation positions to UniProt numbering."""
     uniprot_positions: list[int | None] = []
     sifts = [a for a in align_records if a.get("reference_database_name") == "UniProt"]
     for pos in feature_positions:
@@ -167,7 +169,7 @@ def mutation_positions_to_uniprot(
 
 
 def process_pdb(client: RcsbClient, pdb_id: str) -> dict:
-    """Bir PDB kimliği için tüm metadata satırını üretir."""
+    """Produces a full metadata row for one PDB identifier."""
     pdb_id_u = pdb_id.upper()
     row: dict = {
         "pdb_id": pdb_id_u,
@@ -200,7 +202,7 @@ def process_pdb(client: RcsbClient, pdb_id: str) -> dict:
     if entry is None:
         row["metadata_status"] = "ENTRY_FETCH_FAILED"
         row["manual_review_required"] = True
-        row["notes"] = "RCSB entry API'sinden veri alınamadı."
+        row["notes"] = "Could not fetch data from the RCSB entry API."
         return row
 
     row["experimental_method"] = entry.get("exptl", [{}])[0].get("method")
@@ -221,14 +223,14 @@ def process_pdb(client: RcsbClient, pdb_id: str) -> dict:
     non_polymer_entity_ids = ids.get("non_polymer_entity_ids") or []
     row["n_polymer_entities"] = len(polymer_entity_ids)
 
-    # --- Polimer entity'ler: EGFR zincirini bul ---
+    # --- Polymer entities: find the EGFR chain ---
     egfr_chains: list[str] = []
     egfr_uniprot_seen = None
     mutation_strings: list[str] = []
     for pe_id in polymer_entity_ids:
         pe = client.polymer_entity(pdb_id_u, pe_id)
         if pe is None:
-            notes.append(f"polymer_entity {pe_id} alınamadı")
+            notes.append(f"could not fetch polymer_entity {pe_id}")
             continue
         rp = pe.get("rcsb_polymer_entity", {})
         uniprots = pe.get("rcsb_polymer_entity_container_identifiers", {}).get(
@@ -279,16 +281,16 @@ def process_pdb(client: RcsbClient, pdb_id: str) -> dict:
         ";".join(sorted(set(mutation_strings))) if mutation_strings else None
     )
     if not egfr_chains:
-        notes.append("EGFR zinciri UniProt P00533 ile eşleşmedi — MANUEL KONTROL")
+        notes.append("EGFR chain did not match UniProt P00533 — MANUAL REVIEW")
         row["manual_review_required"] = True
 
-    # --- Non-polimer entity'ler: ligand adaylarını topla ---
+    # --- Non-polymer entities: collect ligand candidates ---
     candidates: list[LigandCandidate] = []
     other_components: list[str] = []
     for npe_id in non_polymer_entity_ids:
         npe = client.nonpolymer_entity(pdb_id_u, npe_id)
         if npe is None:
-            notes.append(f"nonpolymer_entity {npe_id} alınamadı")
+            notes.append(f"could not fetch nonpolymer_entity {npe_id}")
             continue
         comp_id = npe.get("pdbx_entity_nonpoly", {}).get("comp_id")
         name = npe.get("pdbx_entity_nonpoly", {}).get("name")
@@ -320,13 +322,13 @@ def process_pdb(client: RcsbClient, pdb_id: str) -> dict:
     if len(candidates) == 0:
         row["metadata_status"] = "NO_LIGAND_FOUND"
         row["manual_review_required"] = True
-        notes.append("Blocklist dışında hiçbir non-polimer bileşen bulunamadı.")
+        notes.append("No non-polymer component found outside the blocklist.")
     elif len(candidates) > 1:
         row["metadata_status"] = "MULTIPLE_LIGAND_CANDIDATES"
         row["manual_review_required"] = True
         comp_list = ",".join(c.comp_id for c in candidates)
-        notes.append(f"Birden fazla aday ligand: {comp_list} — Aşama 3'te geometrik seçim yapılacak.")
-        # Şimdilik ilkini birincil aday olarak işaretle; Aşama 3'te doğrulanacak.
+        notes.append(f"Multiple candidate ligands: {comp_list} — geometric selection will happen in Stage 3.")
+        # For now, mark the first as the primary candidate; will be confirmed in Stage 3.
         primary = candidates[0]
     else:
         row["metadata_status"] = "OK"
@@ -346,12 +348,13 @@ def process_pdb(client: RcsbClient, pdb_id: str) -> dict:
             row["ligand_smiles"] = desc.get("SMILES_stereo") or desc.get("SMILES")
             row["ligand_inchikey"] = desc.get("InChIKey")
         else:
-            notes.append(f"chemcomp {primary.comp_id} alınamadı")
+            notes.append(f"could not fetch chemcomp {primary.comp_id}")
 
-        # Instance-düzeyinde otoritatif bilgi: auth_seq_id ve gerçek kovalent bağ anotasyonu.
-        # entry-level inter_mol_covalent_bond_count metal koordinasyonu gibi kovalent
-        # OLMAYAN bağları da sayabilir; bu yüzden ligand-özel HAS_COVALENT_LINKAGE
-        # anotasyonu daha güvenilir birincil kaynaktır.
+        # Instance-level authoritative info: auth_seq_id and the real covalent
+        # bond annotation. The entry-level inter_mol_covalent_bond_count can
+        # also count bonds that are NOT covalent, e.g. metal coordination; so
+        # the ligand-specific HAS_COVALENT_LINKAGE annotation is the more
+        # reliable primary source.
         resnums = []
         covalent_linkage_found = False
         for asym_id in primary.asym_ids:
@@ -372,17 +375,18 @@ def process_pdb(client: RcsbClient, pdb_id: str) -> dict:
             row["manual_review_required"] = True
             notes.append(
                 "RCSB rcsb_nonpolymer_instance_annotation: HAS_COVALENT_LINKAGE "
-                "— ligand EGFR'ye kovalent bağlı (otoritatif kaynak). Aşama 5'te "
-                "kovalent params/patch gerekecek."
+                "— ligand is covalently bound to EGFR (authoritative source). "
+                "Will need covalent params/patch in Stage 5."
             )
         elif inter_mol_covalent and inter_mol_covalent > 0:
-            # Instance anotasyonu kovalent bağ göstermiyor ama entry-level sayaç > 0:
-            # muhtemelen ligand-dışı bir kovalent bağ (örn. disülfid, glikozilasyon).
+            # Instance annotation shows no covalent bond but the entry-level
+            # counter is > 0: likely a non-ligand covalent bond (e.g.
+            # disulfide, glycosylation).
             row["covalent_status"] = "INTERMOL_COVALENT_BUT_NOT_ON_LIGAND"
             notes.append(
-                f"inter_mol_covalent_bond_count={inter_mol_covalent} ama ligand "
-                "instance anotasyonunda kovalent bağ yok — bağ ligand dışında olabilir, "
-                "Aşama 3'te yapısal kontrol gerekir."
+                f"inter_mol_covalent_bond_count={inter_mol_covalent} but no covalent "
+                "bond in the ligand instance annotation — the bond may be outside the "
+                "ligand; needs structural review in Stage 3."
             )
             row["manual_review_required"] = True
         else:
@@ -394,11 +398,11 @@ def process_pdb(client: RcsbClient, pdb_id: str) -> dict:
             row["covalent_status"] = "NOT_APPLICABLE_NO_LIGAND"
 
     if row["n_egfr_chains"] and row["n_egfr_chains"] > 1:
-        notes.append("Birden fazla EGFR zinciri (asymmetric unit) — Aşama 3'te hangi kopyanın kullanılacağı belirlenecek.")
+        notes.append("Multiple EGFR chains (asymmetric unit) — which copy to use will be decided in Stage 3.")
         row["manual_review_required"] = True
 
     if row["resolution_A"] is not None and row["resolution_A"] > 3.0:
-        notes.append(f"Düşük çözünürlük: {row['resolution_A']} Å")
+        notes.append(f"Low resolution: {row['resolution_A']} Å")
         row["manual_review_required"] = True
 
     if row["metadata_status"] == "pending":
@@ -424,13 +428,13 @@ def main() -> None:
     parser.add_argument(
         "--force",
         action="store_true",
-        help="Önbelleğe alınmış API yanıtlarını yeniden indir.",
+        help="Re-download cached API responses.",
     )
     parser.add_argument(
         "--pdb-id",
         type=str,
         default=None,
-        help="Tek bir PDB için test amaçlı çalıştır (örn. 5gmp).",
+        help="Run for a single PDB for testing purposes (e.g. 5gmp).",
     )
     args = parser.parse_args()
 
@@ -438,16 +442,16 @@ def main() -> None:
     if args.pdb_id:
         ref_df = ref_df[ref_df["pdb_id"].str.lower() == args.pdb_id.lower()]
         if ref_df.empty:
-            raise SystemExit(f"{args.pdb_id} referans tablosunda bulunamadı.")
+            raise SystemExit(f"{args.pdb_id} not found in the reference table.")
 
     cache_dir = args.output_dir / "raw_api"
     client = RcsbClient(cache_dir=cache_dir, force=args.force)
 
     rows = []
     for i, pdb_id in enumerate(ref_df["pdb_id"], start=1):
-        log.info("[%d/%d] %s işleniyor...", i, len(ref_df), pdb_id)
+        log.info("[%d/%d] processing %s...", i, len(ref_df), pdb_id)
         row = process_pdb(client, pdb_id)
-        # Paper referans değerlerini ekle (yalnızca karşılaştırma için — sonuç değil)
+        # Add paper reference values (for comparison only — not an output)
         ref_row = ref_df[ref_df["pdb_id"].str.lower() == pdb_id.lower()].iloc[0]
         row["paper_minimally_frustrated_contacts"] = ref_row[
             "paper_minimally_frustrated_contacts"
@@ -461,14 +465,14 @@ def main() -> None:
     out_df = pd.DataFrame(rows)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     if args.pdb_id:
-        # Tek-yapı test modu: ana envanteri asla üzerine yazma.
+        # Single-structure test mode: never overwrite the main inventory.
         inventory_path = args.output_dir / f"test_single_{args.pdb_id.lower()}.csv"
     else:
         inventory_path = args.output_dir / "egfr_ligand_inventory.csv"
     out_df.to_csv(inventory_path, index=False)
-    log.info("Envanter yazıldı: %s (%d satır)", inventory_path, len(out_df))
+    log.info("Inventory written: %s (%d rows)", inventory_path, len(out_df))
 
-    # --- QC alt tabloları ---
+    # --- QC sub-tables ---
     qc_specs = {
         "qc_no_ligand_found.csv": out_df["metadata_status"] == "NO_LIGAND_FOUND",
         "qc_multiple_ligand_candidates.csv": out_df["metadata_status"]
@@ -482,13 +486,13 @@ def main() -> None:
     for fname, mask in qc_specs.items():
         subset = out_df[mask]
         subset.to_csv(args.output_dir / fname, index=False)
-        log.info("  %s: %d satır", fname, len(subset))
+        log.info("  %s: %d rows", fname, len(subset))
 
     n_total = len(ref_df)
     n_covered = len(out_df)
-    log.info("Toplam referans PDB: %d, işlenen: %d", n_total, n_covered)
+    log.info("Total reference PDBs: %d, processed: %d", n_total, n_covered)
     if n_total != n_covered:
-        log.warning("UYARI: referans tablo ile çıktı satır sayısı uyuşmuyor!")
+        log.warning("WARNING: row count mismatch between reference table and output!")
 
 
 if __name__ == "__main__":

@@ -1,9 +1,9 @@
 """
-Birim testler: frustrasyon motoru fonksiyonları.
+Unit tests: frustration engine functions.
 
-PyRosetta gerektiren testler, PyRosetta kurulu değilse atlanır.
+Tests that require PyRosetta are skipped if PyRosetta is not installed.
 
-Çalıştırma:
+Usage:
   cd /home/tugba/egfr_atomic_resolution
   /home/tugba/anaconda3/envs/frustrato/bin/python -m pytest src/test_frustration.py -v
 """
@@ -12,7 +12,7 @@ import sys
 import pytest
 import numpy as np
 
-# PyRosetta varsa test et, yoksa atla
+# Test with PyRosetta if available, otherwise skip
 try:
     import pyrosetta
     pyrosetta.init("-mute all")
@@ -21,16 +21,16 @@ except ImportError:
     _PYROSETTA = False
 
 skip_if_no_pyrosetta = pytest.mark.skipif(
-    not _PYROSETTA, reason="PyRosetta kurulu değil"
+    not _PYROSETTA, reason="PyRosetta is not installed"
 )
 
 
 # ---------------------------------------------------------------------------
-# PyRosetta gerektirmeyen testler
+# Tests that don't require PyRosetta
 # ---------------------------------------------------------------------------
 
 def test_build_contact_partner_map_basic():
-    """build_contact_partner_map doğru partner listesi üretmeli."""
+    """build_contact_partner_map should produce the correct partner list."""
     from src.frustration import build_contact_partner_map
 
     contacts = [(1, 2), (1, 3), (2, 4)]
@@ -43,26 +43,26 @@ def test_build_contact_partner_map_basic():
 
 
 def test_frustration_index_formula():
-    """Eq. 1: Z-skoru el ile hesaplanan değerle eşleşmeli."""
+    """Eq. 1: the Z-score should match the manually computed value."""
     native = -5.0
     decoys = [-3.0, -4.0, -6.0, -7.0, -5.5, -4.5, -3.5, -6.5, -5.0, -4.0]
     mu    = np.mean(decoys)
     sigma = np.std(decoys, ddof=1)
     F     = (native - mu) / sigma
-    # Doğrudan formül kontrolü
+    # Direct formula check
     expected = (native - mu) / sigma
     assert abs(F - expected) < 1e-10
 
 
 def test_frustration_class_thresholds():
-    """Frustrasyon sınıflandırması eşik değerlerine uygun olmalı."""
+    """Frustration classification should match the threshold values."""
     # F > 0.78 → minimally frustrated
     assert _classify(1.5)  == "minimally_frustrated"
     assert _classify(0.79) == "minimally_frustrated"
     # F < -1.0 → highly frustrated
     assert _classify(-1.5) == "highly_frustrated"
     assert _classify(-1.01) == "highly_frustrated"
-    # arada → neutral
+    # in between → neutral
     assert _classify(0.0)  == "neutral"
     assert _classify(0.77) == "neutral"
     assert _classify(-0.99) == "neutral"
@@ -77,7 +77,7 @@ def _classify(f):
 
 
 def test_summarize_ligand_frustration_basic():
-    """summarize_ligand_frustration doğru sayıları döndürmeli."""
+    """summarize_ligand_frustration should return the correct counts."""
     import pandas as pd
     from src.frustration import summarize_ligand_frustration
 
@@ -93,11 +93,11 @@ def test_summarize_ligand_frustration_basic():
             "neutral",
         ],
     })
-    # Ligand contacts: residue 1, 3 (kontak 0 ve 2 ligand bölgesinde)
+    # Ligand contacts: residues 1, 3 (contacts 0 and 2 are in the ligand region)
     lig_contacts = [1, 3]
     summary = summarize_ligand_frustration(df, lig_contacts)
 
-    assert summary["n_contacts_total"] == 2, f"Beklenen 2, alınan {summary['n_contacts_total']}"
+    assert summary["n_contacts_total"] == 2, f"Expected 2, got {summary['n_contacts_total']}"
     assert summary["n_minimally_frustrated"] == 1
     assert summary["n_neutral"] == 1
     assert summary["n_highly_frustrated"] == 0
@@ -105,14 +105,14 @@ def test_summarize_ligand_frustration_basic():
 
 
 # ---------------------------------------------------------------------------
-# PyRosetta gerektiren testler (küçük test proteinleri üzerinde)
+# Tests that require PyRosetta (run on small test proteins)
 # ---------------------------------------------------------------------------
 
 @skip_if_no_pyrosetta
 def test_get_protein_contacts_count():
     """
-    Küçük bir protein için get_protein_contacts makul sayıda kontak döndürmeli.
-    1LYZ (129 residue) için >200 kontak bekleniyor.
+    get_protein_contacts should return a reasonable number of contacts for a
+    small protein. Expecting >200 contacts for 1LYZ (129 residues).
     """
     import requests
     from pathlib import Path
@@ -126,16 +126,16 @@ def test_get_protein_contacts_count():
     pose = pyrosetta.pose_from_pdb(str(pdb_path))
     contacts = get_protein_contacts(pose, cutoff=10.0, seq_sep_min=4)
 
-    assert len(contacts) > 100, f"Beklenenden az kontak: {len(contacts)}"
-    # Her çiftin i < j olduğunu kontrol et
+    assert len(contacts) > 100, f"Fewer contacts than expected: {len(contacts)}"
+    # Check that every pair has i < j
     for i, j in contacts:
-        assert i < j, f"i ({i}) < j ({j}) kuralı ihlali"
+        assert i < j, f"i ({i}) < j ({j}) rule violated"
 
 
 @skip_if_no_pyrosetta
 def test_pairwise_energy_symmetric():
     """
-    pairwise_energy(i,j) == pairwise_energy(j,i) olmalı
+    pairwise_energy(i,j) should equal pairwise_energy(j,i)
     (undirected graph).
     """
     import requests
@@ -158,7 +158,7 @@ def test_pairwise_energy_symmetric():
 
 @skip_if_no_pyrosetta
 def test_native_aa_frequency_sums_to_one():
-    """native_aa_frequency frekansları toplamı 1.0 olmalı."""
+    """native_aa_frequency frequencies should sum to 1.0."""
     import requests
     from pathlib import Path
     from src.frustration import native_aa_frequency
@@ -171,16 +171,16 @@ def test_native_aa_frequency_sums_to_one():
     pose = pyrosetta.pose_from_pdb(str(pdb_path))
     freq = native_aa_frequency(pose)
 
-    assert len(freq) > 0, "Frekans sözlüğü boş"
+    assert len(freq) > 0, "Frequency dict is empty"
     total = sum(freq.values())
-    assert abs(total - 1.0) < 1e-9, f"Frekans toplamı {total:.6f} ≠ 1.0"
+    assert abs(total - 1.0) < 1e-9, f"Frequency sum {total:.6f} ≠ 1.0"
 
 
 @skip_if_no_pyrosetta
 def test_decoy_backbone_unchanged():
     """
-    generate_decoy sonrası backbone (N, CA, C, O) koordinatları
-    native'e göre değişmemiş olmalı (backbone_fixed=True).
+    After generate_decoy, the backbone (N, CA, C, O) coordinates should be
+    unchanged relative to native (backbone_fixed=True).
     """
     import requests
     from pathlib import Path
@@ -197,7 +197,7 @@ def test_decoy_backbone_unchanged():
 
     decoy = generate_decoy(pose, sfxn, aa_freq, seed=42)
 
-    # İlk 5 residue CA koordinatını karşılaştır
+    # Compare CA coordinates for the first 5 residues
     bb_atoms = ["N", "CA", "C", "O"]
     max_shift = 0.0
     for res_idx in range(1, 6):
@@ -209,16 +209,17 @@ def test_decoy_backbone_unchanged():
                 max_shift = max(max_shift, shift)
 
     assert max_shift < 0.05, (
-        f"Backbone kaydı çok büyük: {max_shift:.4f} Å "
-        f"(backbone sabit olmalı)"
+        f"Backbone shift too large: {max_shift:.4f} Å "
+        f"(backbone should be fixed)"
     )
 
 
 @skip_if_no_pyrosetta
 def test_frustration_survey_small(tmp_path):
     """
-    Küçük bir proteinle (lysozyme ilk 20 residue) frustrasyon survey çalışmalı.
-    Bazı minimally ve bazı neutral/highly frustrated kontaklar bekleniyor.
+    The frustration survey should run on a small protein (lysozyme, first 20
+    residues). Some minimally and some neutral/highly frustrated contacts
+    are expected.
     """
     import requests
     from pathlib import Path
@@ -235,32 +236,32 @@ def test_frustration_survey_small(tmp_path):
     pose = pyrosetta.pose_from_pdb(str(pdb_path))
     sfxn = pyrosetta.create_score_function("ref2015")
 
-    # Sadece ilk 20 residue'nin kontaklarını al (hız için)
+    # Only take contacts among the first 20 residues (for speed)
     contacts = get_protein_contacts(pose, cutoff=10.0, seq_sep_min=4)
     contacts_small = [(i, j) for i, j in contacts if i <= 20 and j <= 20]
 
     if len(contacts_small) == 0:
-        pytest.skip("Test için uygun kontak bulunamadı")
+        pytest.skip("No suitable contacts found for the test")
 
     df = run_frustration_survey(
         pose=pose,
         scorefxn=sfxn,
         contacts=contacts_small,
-        n_decoys=20,  # hız testi
+        n_decoys=20,  # speed test
         seed=0,
         checkpoint_path=str(tmp_path / "test_ckpt.pkl"),
         checkpoint_every=10,
     )
 
-    assert len(df) == len(contacts_small), "Tüm kontaklar için satır olmalı"
+    assert len(df) == len(contacts_small), "There should be a row for every contact"
     assert set(df.columns) >= {
         "resi","resj","F_index","E_native","decoy_mean","decoy_std","frustration_class"
     }
-    # Frustrasyon sınıfları mantıklı değerler içermeli
+    # Frustration classes should contain valid values
     valid_classes = {"minimally_frustrated","neutral","highly_frustrated"}
     assert set(df["frustration_class"]).issubset(valid_classes)
-    # F_index gerçek sayı olmalı
-    assert not df["F_index"].isna().any(), "NaN F_index değerleri var"
+    # F_index should be a real number
+    assert not df["F_index"].isna().any(), "Found NaN F_index values"
 
 
 if __name__ == "__main__":

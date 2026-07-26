@@ -1,13 +1,13 @@
 """
-Atomistic Frustration Pipeline — Çekirdek Motor
+Atomistic Frustration Pipeline — Core Engine
 
 Chen et al., Nature Communications 11, 5944 (2020)
 DOI: 10.1038/s41467-020-19560-9
 
-Eq. 1: Frustrasyon indeksi (Z-skoru)
+Eq. 1: Frustration index (Z-score)
     F_ij = (E_ij_native - mean(E_ij_decoy)) / std(E_ij_decoy)
 
-Eq. 2: Many-body pairwise enerji düzeltmesi
+Eq. 2: Many-body pairwise energy correction
     E_ij = e_ij
          + 0.5 * Σ_{k ∈ contacts(i), k≠j} e_ik
          + 0.5 * Σ_{l ∈ contacts(j), l≠i} e_jl
@@ -28,7 +28,7 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
-# PyRosetta — kurulu değilse uyarı ver, import sonrası çalışır
+# PyRosetta — warn if not installed, works fine after import otherwise
 try:
     import pyrosetta
     from pyrosetta import Pose
@@ -38,28 +38,30 @@ try:
         RestrictToRepacking,
         PreventRepacking,
     )
-    from pyrosetta.rosetta.protocols.minimization_packing import PackRotamersMover
-    from pyrosetta.rosetta.protocols.relax import FastRelax
+    from pyrosetta.rosetta.protocols.minimization_packing import (
+        PackRotamersMover,
+        MinMover,
+    )
     _PYROSETTA_AVAILABLE = True
 except ImportError:
     _PYROSETTA_AVAILABLE = False
-    logger.warning("PyRosetta bulunamadı. Sadece veri hazırlık adımları çalışır.")
+    logger.warning("PyRosetta not found. Only the data preparation steps will work.")
 
 
 # ---------------------------------------------------------------------------
-# Yardımcı: PyRosetta başlat
+# Helper: initialize PyRosetta
 # ---------------------------------------------------------------------------
 
 def init_pyrosetta(silent: bool = True):
-    """PyRosetta'yı başlatır (tekrar çağrılsa sorun olmaz)."""
+    """Initializes PyRosetta (safe to call more than once)."""
     if not _PYROSETTA_AVAILABLE:
-        raise RuntimeError("PyRosetta kurulu değil.")
+        raise RuntimeError("PyRosetta is not installed.")
     flags = "-mute all" if silent else ""
     pyrosetta.init(flags)
 
 
 # ---------------------------------------------------------------------------
-# 1. Kontak listeleri
+# 1. Contact lists
 # ---------------------------------------------------------------------------
 
 def get_protein_contacts(
@@ -68,18 +70,18 @@ def get_protein_contacts(
     seq_sep_min: int = 4,
 ) -> list[tuple[int, int]]:
     """
-    Cα-Cα mesafesine göre protein-protein kontak çiftleri döndürür.
+    Returns protein-protein contact pairs based on Cα-Cα distance.
 
-    Yalnızca standart amino asit residue'leri dikkate alır.
-    |i - j| < seq_sep_min olan çiftler atlanır (yerel backbone bağları).
+    Only considers standard amino acid residues.
+    Pairs with |i - j| < seq_sep_min are skipped (local backbone bonds).
 
     Args:
-        pose: PyRosetta Pose nesnesi
-        cutoff: Cα-Cα kesme mesafesi (Å)
-        seq_sep_min: Minimum sıra ayrımı
+        pose: PyRosetta Pose object
+        cutoff: Cα-Cα cutoff distance (Å)
+        seq_sep_min: Minimum sequence separation
 
     Returns:
-        (resi, resj) indeks çiftleri listesi (1-indeksli, i < j)
+        List of (resi, resj) index pairs (1-indexed, i < j)
     """
     n = pose.total_residue()
     contacts = []
@@ -109,29 +111,29 @@ def get_ligand_contacts(
     cutoff: float = 10.0,
 ) -> list[int]:
     """
-    Ligand heavy-atom — protein Cα mesafesine göre kontak yapan protein
-    residue'lerinin indekslerini döndürür.
+    Returns the indices of protein residues in contact with the ligand,
+    based on ligand heavy-atom — protein Cα distance.
 
-    Herhangi bir ligand heavy-atom'u bir protein Cα'sına cutoff Å'dan
-    yakınsa o residue "ligand kontağı" sayılır.
+    A residue is counted as a "ligand contact" if any ligand heavy atom is
+    within cutoff Å of its Cα.
 
     Args:
-        pose: PyRosetta Pose nesnesi
-        ligand_resnum: Ligandin pose içindeki residue numarası
-        cutoff: heavy-atom – Cα kesme mesafesi (Å)
+        pose: PyRosetta Pose object
+        ligand_resnum: The ligand's residue number within the pose
+        cutoff: heavy-atom – Cα cutoff distance (Å)
 
     Returns:
-        Protein residue numaraları listesi (1-indeksli)
+        List of protein residue numbers (1-indexed)
     """
     lig_res = pose.residue(ligand_resnum)
     n = pose.total_residue()
     contact_residues = []
 
-    # Ligandın tüm heavy atom koordinatları
+    # All heavy-atom coordinates of the ligand
     lig_coords = []
     for atom_idx in range(1, lig_res.natoms() + 1):
         atom = lig_res.atom(atom_idx)
-        # Hidrojen atla (atom_type_index 18 genelde H, ya da element_type kontrolü)
+        # Skip hydrogens (atom_type_index 18 is usually H, or check element_type)
         if lig_res.atom_is_hydrogen(atom_idx):
             continue
         lig_coords.append(lig_res.xyz(atom_idx))
@@ -148,25 +150,25 @@ def get_ligand_contacts(
         for lc in lig_coords:
             if lc.distance(ca_j) <= cutoff:
                 contact_residues.append(j)
-                break  # Bu residue için yeterli, diğer atomlara bakma
+                break  # this residue is enough, no need to check other atoms
 
     return sorted(set(contact_residues))
 
 
 # ---------------------------------------------------------------------------
-# 2. Enerji hesaplama (Eq. 2)
+# 2. Energy calculation (Eq. 2)
 # ---------------------------------------------------------------------------
 
 def _get_energy_graph(pose: "Pose", scorefxn: "ScoreFunction") -> Any:
-    """Pose'u skorla ve EnergyGraph nesnesini döndür."""
+    """Scores the pose and returns the EnergyGraph object."""
     scorefxn(pose)
     return pose.energies().energy_graph()
 
 
-_FA_REP_ST = None  # ScoreType önbelleği
+_FA_REP_ST = None  # ScoreType cache
 
 def _fa_rep_score_type():
-    """fa_rep ScoreType nesnesini döndürür (lazy init)."""
+    """Returns the fa_rep ScoreType object (lazy init)."""
     global _FA_REP_ST
     if _FA_REP_ST is None:
         from pyrosetta.rosetta.core.scoring import fa_rep
@@ -182,19 +184,19 @@ def pairwise_energy(
     exclude_fa_rep: bool = True,
 ) -> float:
     """
-    Residue i ve j arasındaki doğrudan pairwise enerjiyi döndürür.
+    Returns the direct pairwise energy between residues i and j.
 
-    EnergyGraph üzerinden edge (i,j) toplamı alınır; fa_rep hariç tutulabilir.
-    Bu, Eq. 2'deki e_ij terimine karşılık gelir.
+    The edge (i,j) total is taken from the EnergyGraph; fa_rep can be
+    excluded. This corresponds to the e_ij term in Eq. 2.
 
     Args:
-        pose: Skor edilmiş Pose
-        scorefxn: Aktif ScoreFunction
-        i, j: Residue indeksleri (1-tabanlı)
-        exclude_fa_rep: True → fa_rep terimi toplamdan çıkarılır
+        pose: A scored Pose
+        scorefxn: The active ScoreFunction
+        i, j: Residue indices (1-based)
+        exclude_fa_rep: True → the fa_rep term is subtracted from the total
 
     Returns:
-        e_ij (Rosetta enerji birimi, kcal/mol~)
+        e_ij (Rosetta energy unit, ~kcal/mol)
     """
     graph = _get_energy_graph(pose, scorefxn)
     edge = graph.find_energy_edge(i, j)
@@ -218,17 +220,17 @@ def contact_energy_eq2(
     exclude_fa_rep: bool = True,
 ) -> float:
     """
-    Eq. 2 many-body enerji düzeltmesi:
+    Eq. 2 many-body energy correction:
         E_ij = e_ij
              + 0.5 * Σ_{k ∈ contacts(i), k≠j} e_ik
              + 0.5 * Σ_{l ∈ contacts(j), l≠i} e_jl
 
     Args:
-        contact_partners_i: i'nin j hariç tüm kontak partnerleri
-        contact_partners_j: j'nin i hariç tüm kontak partnerleri
+        contact_partners_i: all of i's contact partners except j
+        contact_partners_j: all of j's contact partners except i
 
     Returns:
-        E_ij (many-body düzeltmeli pairwise enerji)
+        E_ij (many-body-corrected pairwise energy)
     """
     e_ij = pairwise_energy(pose, scorefxn, i, j, exclude_fa_rep)
 
@@ -249,9 +251,9 @@ def build_contact_partner_map(
     contacts: list[tuple[int, int]],
 ) -> dict[int, list[int]]:
     """
-    Kontak listesinden her residue için partner listesi dict'i oluşturur.
+    Builds a dict mapping each residue to its list of contact partners.
 
-    contacts: [(i,j), ...] biçiminde kontak çiftleri
+    contacts: list of contact pairs [(i,j), ...]
     Returns: {resnum: [partner1, partner2, ...]}
     """
     partners: dict[int, list[int]] = {}
@@ -262,18 +264,18 @@ def build_contact_partner_map(
 
 
 # ---------------------------------------------------------------------------
-# 3. Decoy üretimi
+# 3. Decoy generation
 # ---------------------------------------------------------------------------
 
 def native_aa_frequency(pose: "Pose") -> dict[str, float]:
     """
-    Protein-spesifik, pozisyon-bağımsız amino asit frekans dağılımı.
+    Protein-specific, position-independent amino acid frequency distribution.
 
-    Tüm protein residue'lerinin bir-harfli kodlarını sayarak
-    20 amino asit için normalize edilmiş frekans sözlüğü döndürür.
+    Counts the one-letter codes of every protein residue and returns a
+    normalized frequency dict for the 20 amino acids.
 
     Returns:
-        {'A': 0.08, 'C': 0.02, ...}  (toplam = 1.0)
+        {'A': 0.08, 'C': 0.02, ...}  (sums to 1.0)
     """
     from pyrosetta.rosetta.core.chemical import aa_from_oneletter_code
     counts: dict[str, int] = {}
@@ -297,19 +299,19 @@ def generate_decoy(
     seed: int | None = None,
 ) -> "Pose":
     """
-    Tek bir decoy pose üretir:
-      1. Her protein pozisyonunu aa_freq dağılımından örneklenen amino asitle değiştir
-      2. Backbone sabit tutarak side-chain'leri repack et
-      3. 1 döngü backbone-sabit FastRelax (yan zincir çarpışmalarını gider)
+    Generates a single decoy pose:
+      1. Replace every protein position with an amino acid sampled from aa_freq
+      2. Repack side chains with the backbone held fixed
+      3. 1 cycle of backbone-fixed FastRelax (resolves side-chain clashes)
 
     Args:
-        pose: Orijinal native pose (değiştirilmez — kopya üzerinde çalışılır)
-        scorefxn: Skor fonksiyonu
-        aa_freq: native_aa_frequency() çıktısı
-        seed: Rastgelelik tohumu (None → global state kullanılır)
+        pose: The original native pose (not modified — a clone is used)
+        scorefxn: The score function
+        aa_freq: Output of native_aa_frequency()
+        seed: Random seed (None → uses global state)
 
     Returns:
-        Yeni decoy Pose nesnesi (backbone = native, sequence = shuffle)
+        A new decoy Pose object (backbone = native, sequence = shuffled)
     """
     if seed is not None:
         random.seed(seed)
@@ -319,7 +321,7 @@ def generate_decoy(
     decoy = pose.clone()
     n = decoy.total_residue()
 
-    # Amino asit adları (tek harf → 3 harf + tam Rosetta adı)
+    # Amino acid names (one letter → 3-letter + full Rosetta name)
     aa_letters = list(aa_freq.keys())
     aa_probs   = list(aa_freq.values())
 
@@ -330,37 +332,53 @@ def generate_decoy(
         if not res.is_protein():
             continue
         new_aa_1let = np.random.choice(aa_letters, p=aa_probs)
-        # Tek harften Rosetta residue type adına dönüştür
+        # Convert the one-letter code to a Rosetta residue type name
         from pyrosetta.rosetta.core.chemical import aa_from_oneletter_code, name_from_aa
         aa_enum = aa_from_oneletter_code(new_aa_1let)
         res_name = name_from_aa(aa_enum)
         mutator = MutateResidue(i, res_name)
         mutator.apply(decoy)
 
-    # Side-chain repack (backbone sabit)
+    # Side-chain repack (backbone fixed)
     tf = TaskFactory()
     tf.push_back(RestrictToRepacking())
     packer = PackRotamersMover(scorefxn)
     packer.task_factory(tf)
     packer.apply(decoy)
 
-    # Kısa backbone-sabit relaxasyon
-    relax = FastRelax(scorefxn, 1)
-    relax.set_movemap_factory(None)  # varsayılan hareket haritası
-    # Backbone dondur: sadece side-chain minimize et
+    # Short backbone-fixed minimization (chi only), to resolve side-chain
+    # clashes introduced by the repack.
     from pyrosetta.rosetta.core.kinematics import MoveMap
     mm = MoveMap()
     mm.set_bb(False)
     mm.set_chi(True)
     mm.set_jump(False)
-    relax.set_movemap(mm)
-    relax.apply(decoy)
+    min_mover = MinMover()
+    min_mover.movemap(mm)
+    min_mover.score_function(scorefxn)
+    min_mover.min_type("lbfgs_armijo_nonmonotone")
+    min_mover.tolerance(0.01)
+    min_mover.apply(decoy)
+
+    # MutateResidue preserves N/CA/C exactly but rebuilds the carbonyl O from
+    # idealized bond geometry, which drifts ~0.5 Å from the (non-ideal)
+    # crystallographic position — not a relax/minimizer artifact. Restore all
+    # backbone atoms from the native pose explicitly so the decoy backbone is
+    # bit-for-bit identical to native, as the frustration algorithm requires.
+    from pyrosetta.rosetta.core.id import AtomID
+    for i in range(1, n + 1):
+        if not pose.residue(i).is_protein():
+            continue
+        for atom_name in ("N", "CA", "C", "O"):
+            if pose.residue(i).has(atom_name) and decoy.residue(i).has(atom_name):
+                atom_idx = decoy.residue(i).atom_index(atom_name)
+                decoy.set_xyz(AtomID(atom_idx, i), pose.residue(i).xyz(atom_name))
 
     return decoy
 
 
 # ---------------------------------------------------------------------------
-# 4. Ana frustrasyon survey
+# 4. Main frustration survey
 # ---------------------------------------------------------------------------
 
 def run_frustration_survey(
@@ -374,26 +392,26 @@ def run_frustration_survey(
     checkpoint_every: int = 50,
 ) -> pd.DataFrame:
     """
-    Frustrasyon indeksini (Eq. 1) tüm kontak çiftleri için hesaplar.
+    Computes the frustration index (Eq. 1) for every contact pair.
 
-    Algoritma:
-      1. Native pose için tüm kontak E_ij değerlerini hesapla (Eq. 2)
-      2. n_decoys adet decoy üret, her decoy'dan tüm E_ij'leri topla
-      3. Her kontak için Z-skoru hesapla (Eq. 1)
+    Algorithm:
+      1. Compute all contact E_ij values for the native pose (Eq. 2)
+      2. Generate n_decoys decoys, collecting all E_ij from each one
+      3. Compute the Z-score for every contact (Eq. 1)
 
-    Checkpoint mekanizması:
-      checkpoint_path belirtilirse her checkpoint_every decoy'da ara sonuç
-      pickle'a kaydedilir; kaldığı yerden devam edilebilir.
+    Checkpoint mechanism:
+      If checkpoint_path is given, an intermediate result is pickled every
+      checkpoint_every decoys; the run can be resumed from where it left off.
 
     Args:
-        contacts: get_protein_contacts() veya get_ligand_contacts() çıktısı
-        n_decoys: Üretilecek decoy sayısı
-        seed: Başlangıç rastgelelik tohumu
-        checkpoint_path: Checkpoint dosyası yolu (None → kaydetme)
-        checkpoint_every: Kaç decoy'da bir checkpoint al
+        contacts: output of get_protein_contacts() or get_ligand_contacts()
+        n_decoys: number of decoys to generate
+        seed: initial random seed
+        checkpoint_path: path to the checkpoint file (None → no saving)
+        checkpoint_every: how often (in decoys) to checkpoint
 
     Returns:
-        DataFrame sütunları:
+        DataFrame with columns:
           resi, resj, F_index, E_native, decoy_mean, decoy_std,
           frustration_class
     """
@@ -404,11 +422,11 @@ def run_frustration_survey(
         def _tqdm(iterable, **kwargs):  # type: ignore
             return iterable
 
-    # Kontak partner haritası (Eq. 2 için)
+    # Contact partner map (for Eq. 2)
     partner_map = build_contact_partner_map(contacts)
 
-    # --- 1. Native enerjiler ---
-    logger.info("Native enerjiler hesaplanıyor...")
+    # --- 1. Native energies ---
+    logger.info("Computing native energies...")
     scorefxn(pose)
     native_energies: dict[tuple[int, int], float] = {}
     for i, j in contacts:
@@ -418,7 +436,7 @@ def run_frustration_survey(
             pose, scorefxn, i, j, pi, pj, exclude_fa_rep
         )
 
-    # --- 2. Checkpoint yükle (varsa) ---
+    # --- 2. Load checkpoint (if present) ---
     decoy_energies: dict[tuple[int, int], list[float]] = {
         c: [] for c in contacts
     }
@@ -429,9 +447,9 @@ def run_frustration_survey(
             ckpt = pickle.load(f)
         decoy_energies = ckpt["decoy_energies"]
         start_decoy = ckpt["completed_decoys"]
-        logger.info(f"Checkpoint yüklendi: {start_decoy} decoy tamamlanmış.")
+        logger.info(f"Checkpoint loaded: {start_decoy} decoys already completed.")
 
-    # --- 3. Decoy döngüsü ---
+    # --- 3. Decoy loop ---
     aa_freq = native_aa_frequency(pose)
 
     for d_idx in _tqdm(
@@ -465,7 +483,7 @@ def run_frustration_survey(
                     f
                 )
 
-    # --- 4. Eq. 1: Z-skoru ---
+    # --- 4. Eq. 1: Z-score ---
     rows = []
     for i, j in contacts:
         e_nat  = native_energies[(i, j)]
@@ -479,7 +497,7 @@ def run_frustration_survey(
         else:
             f_idx = (e_nat - mu) / sigma
 
-        # Frustrasyon sınıfı
+        # Frustration class
         if f_idx > 0.78:
             frust_class = "minimally_frustrated"
         elif f_idx < -1.0:
@@ -501,7 +519,7 @@ def run_frustration_survey(
 
 
 # ---------------------------------------------------------------------------
-# 5. EGFR analizi: ligand-pocket frustrasyon özeti
+# 5. EGFR analysis: ligand-pocket frustration summary
 # ---------------------------------------------------------------------------
 
 def summarize_ligand_frustration(
@@ -509,11 +527,11 @@ def summarize_ligand_frustration(
     ligand_contacts: list[int],
 ) -> dict:
     """
-    Ligand-pocket residue'lerini içeren kontak çiftlerini filtreler ve
-    frustrasyon dağılımını özetler.
+    Filters contact pairs that include a ligand-pocket residue and
+    summarizes the frustration distribution.
 
-    'Ligand kontağı' = kontak çiftinin en az bir tarafı
-    ligand_contacts listesindedir.
+    A "ligand contact" is a contact pair where at least one side is in
+    ligand_contacts.
 
     Returns:
         {

@@ -1,5 +1,5 @@
-# EGFR Atomistic Frustration Pipeline - Konfigürasyon
-# Tüm sayısal parametreler ve dosya yolları burada; kod içinde hardcode edilmez.
+# EGFR Atomistic Frustration Pipeline - Configuration
+# All numeric parameters and file paths live here; nothing is hardcoded in the code.
 
 paths:
   raw_pdb:        data/raw_pdb
@@ -8,17 +8,20 @@ paths:
   params:         data/ligands/params
   results:        results
   checkpoints:    checkpoints
-  candidates_csv: results/egfr_final_candidates.csv
+  # Stage 1/4/5 outputs (scripts/01-05) — the current 61-structure candidate source
+  candidates_csv:    results/metadata/egfr_ligand_inventory.csv
+  prep_summary_csv:  results/preparation_summary.csv
+  ligand_status_csv: results/metadata/ligand_parameterization_status.csv
 
 contacts:
-  protein_protein_cutoff_A: 10.0   # Cα-Cα kesme mesafesi (Å)
-  ligand_protein_cutoff_A:  10.0   # ligand heavy-atom — Cα kesme mesafesi (Å)
-  seq_sep_min: 4                   # |i-j| < 4 kontakları atla (yerel backbone)
+  protein_protein_cutoff_A: 10.0   # Cα-Cα cutoff distance (Å)
+  ligand_protein_cutoff_A:  10.0   # ligand heavy-atom — Cα cutoff distance (Å)
+  seq_sep_min: 4                   # skip contacts with |i-j| < 4 (local backbone)
 
 frustration:
-  n_decoys: 50                     # başlangıç prototipi; sonra 200-1000'e çıkar
+  n_decoys: 50                     # initial prototype; raise to 200-1000 later
   seed: 42
-  exclude_fa_rep: true             # Eq.1/2: fa_rep terimi hariç tutulsun
+  exclude_fa_rep: true             # Eq.1/2: exclude the fa_rep term
   thresholds:
     minimally_frustrated:  0.78   # F_ij > 0.78 → minimally frustrated
     highly_frustrated:    -1.00   # F_ij < -1.0 → highly frustrated
@@ -28,15 +31,15 @@ energy:
 
 decoy:
   backbone_fixed: true
-  relax_cycles: 1                  # backbone-sabit FastRelax iterasyonu (1 = hızlı)
+  relax_cycles: 1                  # reserved; decoy side-chain minimization is a single chi-only MinMover pass
 
 chain_selection:
-  default: A                       # çok zincirli yapılarda hangi zincir kullanılır
+  default: A                       # which chain to use for multi-chain structures
 
 checkpoint:
-  save_every_n_decoys: 50         # bu sıklıkta ara sonuç kaydet
-  format: parquet                  # parquet veya pickle
+  save_every_n_decoys: 50         # save intermediate results at this interval
+  format: parquet                  # parquet or pickle
 
 validation:
-  pdb_id: 1LYZ                    # lysozyme validasyon yapısı
-  expected_core_frac_min: 0.5     # core kontakların en az %50'si minimally frustrated olmalı
+  pdb_id: 1LYZ                    # lysozyme validation structure
+  expected_core_frac_min: 0.5     # at least 50% of core contacts must be minimally frustrated

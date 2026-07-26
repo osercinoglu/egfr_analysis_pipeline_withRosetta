@@ -1,25 +1,25 @@
 """
-Aşama 5: 51 benzersiz EGFR-inhibitör ligandını Rosetta/PyRosetta için
-parametreler (.params) üretir ve her birini doğrular.
+Stage 5: Generates Rosetta/PyRosetta parameters (.params) for the 51 unique
+EGFR-inhibitor ligands and validates each one.
 
-Akış (her benzersiz ligand comp_id için, öncelik sırasıyla):
-  1. RCSB CCD CIF -> mol2 (kanonik atom adları, PDB HETATM ile eşleşir) [birincil]
-  2. RCSB ideal SDF -> RDKit sanitize -> mol2 (OpenBabel)                [yedek 1]
-  3. Kompleksten çıkarılan ligand PDB -> mol2 (OpenBabel, --gen3d)        [son çare]
+Pipeline (for every unique ligand comp_id, in priority order):
+  1. RCSB CCD CIF -> mol2 (canonical atom names, matches PDB HETATM)   [primary]
+  2. RCSB ideal SDF -> RDKit sanitize -> mol2 (OpenBabel)               [fallback 1]
+  3. Ligand PDB extracted from the complex -> mol2 (OpenBabel, --gen3d) [last resort]
   4. molfile_to_params.py --keep-names --clobber
 
-Her ligand için doğrulama:
-  - .params dosyası üretildi mi
-  - atom sayısı > 0
-  - o ligandı kullanan HER PDB'nin data/processed/{ID}_clean.pdb'sindeki
-    HETATM atom adlarıyla params ATOM adları TAM eşleşiyor mu
-  - PyRosetta pose'a ligand olarak yüklenebiliyor mu
-  - REF2015 ile skorlanabiliyor mu (NaN/inf değil)
+Validation for every ligand:
+  - was a .params file produced
+  - atom count > 0
+  - do the params ATOM names EXACTLY match the HETATM atom names in
+    data/processed/{ID}_clean.pdb for EVERY PDB using that ligand
+  - can PyRosetta load it as a ligand into a pose
+  - can it be scored with REF2015 (not NaN/inf)
 
-Kovalent ligandlar (Aşama 4'te CYS797-SG bağlantısı tespit edilenler) için
-ayrıca .params dosyasına bir CONNECT kaydı eklenir (Aşama 6'da kovalent
-bağın kurulması için gerekli); bu script CONNECT ekler ama fiili kovalent
-pose inşası Aşama 6'nın konusudur.
+For covalent ligands (those where Stage 4 detected a CYS797-SG linkage), a
+CONNECT record is also added to the .params file (needed to build the
+covalent bond in Stage 6); this script adds the CONNECT record but building
+the actual covalent pose is Stage 6's job.
 """
 
 from __future__ import annotations
@@ -69,11 +69,12 @@ def build_mol2_for_ligand(
     lig_dir: Path,
     rosetta_ligand_comp_id: str | None = None,
 ) -> tuple[Path | None, str]:
-    """Kaskad: CIF->mol2, sonra SDF->RDKit->mol2, sonra PDB->obabel->mol2.
+    """Cascade: CIF->mol2, then SDF->RDKit->mol2, then PDB->obabel->mol2.
 
-    CIF/SDF sorguları her zaman gerçek CCD kimliği (ligand_comp_id) ile yapılır.
-    Son çare PDB-tabanlı yol (obabel) ise clean_pdb'deki fiili HETATM adını
-    (rosetta_ligand_comp_id, override yoksa ligand_comp_id ile aynı) kullanır."""
+    CIF/SDF lookups always use the real CCD identity (ligand_comp_id). The
+    last-resort PDB-based path (obabel) uses the actual HETATM name in
+    clean_pdb (rosetta_ligand_comp_id, same as ligand_comp_id unless there's
+    an override)."""
     pdb_match_id = rosetta_ligand_comp_id or ligand_comp_id
     lig_dir.mkdir(parents=True, exist_ok=True)
     mol2_path = lig_dir / f"{ligand_comp_id}_ccd.mol2"
@@ -101,19 +102,19 @@ def build_mol2_for_ligand(
 
 
 def _is_hydrogen_name(atom_name: str) -> bool:
-    # PDB atom adlandırmasında hidrojenler tipik olarak 'H' ile başlar
-    # (ör. H10, HG1) ya da nadiren ilk karakter rakamsa ikinci karakter 'H'dir.
+    # In PDB atom naming, hydrogens typically start with 'H' (e.g. H10, HG1),
+    # or in rarer cases the first character is a digit and the second is 'H'.
     stripped = atom_name.strip()
     return stripped.startswith("H") or (len(stripped) > 1 and stripped[1] == "H" and stripped[0].isdigit())
 
 
 def verify_atom_names(params_path: Path, pdb_paths: list[Path], ligand_comp_id: str) -> dict:
-    """params'taki ağır atomların PDB'deki ağır atomlarla eşleşip eşleşmediğini
-    kontrol eder. cif_to_mol2 hidrojenleri elediği için params yalnızca ağır
-    atomlar içerir; PDB'de fazladan H atomu olması (bazı yüksek çözünürlüklü
-    yapılarda görülür) engelleyici bir uyumsuzluk SAYILMAZ çünkü Rosetta H
-    atomlarını ideal geometriden zaten yeniden oluşturur. Ağır atom
-    uyuşmazlığı ise gerçek bir sorundur."""
+    """Checks whether the heavy atoms in params match the heavy atoms in the
+    PDB. Since cif_to_mol2 strips hydrogens, params only contains heavy
+    atoms; extra H atoms in the PDB (seen in some high-resolution structures)
+    are NOT counted as a blocking mismatch, since Rosetta rebuilds H atoms
+    from ideal geometry anyway. A heavy-atom mismatch, however, is a real
+    problem."""
     params_atoms = set()
     for line in params_path.read_text().splitlines():
         if line.startswith("ATOM"):
@@ -160,10 +161,10 @@ print(f"RESULT loaded=True scored={{ok}} score={{score}} error=None")
 
 
 def test_pyrosetta_load(params_path: Path, conformer_pdb: Path) -> dict:
-    """Ayrı bir alt-process'te PyRosetta init edip params'ı yükler ve REF2015
-    ile skorlar. Alt-process kullanılıyor çünkü pyrosetta.init() bir process
-    içinde yalnızca bir kez çağrılabilir; 51 ligand için 51 farklı
-    -extra_res_fa gerekiyor."""
+    """Initializes PyRosetta in a separate subprocess, loads the params, and
+    scores with REF2015. A subprocess is used because pyrosetta.init() can
+    only be called once per process; 51 ligands need 51 different
+    -extra_res_fa values."""
     import subprocess
     import sys as _sys
 
@@ -203,7 +204,7 @@ def main() -> None:
     parser.add_argument(
         "--output-csv", type=Path, default=Path("results/metadata/ligand_parameterization_status.csv")
     )
-    parser.add_argument("--ligand-id", type=str, default=None, help="Tek bir ligand comp_id test et")
+    parser.add_argument("--ligand-id", type=str, default=None, help="Test a single ligand comp_id")
     parser.add_argument("--skip-pyrosetta-test", action="store_true")
     args = parser.parse_args()
 
@@ -218,14 +219,14 @@ def main() -> None:
     if args.ligand_id:
         unique_ligands = [l for l in unique_ligands if l.lower() == args.ligand_id.lower()]
         if not unique_ligands:
-            raise SystemExit(f"{args.ligand_id} envanterde bulunamadı.")
+            raise SystemExit(f"{args.ligand_id} not found in the inventory.")
 
     script_path = download_molfile_to_params(Path("src"))
     args.params_dir.mkdir(parents=True, exist_ok=True)
 
     rows = []
     for i, ligand_comp_id in enumerate(unique_ligands, start=1):
-        log.info("[%d/%d] %s parametreleniyor...", i, len(unique_ligands), ligand_comp_id)
+        log.info("[%d/%d] parameterizing %s...", i, len(unique_ligands), ligand_comp_id)
         pdbs_with_this_ligand = merged[merged["ligand_comp_id"] == ligand_comp_id]["pdb_id"].tolist()
         clean_pdb_paths = [
             args.processed_dir / f"{p}_clean.pdb" for p in pdbs_with_this_ligand
@@ -238,10 +239,11 @@ def main() -> None:
             continue
 
         is_covalent = bool(merged[merged["ligand_comp_id"] == ligand_comp_id]["is_covalent"].any())
-        # Rosetta'nın gördüğü rezidü adı: normalde ligand_comp_id ile aynıdır;
-        # dahili Rosetta rezidü/patch isim çakışması olan nadir durumlarda
-        # (bkz. config/ligand_overrides.yaml rosetta_ligand_code, ör. '634'
-        # -> 'Z34') Aşama 4 clean_pdb'ye farklı bir HETATM adı yazmış olabilir.
+        # The residue name Rosetta sees: normally the same as ligand_comp_id;
+        # in the rare cases with an internal Rosetta residue/patch name
+        # collision (see config/ligand_overrides.yaml rosetta_ligand_code,
+        # e.g. '634' -> 'Z34'), Stage 4 may have written a different HETATM
+        # name into clean_pdb.
         rosetta_ligand_comp_id = str(
             merged[merged["ligand_comp_id"] == ligand_comp_id]["rosetta_ligand_comp_id"].iloc[0]
         )
@@ -315,10 +317,10 @@ def main() -> None:
     )
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     out_df.to_csv(output_csv, index=False)
-    log.info("Sonuç yazıldı: %s (%d satır)", output_csv, len(out_df))
+    log.info("Results written: %s (%d rows)", output_csv, len(out_df))
 
     if "status" in out_df.columns:
-        log.info("Özet:\n%s", out_df["status"].value_counts().to_string())
+        log.info("Summary:\n%s", out_df["status"].value_counts().to_string())
 
 
 if __name__ == "__main__":

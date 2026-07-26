@@ -1,22 +1,22 @@
 """
-Aşama 2: Aşama 1'de doğrulanan 61 EGFR-inhibitör kompleksi için ham PDB ve
-mmCIF koordinat dosyalarını RCSB'den indirir.
+Stage 2: Downloads raw PDB and mmCIF coordinate files from RCSB for the 61
+EGFR-inhibitor complexes validated in Stage 1.
 
-Bu script yapıyı HENÜZ DEĞİŞTİRMEZ (temizleme, altloc seçimi, vb. Aşama 4'ün
-işidir). Sadece indirme + bütünlük doğrulaması yapar:
-  - dosya checksum'ı (SHA-256)
-  - indirme tarihi/saati (UTC)
-  - HTTP durum kodu ve hataları
-  - dosyanın gerçekten talep edilen PDB kimliğine ait olduğunun doğrulanması
-    (PDB: HEADER satırındaki idCode; mmCIF: data_ bloğu)
-  - atom sayısı (ATOM+HETATM / atom_site satırı)
-  - Aşama 1'de belirlenen hedef ligandın (ligand_comp_id) dosyada
-    gerçekten bulunduğunun doğrulanması
+This script does NOT yet modify the structure (cleaning, altloc selection,
+etc. is Stage 4's job). It only downloads + verifies integrity:
+  - file checksum (SHA-256)
+  - download timestamp (UTC)
+  - HTTP status code and errors
+  - confirms the file actually belongs to the requested PDB ID
+    (PDB: idCode in the HEADER line; mmCIF: the data_ block)
+  - atom count (ATOM+HETATM / atom_site lines)
+  - confirms the target ligand (ligand_comp_id) identified in Stage 1 is
+    actually present in the file
 
-Var olan eski data/raw_pdb/*.pdb dosyaları (önceki 25-yapılık projeden kalma)
-güvenilir kabul edilmez; bu script her PDB için taze indirme yapar ve
-checksum'ı manifest'e kaydeder (--skip-existing verilirse ve manifest'te
-zaten doğrulanmış bir kayıt varsa yeniden indirmeyi atlar).
+Any existing data/raw_pdb/*.pdb files left over from the earlier 25-structure
+project are not trusted; this script does a fresh download for every PDB
+and records the checksum in the manifest (with --skip-existing, re-download
+is skipped if the manifest already has a verified record).
 """
 
 from __future__ import annotations
@@ -50,7 +50,7 @@ def sha256_of(path: Path) -> str:
 
 
 def download_with_retry(url: str) -> tuple[bytes | None, int | None, str | None]:
-    """Basit yeniden-deneme mantığıyla dosya indirir. (içerik, http_status, hata)"""
+    """Downloads a file with simple retry logic. Returns (content, http_status, error)."""
     last_err = None
     for attempt in range(1, MAX_RETRIES + 1):
         try:
@@ -75,7 +75,7 @@ def verify_pdb_file(content: bytes, expected_id: str, expected_ligand: str) -> d
     id_match = False
     for line in lines:
         if line.startswith("HEADER"):
-            # PDB format: idCode kolonlar 63-66 (1-indeksli)
+            # PDB format: idCode is in columns 63-66 (1-indexed)
             token = line[62:66].strip().upper()
             if token == expected_id.upper():
                 id_match = True
@@ -106,9 +106,9 @@ def verify_cif_file(content: bytes, expected_id: str, expected_ligand: str) -> d
             break
 
     atom_count = sum(1 for l in lines if l.startswith("ATOM") or l.startswith("HETATM"))
-    # mmCIF atom_site kayıtlarında ligand comp_id genellikle 6. sütun civarında
-    # (auth_comp_id); tam sütun konumu dosyaya göre değişir, bu yüzden basit bir
-    # kelime-sınırlı regex araması kullanılıyor (yalnızca doğrulama amaçlı).
+    # In mmCIF atom_site records the ligand comp_id is usually around column 6
+    # (auth_comp_id); the exact column position varies by file, so a simple
+    # word-boundary regex search is used instead (for verification purposes only).
     ligand_found = bool(
         re.search(rf"\b{re.escape(expected_ligand.upper())}\b", text.upper())
     )
@@ -165,7 +165,7 @@ def process_one(
         row["status"] = "SKIPPED_ALREADY_PRESENT"
         return row
 
-    # --- PDB formatı ---
+    # --- PDB format ---
     pdb_content, pdb_status, pdb_err = download_with_retry(
         f"{RCSB_FILES_BASE}/{pdb_id_u}.pdb"
     )
@@ -180,13 +180,13 @@ def process_one(
         row["pdb_atom_count"] = verify["atom_count"]
         row["pdb_ligand_found"] = verify["ligand_found"]
         if not verify["id_match"]:
-            notes.append("PDB HEADER idCode beklenenle eşleşmiyor!")
+            notes.append("PDB HEADER idCode does not match the expected value!")
         if not verify["ligand_found"]:
-            notes.append(f"PDB dosyasında ligand {ligand_comp_id} HETATM olarak bulunamadı!")
+            notes.append(f"Ligand {ligand_comp_id} not found as HETATM in the PDB file!")
     else:
-        notes.append(f"PDB indirme başarısız: {pdb_err}")
+        notes.append(f"PDB download failed: {pdb_err}")
 
-    # --- mmCIF formatı ---
+    # --- mmCIF format ---
     cif_content, cif_status, cif_err = download_with_retry(
         f"{RCSB_FILES_BASE}/{pdb_id_u}.cif"
     )
@@ -201,11 +201,11 @@ def process_one(
         row["cif_atom_count"] = verify["atom_count"]
         row["cif_ligand_found"] = verify["ligand_found"]
         if not verify["id_match"]:
-            notes.append("mmCIF data_ bloğu beklenenle eşleşmiyor!")
+            notes.append("mmCIF data_ block does not match the expected value!")
         if not verify["ligand_found"]:
-            notes.append(f"mmCIF dosyasında ligand {ligand_comp_id} bulunamadı!")
+            notes.append(f"Ligand {ligand_comp_id} not found in the mmCIF file!")
     else:
-        notes.append(f"mmCIF indirme başarısız: {cif_err}")
+        notes.append(f"mmCIF download failed: {cif_err}")
 
     if row["pdb_downloaded"] and row["cif_downloaded"] and not notes:
         row["status"] = "OK"
@@ -235,7 +235,7 @@ def main() -> None:
     parser.add_argument(
         "--skip-existing",
         action="store_true",
-        help="Zaten indirilmiş ve doğrulanmış dosyaları yeniden indirme.",
+        help="Don't re-download files that are already downloaded and verified.",
     )
     parser.add_argument("--pdb-id", type=str, default=None)
     args = parser.parse_args()
@@ -247,11 +247,11 @@ def main() -> None:
     if args.pdb_id:
         inv = inv[inv["pdb_id"].str.lower() == args.pdb_id.lower()]
         if inv.empty:
-            raise SystemExit(f"{args.pdb_id} envanterde bulunamadı.")
+            raise SystemExit(f"{args.pdb_id} not found in the inventory.")
 
     rows = []
     for i, r in enumerate(inv.itertuples(), start=1):
-        log.info("[%d/%d] %s indiriliyor...", i, len(inv), r.pdb_id)
+        log.info("[%d/%d] downloading %s...", i, len(inv), r.pdb_id)
         row = process_one(
             r.pdb_id,
             r.ligand_comp_id,
@@ -277,10 +277,10 @@ def main() -> None:
     n_partial = (out_df["status"] == "PARTIAL_OR_WARNING").sum()
     n_failed = (out_df["status"] == "FAILED").sum()
     log.info(
-        "Özet: OK=%d, SKIPPED=%d, PARTIAL/WARNING=%d, FAILED=%d (toplam %d)",
+        "Summary: OK=%d, SKIPPED=%d, PARTIAL/WARNING=%d, FAILED=%d (total %d)",
         n_ok, n_skipped, n_partial, n_failed, len(out_df),
     )
-    log.info("Manifest yazıldı: %s", manifest_path)
+    log.info("Manifest written: %s", manifest_path)
 
 
 if __name__ == "__main__":

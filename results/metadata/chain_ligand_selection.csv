@@ -1,62 +1,62 @@
 pdb_id,n_protein_chains,n_ligand_copies,motif_summary,selected_chain,selected_ligand_chain,selected_ligand_resnum,selection_status,reason,n_pocket_ligand_copies,n_valid_motif_chains
-1XKK,1,1,{'A': '8/8 OK (0 eksik)'},A,A,91,OK,"Seçilen ligand kopyası (zincir A, resnum 91) ATP cebi referans noktalarına en yakın (ortalama 5.34 Å), en yakın protein zinciri A.",1,1
-2ITO,1,1,{'A': '8/8 OK (0 eksik)'},A,A,2020,OK,"Seçilen ligand kopyası (zincir A, resnum 2020) ATP cebi referans noktalarına en yakın (ortalama 4.87 Å), en yakın protein zinciri A.",1,1
-2ITP,1,1,{'A': '8/8 OK (0 eksik)'},A,A,2019,OK,"Seçilen ligand kopyası (zincir A, resnum 2019) ATP cebi referans noktalarına en yakın (ortalama 4.88 Å), en yakın protein zinciri A.",1,1
-2ITT,1,1,{'A': '8/8 OK (0 eksik)'},A,A,2020,OK,"Seçilen ligand kopyası (zincir A, resnum 2020) ATP cebi referans noktalarına en yakın (ortalama 5.10 Å), en yakın protein zinciri A.",1,1
-2ITY,1,1,{'A': '8/8 OK (0 eksik)'},A,A,2020,OK,"Seçilen ligand kopyası (zincir A, resnum 2020) ATP cebi referans noktalarına en yakın (ortalama 4.70 Å), en yakın protein zinciri A.",1,1
-2ITZ,1,1,{'A': '8/8 OK (0 eksik)'},A,A,2021,OK,"Seçilen ligand kopyası (zincir A, resnum 2021) ATP cebi referans noktalarına en yakın (ortalama 4.53 Å), en yakın protein zinciri A.",1,1
-2J6M,1,1,{'A': '8/8 OK (0 eksik)'},A,A,2021,OK,"Seçilen ligand kopyası (zincir A, resnum 2021) ATP cebi referans noktalarına en yakın (ortalama 4.83 Å), en yakın protein zinciri A.",1,1
-2JIU,2,1,"{'A': '8/8 OK (0 eksik)', 'B': '8/8 OK (0 eksik)'}",A,A,2017,OK,"Seçilen ligand kopyası (zincir A, resnum 2017) ATP cebi referans noktalarına en yakın (ortalama 4.95 Å), en yakın protein zinciri A.",1,2
-2RGP,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1,OK,"Seçilen ligand kopyası (zincir A, resnum 1) ATP cebi referans noktalarına en yakın (ortalama 5.30 Å), en yakın protein zinciri A.",1,1
-3BEL,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1,OK,"Seçilen ligand kopyası (zincir A, resnum 1) ATP cebi referans noktalarına en yakın (ortalama 5.23 Å), en yakın protein zinciri A.",1,1
-3IKA,2,1,"{'A': '8/8 OK (0 eksik)', 'B': '8/8 OK (0 eksik)'}",A,A,1797,OK,"Seçilen ligand kopyası (zincir A, resnum 1797) ATP cebi referans noktalarına en yakın (ortalama 6.92 Å), en yakın protein zinciri A.",1,2
-3POZ,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1023,OK,"Seçilen ligand kopyası (zincir A, resnum 1023) ATP cebi referans noktalarına en yakın (ortalama 4.85 Å), en yakın protein zinciri A.",1,1
-3W2O,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.19 Å), en yakın protein zinciri A.",1,1
-3W2P,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.24 Å), en yakın protein zinciri A.",1,1
-3W2Q,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.20 Å), en yakın protein zinciri A.",1,1
-3W2R,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.09 Å), en yakın protein zinciri A.",1,1
-3W2S,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.62 Å), en yakın protein zinciri A.",1,1
-3W32,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.15 Å), en yakın protein zinciri A.",1,1
-3W33,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.38 Å), en yakın protein zinciri A.",1,1
-4JQ7,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1001,OK,"Seçilen ligand kopyası (zincir A, resnum 1001) ATP cebi referans noktalarına en yakın (ortalama 4.46 Å), en yakın protein zinciri A.",1,1
-4JQ8,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1001,OK,"Seçilen ligand kopyası (zincir A, resnum 1001) ATP cebi referans noktalarına en yakın (ortalama 3.54 Å), en yakın protein zinciri A.",1,1
-4JR3,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1001,OK,"Seçilen ligand kopyası (zincir A, resnum 1001) ATP cebi referans noktalarına en yakın (ortalama 4.09 Å), en yakın protein zinciri A.",1,1
-4JRV,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1001,OK,"Seçilen ligand kopyası (zincir A, resnum 1001) ATP cebi referans noktalarına en yakın (ortalama 3.38 Å), en yakın protein zinciri A.",1,1
-4LI5,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 6.07 Å), en yakın protein zinciri A.",1,1
-4RJ4,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.43 Å), en yakın protein zinciri A.",1,1
-4RJ5,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.48 Å), en yakın protein zinciri A.",1,1
-4RJ6,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1102,OK,"Seçilen ligand kopyası (zincir A, resnum 1102) ATP cebi referans noktalarına en yakın (ortalama 4.22 Å), en yakın protein zinciri A.",1,1
-4RJ7,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1102,OK,"Seçilen ligand kopyası (zincir A, resnum 1102) ATP cebi referans noktalarına en yakın (ortalama 4.85 Å), en yakın protein zinciri A.",1,1
-5C8K,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.31 Å), en yakın protein zinciri A.",1,1
-5C8M,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.32 Å), en yakın protein zinciri A.",1,1
-5C8N,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1102,OK,"Seçilen ligand kopyası (zincir A, resnum 1102) ATP cebi referans noktalarına en yakın (ortalama 3.62 Å), en yakın protein zinciri A.",1,1
-5CAL,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.16 Å), en yakın protein zinciri A.",1,1
-5CAN,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1102,OK,"Seçilen ligand kopyası (zincir A, resnum 1102) ATP cebi referans noktalarına en yakın (ortalama 4.01 Å), en yakın protein zinciri A.",1,1
-5CAO,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.19 Å), en yakın protein zinciri A.",1,1
-5CAP,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1103,OK,"Seçilen ligand kopyası (zincir A, resnum 1103) ATP cebi referans noktalarına en yakın (ortalama 3.98 Å), en yakın protein zinciri A.",1,1
-5CAQ,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1102,OK,"Seçilen ligand kopyası (zincir A, resnum 1102) ATP cebi referans noktalarına en yakın (ortalama 4.25 Å), en yakın protein zinciri A.",1,1
-5CAS,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1102,OK,"Seçilen ligand kopyası (zincir A, resnum 1102) ATP cebi referans noktalarına en yakın (ortalama 4.25 Å), en yakın protein zinciri A.",1,1
-5CAU,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1102,OK,"Seçilen ligand kopyası (zincir A, resnum 1102) ATP cebi referans noktalarına en yakın (ortalama 4.18 Å), en yakın protein zinciri A.",1,1
-5CAV,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.22 Å), en yakın protein zinciri A.",1,1
-5EDQ,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.07 Å), en yakın protein zinciri A.",1,1
-5EDR,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.05 Å), en yakın protein zinciri A.",1,1
-5EM5,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.31 Å), en yakın protein zinciri A.",1,1
-5EM6,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1102,OK,"Seçilen ligand kopyası (zincir A, resnum 1102) ATP cebi referans noktalarına en yakın (ortalama 4.03 Å), en yakın protein zinciri A.",1,1
-5EM7,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1102,OK,"Seçilen ligand kopyası (zincir A, resnum 1102) ATP cebi referans noktalarına en yakın (ortalama 4.45 Å), en yakın protein zinciri A.",1,1
-5EM8,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.67 Å), en yakın protein zinciri A.",1,1
-5GMP,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.84 Å), en yakın protein zinciri A.",1,1
-5GNK,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1001,OK,"Seçilen ligand kopyası (zincir A, resnum 1001) ATP cebi referans noktalarına en yakın (ortalama 5.24 Å), en yakın protein zinciri A.",1,1
-5GTY,8,8,"{'A': '8/8 OK (0 eksik)', 'B': '8/8 OK (0 eksik)', 'D': '8/8 OK (0 eksik)', 'E': '8/8 OK (0 eksik)', 'F': '8/8 OK (0 eksik)', 'G': '8/8 OK (0 eksik)', 'H': '8/8 OK (0 eksik)', 'C': '8/8 OK (0 eksik)'}",C,C,1101,OK,"Seçilen ligand kopyası (zincir C, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.21 Å), en yakın protein zinciri C. 8 kopya mesafe bakımından eşdeğerdi (± 1 Å); tamlık (eksik CA: 0), occupancy (1.00) ve altloc (0 atom) ile ayırt edildi. Diğer cep-içi kopyalar (kullanılmadı): A/1101 (5.70 Å), B/1101 (5.43 Å), D/1101 (5.29 Å), E/1101 (5.40 Å), F/1101 (5.44 Å), G/1101 (5.40 Å), H/1101 (5.40 Å).",8,8
-5HCX,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1102,OK,"Seçilen ligand kopyası (zincir A, resnum 1102) ATP cebi referans noktalarına en yakın (ortalama 3.89 Å), en yakın protein zinciri A.",1,1
-5HCY,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1102,OK,"Seçilen ligand kopyası (zincir A, resnum 1102) ATP cebi referans noktalarına en yakın (ortalama 4.00 Å), en yakın protein zinciri A.",1,1
-5HG7,1,1,{'A': '8/8 OK (0 eksik)'},A,A,9001,OK,"Seçilen ligand kopyası (zincir A, resnum 9001) ATP cebi referans noktalarına en yakın (ortalama 7.34 Å), en yakın protein zinciri A.",1,1
-5HG8,1,1,{'A': '8/8 OK (0 eksik)'},A,A,9001,OK,"Seçilen ligand kopyası (zincir A, resnum 9001) ATP cebi referans noktalarına en yakın (ortalama 7.88 Å), en yakın protein zinciri A.",1,1
-5HG9,1,1,{'A': '8/8 OK (0 eksik)'},A,A,9001,OK,"Seçilen ligand kopyası (zincir A, resnum 9001) ATP cebi referans noktalarına en yakın (ortalama 7.73 Å), en yakın protein zinciri A.",1,1
-5J9Y,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.91 Å), en yakın protein zinciri A.",1,1
-5J9Z,1,1,{'A': '8/8 OK (0 eksik)'},A,A,1101,OK,"Seçilen ligand kopyası (zincir A, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 4.78 Å), en yakın protein zinciri A.",1,1
-5UG8,1,1,{'A': '8/8 OK (0 eksik)'},A,A,9001,OK,"Seçilen ligand kopyası (zincir A, resnum 9001) ATP cebi referans noktalarına en yakın (ortalama 7.53 Å), en yakın protein zinciri A.",1,1
-5UG9,1,1,{'A': '8/8 OK (0 eksik)'},A,A,9001,OK,"Seçilen ligand kopyası (zincir A, resnum 9001) ATP cebi referans noktalarına en yakın (ortalama 7.57 Å), en yakın protein zinciri A.",1,1
-5UGA,1,1,{'A': '8/8 OK (0 eksik)'},A,A,9001,OK,"Seçilen ligand kopyası (zincir A, resnum 9001) ATP cebi referans noktalarına en yakın (ortalama 6.90 Å), en yakın protein zinciri A.",1,1
-5UGB,1,1,{'A': '8/8 OK (0 eksik)'},A,A,9001,OK,"Seçilen ligand kopyası (zincir A, resnum 9001) ATP cebi referans noktalarına en yakın (ortalama 5.90 Å), en yakın protein zinciri A.",1,1
-5UGC,1,1,{'A': '8/8 OK (0 eksik)'},A,A,9001,OK,"Seçilen ligand kopyası (zincir A, resnum 9001) ATP cebi referans noktalarına en yakın (ortalama 8.12 Å), en yakın protein zinciri A.",1,1
-5YU9,4,4,"{'A': '8/8 OK (0 eksik)', 'B': '8/8 OK (0 eksik)', 'C': '8/8 OK (0 eksik)', 'D': '8/8 OK (0 eksik)'}",D,D,1101,OK,"Seçilen ligand kopyası (zincir D, resnum 1101) ATP cebi referans noktalarına en yakın (ortalama 5.67 Å), en yakın protein zinciri D. 4 kopya mesafe bakımından eşdeğerdi (± 1 Å); tamlık (eksik CA: 0), occupancy (1.00) ve altloc (0 atom) ile ayırt edildi. Diğer cep-içi kopyalar (kullanılmadı): A/1101 (5.68 Å), B/1101 (5.74 Å), C/1101 (5.70 Å).",4,4
+1XKK,1,1,{'A': '8/8 OK (0 missing)'},A,A,91,OK,"Selected ligand copy (chain A, resnum 91) is closest to the ATP pocket reference points (mean 5.34 Å), nearest protein chain A.",1,1
+2ITO,1,1,{'A': '8/8 OK (0 missing)'},A,A,2020,OK,"Selected ligand copy (chain A, resnum 2020) is closest to the ATP pocket reference points (mean 4.87 Å), nearest protein chain A.",1,1
+2ITP,1,1,{'A': '8/8 OK (0 missing)'},A,A,2019,OK,"Selected ligand copy (chain A, resnum 2019) is closest to the ATP pocket reference points (mean 4.88 Å), nearest protein chain A.",1,1
+2ITT,1,1,{'A': '8/8 OK (0 missing)'},A,A,2020,OK,"Selected ligand copy (chain A, resnum 2020) is closest to the ATP pocket reference points (mean 5.10 Å), nearest protein chain A.",1,1
+2ITY,1,1,{'A': '8/8 OK (0 missing)'},A,A,2020,OK,"Selected ligand copy (chain A, resnum 2020) is closest to the ATP pocket reference points (mean 4.70 Å), nearest protein chain A.",1,1
+2ITZ,1,1,{'A': '8/8 OK (0 missing)'},A,A,2021,OK,"Selected ligand copy (chain A, resnum 2021) is closest to the ATP pocket reference points (mean 4.53 Å), nearest protein chain A.",1,1
+2J6M,1,1,{'A': '8/8 OK (0 missing)'},A,A,2021,OK,"Selected ligand copy (chain A, resnum 2021) is closest to the ATP pocket reference points (mean 4.83 Å), nearest protein chain A.",1,1
+2JIU,2,1,"{'A': '8/8 OK (0 missing)', 'B': '8/8 OK (0 missing)'}",A,A,2017,OK,"Selected ligand copy (chain A, resnum 2017) is closest to the ATP pocket reference points (mean 4.95 Å), nearest protein chain A.",1,2
+2RGP,1,1,{'A': '8/8 OK (0 missing)'},A,A,1,OK,"Selected ligand copy (chain A, resnum 1) is closest to the ATP pocket reference points (mean 5.30 Å), nearest protein chain A.",1,1
+3BEL,1,1,{'A': '8/8 OK (0 missing)'},A,A,1,OK,"Selected ligand copy (chain A, resnum 1) is closest to the ATP pocket reference points (mean 5.23 Å), nearest protein chain A.",1,1
+3IKA,2,1,"{'A': '8/8 OK (0 missing)', 'B': '8/8 OK (0 missing)'}",A,A,1797,OK,"Selected ligand copy (chain A, resnum 1797) is closest to the ATP pocket reference points (mean 6.92 Å), nearest protein chain A.",1,2
+3POZ,1,1,{'A': '8/8 OK (0 missing)'},A,A,1023,OK,"Selected ligand copy (chain A, resnum 1023) is closest to the ATP pocket reference points (mean 4.85 Å), nearest protein chain A.",1,1
+3W2O,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 5.19 Å), nearest protein chain A.",1,1
+3W2P,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 5.24 Å), nearest protein chain A.",1,1
+3W2Q,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 5.20 Å), nearest protein chain A.",1,1
+3W2R,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.09 Å), nearest protein chain A.",1,1
+3W2S,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.62 Å), nearest protein chain A.",1,1
+3W32,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 5.15 Å), nearest protein chain A.",1,1
+3W33,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 5.38 Å), nearest protein chain A.",1,1
+4JQ7,1,1,{'A': '8/8 OK (0 missing)'},A,A,1001,OK,"Selected ligand copy (chain A, resnum 1001) is closest to the ATP pocket reference points (mean 4.46 Å), nearest protein chain A.",1,1
+4JQ8,1,1,{'A': '8/8 OK (0 missing)'},A,A,1001,OK,"Selected ligand copy (chain A, resnum 1001) is closest to the ATP pocket reference points (mean 3.54 Å), nearest protein chain A.",1,1
+4JR3,1,1,{'A': '8/8 OK (0 missing)'},A,A,1001,OK,"Selected ligand copy (chain A, resnum 1001) is closest to the ATP pocket reference points (mean 4.09 Å), nearest protein chain A.",1,1
+4JRV,1,1,{'A': '8/8 OK (0 missing)'},A,A,1001,OK,"Selected ligand copy (chain A, resnum 1001) is closest to the ATP pocket reference points (mean 3.38 Å), nearest protein chain A.",1,1
+4LI5,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 6.07 Å), nearest protein chain A.",1,1
+4RJ4,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.43 Å), nearest protein chain A.",1,1
+4RJ5,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.48 Å), nearest protein chain A.",1,1
+4RJ6,1,1,{'A': '8/8 OK (0 missing)'},A,A,1102,OK,"Selected ligand copy (chain A, resnum 1102) is closest to the ATP pocket reference points (mean 4.22 Å), nearest protein chain A.",1,1
+4RJ7,1,1,{'A': '8/8 OK (0 missing)'},A,A,1102,OK,"Selected ligand copy (chain A, resnum 1102) is closest to the ATP pocket reference points (mean 4.85 Å), nearest protein chain A.",1,1
+5C8K,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.31 Å), nearest protein chain A.",1,1
+5C8M,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.32 Å), nearest protein chain A.",1,1
+5C8N,1,1,{'A': '8/8 OK (0 missing)'},A,A,1102,OK,"Selected ligand copy (chain A, resnum 1102) is closest to the ATP pocket reference points (mean 3.62 Å), nearest protein chain A.",1,1
+5CAL,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.16 Å), nearest protein chain A.",1,1
+5CAN,1,1,{'A': '8/8 OK (0 missing)'},A,A,1102,OK,"Selected ligand copy (chain A, resnum 1102) is closest to the ATP pocket reference points (mean 4.01 Å), nearest protein chain A.",1,1
+5CAO,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.19 Å), nearest protein chain A.",1,1
+5CAP,1,1,{'A': '8/8 OK (0 missing)'},A,A,1103,OK,"Selected ligand copy (chain A, resnum 1103) is closest to the ATP pocket reference points (mean 3.98 Å), nearest protein chain A.",1,1
+5CAQ,1,1,{'A': '8/8 OK (0 missing)'},A,A,1102,OK,"Selected ligand copy (chain A, resnum 1102) is closest to the ATP pocket reference points (mean 4.25 Å), nearest protein chain A.",1,1
+5CAS,1,1,{'A': '8/8 OK (0 missing)'},A,A,1102,OK,"Selected ligand copy (chain A, resnum 1102) is closest to the ATP pocket reference points (mean 4.25 Å), nearest protein chain A.",1,1
+5CAU,1,1,{'A': '8/8 OK (0 missing)'},A,A,1102,OK,"Selected ligand copy (chain A, resnum 1102) is closest to the ATP pocket reference points (mean 4.18 Å), nearest protein chain A.",1,1
+5CAV,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.22 Å), nearest protein chain A.",1,1
+5EDQ,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 5.07 Å), nearest protein chain A.",1,1
+5EDR,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 5.05 Å), nearest protein chain A.",1,1
+5EM5,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 5.31 Å), nearest protein chain A.",1,1
+5EM6,1,1,{'A': '8/8 OK (0 missing)'},A,A,1102,OK,"Selected ligand copy (chain A, resnum 1102) is closest to the ATP pocket reference points (mean 4.03 Å), nearest protein chain A.",1,1
+5EM7,1,1,{'A': '8/8 OK (0 missing)'},A,A,1102,OK,"Selected ligand copy (chain A, resnum 1102) is closest to the ATP pocket reference points (mean 4.45 Å), nearest protein chain A.",1,1
+5EM8,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.67 Å), nearest protein chain A.",1,1
+5GMP,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 5.84 Å), nearest protein chain A.",1,1
+5GNK,1,1,{'A': '8/8 OK (0 missing)'},A,A,1001,OK,"Selected ligand copy (chain A, resnum 1001) is closest to the ATP pocket reference points (mean 5.24 Å), nearest protein chain A.",1,1
+5GTY,8,8,"{'A': '8/8 OK (0 missing)', 'B': '8/8 OK (0 missing)', 'D': '8/8 OK (0 missing)', 'E': '8/8 OK (0 missing)', 'F': '8/8 OK (0 missing)', 'G': '8/8 OK (0 missing)', 'H': '8/8 OK (0 missing)', 'C': '8/8 OK (0 missing)'}",C,C,1101,OK,"Selected ligand copy (chain C, resnum 1101) is closest to the ATP pocket reference points (mean 5.21 Å), nearest protein chain C. 8 copies were equivalent in distance (± 1 Å); disambiguated by completeness (missing CA: 0), occupancy (1.00) and altloc (0 atom(s)). Other in-pocket copies (not used): A/1101 (5.70 Å), B/1101 (5.43 Å), D/1101 (5.29 Å), E/1101 (5.40 Å), F/1101 (5.44 Å), G/1101 (5.40 Å), H/1101 (5.40 Å).",8,8
+5HCX,1,1,{'A': '8/8 OK (0 missing)'},A,A,1102,OK,"Selected ligand copy (chain A, resnum 1102) is closest to the ATP pocket reference points (mean 3.89 Å), nearest protein chain A.",1,1
+5HCY,1,1,{'A': '8/8 OK (0 missing)'},A,A,1102,OK,"Selected ligand copy (chain A, resnum 1102) is closest to the ATP pocket reference points (mean 4.00 Å), nearest protein chain A.",1,1
+5HG7,1,1,{'A': '8/8 OK (0 missing)'},A,A,9001,OK,"Selected ligand copy (chain A, resnum 9001) is closest to the ATP pocket reference points (mean 7.34 Å), nearest protein chain A.",1,1
+5HG8,1,1,{'A': '8/8 OK (0 missing)'},A,A,9001,OK,"Selected ligand copy (chain A, resnum 9001) is closest to the ATP pocket reference points (mean 7.88 Å), nearest protein chain A.",1,1
+5HG9,1,1,{'A': '8/8 OK (0 missing)'},A,A,9001,OK,"Selected ligand copy (chain A, resnum 9001) is closest to the ATP pocket reference points (mean 7.73 Å), nearest protein chain A.",1,1
+5J9Y,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.91 Å), nearest protein chain A.",1,1
+5J9Z,1,1,{'A': '8/8 OK (0 missing)'},A,A,1101,OK,"Selected ligand copy (chain A, resnum 1101) is closest to the ATP pocket reference points (mean 4.78 Å), nearest protein chain A.",1,1
+5UG8,1,1,{'A': '8/8 OK (0 missing)'},A,A,9001,OK,"Selected ligand copy (chain A, resnum 9001) is closest to the ATP pocket reference points (mean 7.53 Å), nearest protein chain A.",1,1
+5UG9,1,1,{'A': '8/8 OK (0 missing)'},A,A,9001,OK,"Selected ligand copy (chain A, resnum 9001) is closest to the ATP pocket reference points (mean 7.57 Å), nearest protein chain A.",1,1
+5UGA,1,1,{'A': '8/8 OK (0 missing)'},A,A,9001,OK,"Selected ligand copy (chain A, resnum 9001) is closest to the ATP pocket reference points (mean 6.90 Å), nearest protein chain A.",1,1
+5UGB,1,1,{'A': '8/8 OK (0 missing)'},A,A,9001,OK,"Selected ligand copy (chain A, resnum 9001) is closest to the ATP pocket reference points (mean 5.90 Å), nearest protein chain A.",1,1
+5UGC,1,1,{'A': '8/8 OK (0 missing)'},A,A,9001,OK,"Selected ligand copy (chain A, resnum 9001) is closest to the ATP pocket reference points (mean 8.12 Å), nearest protein chain A.",1,1
+5YU9,4,4,"{'A': '8/8 OK (0 missing)', 'B': '8/8 OK (0 missing)', 'C': '8/8 OK (0 missing)', 'D': '8/8 OK (0 missing)'}",D,D,1101,OK,"Selected ligand copy (chain D, resnum 1101) is closest to the ATP pocket reference points (mean 5.67 Å), nearest protein chain D. 4 copies were equivalent in distance (± 1 Å); disambiguated by completeness (missing CA: 0), occupancy (1.00) and altloc (0 atom(s)). Other in-pocket copies (not used): A/1101 (5.68 Å), B/1101 (5.74 Å), C/1101 (5.70 Å).",4,4

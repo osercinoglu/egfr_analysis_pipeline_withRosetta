@@ -1,2 +1,2 @@
 pdb_id,n_protein_chains,n_ligand_copies,motif_summary,selected_chain,selected_ligand_chain,selected_ligand_resnum,selection_status,reason,n_pocket_ligand_copies,n_valid_motif_chains
-3IKA,2,1,"{'A': '8/8 OK (0 eksik)', 'B': '8/8 OK (0 eksik)'}",A,A,1797,OK,"Seçilen ligand kopyası (zincir A, resnum 1797) ATP cebi referans noktalarına en yakın (ortalama 6.92 Å), en yakın protein zinciri A.",1,2
+3IKA,2,1,"{'A': '8/8 OK (0 missing)', 'B': '8/8 OK (0 missing)'}",A,A,1797,OK,"Selected ligand copy (chain A, resnum 1797) is closest to the ATP pocket reference points (mean 6.92 Å), nearest protein chain A.",1,2

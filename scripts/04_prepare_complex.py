@@ -1,21 +1,22 @@
 """
-Aşama 4: Aşama 3'te seçilen EGFR zinciri + ligand kopyasından, Rosetta/
-PyRosetta için analiz-özel, temizlenmiş bir kompleks yapısı üretir.
+Stage 4: Produces an analysis-specific, cleaned complex structure for
+Rosetta/PyRosetta from the EGFR chain + ligand copy selected in Stage 3.
 
-Korunanlar: seçilen EGFR zinciri (standart amino asitler), seçilen ligand
-kopyası. Çıkarılanlar (varsayılan): diğer protein zincirleri, kristalizasyon
-ajanları/tampon molekülleri, alternatif ligand kopyaları, sular.
+Kept: the selected EGFR chain (standard amino acids), the selected ligand
+copy. Removed (default): other protein chains, crystallization agents/
+buffer molecules, alternative ligand copies, waters.
 
-Sular kalıcı olarak silinmeden önce ligandın 4 Å çevresindeki sular ayrıca
-raporlanır (köprü su olasılığı için) — bkz. results/metadata/bridging_waters/.
+Before waters are permanently removed, waters within 4 Å of the ligand are
+separately reported (as bridging-water candidates) — see
+results/metadata/bridging_waters/.
 
-Bu script:
-  - altloc seçimi (en yüksek occupancy'li / 'A' ya da boş altloc tutulur)
-  - SEQRES vs ATOM karşılaştırmasıyla eksik residue tespiti
-  - Cys-Cys disülfid taraması (SG-SG < 2.5 Å)
-  - Kovalent yapılar için mmCIF _struct_conn'dan otoriter bağ bilgisi çıkarımı
-  - native numaralandırma -> sıralı pose numaralandırma haritası
-üretir.
+This script produces:
+  - altloc selection (highest-occupancy / 'A' or blank altloc is kept)
+  - missing-residue detection via SEQRES vs ATOM comparison
+  - Cys-Cys disulfide scan (SG-SG < 2.5 Å)
+  - authoritative bond info extracted from mmCIF _struct_conn for covalent
+    structures
+  - native numbering -> sequential pose numbering map
 """
 
 from __future__ import annotations
@@ -63,8 +64,9 @@ def read_atom_lines(pdb_path: Path) -> list[str]:
 
 
 def select_altloc(lines: list[str]) -> tuple[list[str], int]:
-    """Her (chain, resSeq, atomName) için altLoc ' ' veya en yüksek
-    occupancy'li kaydı tutar; diğerlerini eler. (seçilen satırlar, elenen atom sayısı)"""
+    """For each (chain, resSeq, atomName), keeps the record with altLoc ' '
+    or the highest occupancy; discards the rest. Returns (selected lines,
+    number of discarded atoms)."""
     groups: dict[tuple, list[tuple[str, str, float]]] = {}
     for line in lines:
         chain = line[21]
@@ -81,7 +83,7 @@ def select_altloc(lines: list[str]) -> tuple[list[str], int]:
         if len(entries) == 1:
             kept_lines.append(entries[0][1])
             continue
-        # Birden fazla altloc var: ' ' veya 'A' tercih edilir, yoksa en yüksek occupancy.
+        # Multiple altlocs present: prefer ' ' or 'A', otherwise highest occupancy.
         blank_or_a = [e for e in entries if e[0] in (" ", "A")]
         if blank_or_a:
             best = max(blank_or_a, key=lambda e: e[2])
@@ -89,14 +91,14 @@ def select_altloc(lines: list[str]) -> tuple[list[str], int]:
             best = max(entries, key=lambda e: e[2])
         kept_lines.append(best[1])
         n_removed += len(entries) - 1
-    # Orijinal dosya sırasını korumak için satır numarasına göre sırala
+    # Sort by original line order to preserve the source file's order
     order = {l: i for i, l in enumerate(lines)}
     kept_lines.sort(key=lambda l: order[l])
     return kept_lines, n_removed
 
 
 def get_covalent_bond_info(cif_path: Path, ligand_comp_id: str) -> dict | None:
-    """mmCIF _struct_conn kategorisinden ligand'ın kovalent bağ bilgisini çıkarır."""
+    """Extracts the ligand's covalent bond info from the mmCIF _struct_conn category."""
     try:
         d = MMCIF2Dict(str(cif_path))
     except Exception:
@@ -250,7 +252,7 @@ def prepare_one(
     protein_lines, n_altloc_removed_p = select_altloc(protein_lines)
     ligand_lines, n_altloc_removed_l = select_altloc(ligand_lines)
 
-    # --- Eksik residue / disülfid / kovalent bağ / köprü su analizleri ---
+    # --- Missing-residue / disulfide / covalent-bond / bridging-water analyses ---
     n_missing, gap_ranges = detect_missing_residues(pdb_path, egfr_chain)
     disulfides = detect_disulfides(pdb_path, egfr_chain)
     bridging_waters = find_bridging_waters(pdb_path, egfr_chain, ligand_chain, ligand_resnum)
@@ -260,31 +262,31 @@ def prepare_one(
         covalent_info = get_covalent_bond_info(cif_path, ligand_comp_id)
 
     if rosetta_ligand_comp_id != ligand_comp_id:
-        # Bazı gerçek CCD kodları (ör. '634') Rosetta'nın dahili rezidü/patch
-        # isim uzayıyla (ör. peptoid kütüphanesi) çakışıyor ve
-        # ResidueTypeSetCache hatasına yol açıyor. Bu durumda clean_pdb'deki
-        # HETATM resName alanı yalnızca Rosetta'nın görmesi için değiştirilir;
-        # gerçek CCD kimliği ligand_comp_id olarak özet tablolarda korunur.
+        # Some real CCD codes (e.g. '634') collide with Rosetta's internal
+        # residue/patch name space (e.g. the peptoid library), causing a
+        # ResidueTypeSetCache error. In that case only the HETATM resName
+        # field in clean_pdb is changed, purely for Rosetta's benefit; the
+        # real CCD identity is kept as ligand_comp_id in the summary tables.
         ligand_lines = [
             l[:17] + f"{rosetta_ligand_comp_id:>3s}" + l[20:] for l in ligand_lines
         ]
 
-    # --- Temizlenmiş PDB'yi yaz ---
+    # --- Write the cleaned PDB ---
     processed_dir.mkdir(parents=True, exist_ok=True)
     out_path = processed_dir / f"{pdb_id}_clean.pdb"
     with open(out_path, "w") as f:
-        f.write(f"REMARK   Aşama 4 ile üretildi. Kaynak: {pdb_id}.pdb\n")
-        f.write(f"REMARK   EGFR zinciri: {egfr_chain}, ligand: {ligand_comp_id} "
-                f"(zincir {ligand_chain}, resnum {ligand_resnum})\n")
+        f.write(f"REMARK   Generated by Stage 4. Source: {pdb_id}.pdb\n")
+        f.write(f"REMARK   EGFR chain: {egfr_chain}, ligand: {ligand_comp_id} "
+                f"(chain {ligand_chain}, resnum {ligand_resnum})\n")
         if rosetta_ligand_comp_id != ligand_comp_id:
             f.write(
-                f"REMARK   ROSETTA REZIDU ADI DEĞİŞTİRİLDİ: {ligand_comp_id} -> "
-                f"{rosetta_ligand_comp_id} (bkz. config/ligand_overrides.yaml, "
+                f"REMARK   ROSETTA RESIDUE NAME CHANGED: {ligand_comp_id} -> "
+                f"{rosetta_ligand_comp_id} (see config/ligand_overrides.yaml, "
                 f"rosetta_ligand_code_reason)\n"
             )
         if covalent_info:
             f.write(
-                f"REMARK   KOVALENT BAĞ: {covalent_info['protein_resname']}"
+                f"REMARK   COVALENT BOND: {covalent_info['protein_resname']}"
                 f"{covalent_info['protein_resnum']}.{covalent_info['protein_atom']} - "
                 f"{covalent_info['ligand_resname']}.{covalent_info['ligand_atom']} "
                 f"({covalent_info['bond_distance_A']} Å)\n"
@@ -296,7 +298,7 @@ def prepare_one(
             f.write(line + "\n")
         f.write("END\n")
 
-    # --- Residue mapping (native -> sıralı pose numaralandırma) ---
+    # --- Residue mapping (native -> sequential pose numbering) ---
     mapping_dir.mkdir(parents=True, exist_ok=True)
     seen_res = []
     for line in protein_lines:
@@ -331,26 +333,26 @@ def prepare_one(
             bridging_water_dir / f"{pdb_id}_bridging_waters.csv", index=False
         )
 
-    # --- Özet satırı ---
+    # --- Summary row ---
     protein_atom_count = len(protein_lines)
     ligand_atom_count = len(ligand_lines)
     n_protein_residues = len(seen_res) - 1
 
     warnings_list = []
     if n_missing > 0:
-        warnings_list.append(f"{n_missing} eksik residue (SEQRES vs ATOM): {gap_ranges}")
+        warnings_list.append(f"{n_missing} missing residues (SEQRES vs ATOM): {gap_ranges}")
     if n_altloc_removed_p + n_altloc_removed_l > 0:
         warnings_list.append(
-            f"{n_altloc_removed_p + n_altloc_removed_l} altloc atomu elendi"
+            f"{n_altloc_removed_p + n_altloc_removed_l} altloc atom(s) removed"
         )
     if disulfides:
-        warnings_list.append(f"{len(disulfides)} disülfid bağı: {disulfides}")
+        warnings_list.append(f"{len(disulfides)} disulfide bond(s): {disulfides}")
     if covalent_info:
         warnings_list.append(
-            f"KOVALENT: {covalent_info['protein_resname']}{covalent_info['protein_resnum']} - ligand"
+            f"COVALENT: {covalent_info['protein_resname']}{covalent_info['protein_resnum']} - ligand"
         )
     if bridging_waters:
-        warnings_list.append(f"{len(bridging_waters)} köprü-su adayı (<4Å ligand)")
+        warnings_list.append(f"{len(bridging_waters)} bridging-water candidate(s) (<4Å ligand)")
 
     row.update(
         {
@@ -409,7 +411,7 @@ def main() -> None:
 
     rows = []
     for i, pdb_id in enumerate(pdb_ids, start=1):
-        log.info("[%d/%d] %s hazırlanıyor...", i, len(pdb_ids), pdb_id)
+        log.info("[%d/%d] preparing %s...", i, len(pdb_ids), pdb_id)
         try:
             row = prepare_one(
                 pdb_id,
@@ -421,7 +423,7 @@ def main() -> None:
                 args.bridging_water_dir,
             )
         except Exception as exc:
-            log.error("  %s işlenirken hata: %s", pdb_id, exc)
+            log.error("  error processing %s: %s", pdb_id, exc)
             row = {"pdb_id": pdb_id, "status": "EXCEPTION", "warnings": str(exc)}
         rows.append(row)
         if row.get("status") != "OK":
@@ -435,10 +437,10 @@ def main() -> None:
     )
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     out_df.to_csv(output_csv, index=False)
-    log.info("Özet yazıldı: %s (%d satır)", output_csv, len(out_df))
+    log.info("Summary written: %s (%d rows)", output_csv, len(out_df))
 
     n_ok = (out_df["status"] == "OK").sum()
-    log.info("Özet: OK=%d / %d", n_ok, len(out_df))
+    log.info("Summary: OK=%d / %d", n_ok, len(out_df))
 
 
 if __name__ == "__main__":

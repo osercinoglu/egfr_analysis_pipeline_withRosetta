@@ -1,13 +1,13 @@
 """
-EGFR kinase domain - small molecule inhibitor complexes tarama scripti.
+Script to survey EGFR kinase domain - small molecule inhibitor complexes.
 
-RCSB PDB Search API + ChEMBL API + BindingDB kullanarak:
-  1. Human EGFR (UniProt P00533) kristal yapılarını listeler
-  2. Küçük moleküllü (MW 200-800 Da, ilaç benzeri) ligandları filtreler
-  3. ChEMBL üzerinden Kd/Ki binding affinite verisi çeker
-  4. Sonuçları CSV'e yazar
+Using the RCSB PDB Search API + ChEMBL API + BindingDB:
+  1. Lists human EGFR (UniProt P00533) crystal structures
+  2. Filters for small-molecule (MW 200-800 Da, drug-like) ligands
+  3. Fetches Kd/Ki binding affinity data via ChEMBL
+  4. Writes the results to CSV
 
-Çalıştırma:
+Usage:
   python src/search_egfr_structures.py --out results/egfr_candidates.csv
 """
 
@@ -23,7 +23,7 @@ RCSB_DATA    = "https://data.rcsb.org/rest/v1/core"
 CHEMBL_BASE  = "https://www.ebi.ac.uk/chembl/api/data"
 BDB_BASE     = "https://www.bindingdb.org/axis2/services/BDBService"
 
-# Kristalleştirme katkıları / buffer bileşenleri - dışarıda tutulacak
+# Crystallization additives / buffer components - to be excluded
 CRYSTAL_EXCL = {
     "HOH","SO4","GOL","PEG","EDO","MPD","BME","DTT","PO4","MES","TRS",
     "ACE","ACT","FMT","IMD","IPA","DMS","EOH","CIT","TAR","MRD","EPE",
@@ -40,7 +40,7 @@ CRYSTAL_EXCL = {
     "XX1", "UNL", "UNX", "DRG",
 }
 
-# Makaledeki 4 yapı - bunlar zaten var, listeye eklenecek
+# The 4 structures from the paper - already known, will be added to the list
 KNOWN = [
     {"pdb_id": "5GMP", "ligand_id": "F62",  "kd_pM": 0.8,   "inhibitor": "XTF-262"},
     {"pdb_id": "1XKK", "ligand_id": "FMM",  "kd_pM": 3.0,   "inhibitor": "GW572016"},
@@ -50,7 +50,7 @@ KNOWN = [
 
 
 def search_rcsb_egfr_structures() -> list[str]:
-    """RCSB'den human EGFR (P00533) X-ray kristal yapılarını döndürür."""
+    """Returns human EGFR (P00533) X-ray crystal structures from RCSB."""
     query = {
         "query": {
             "type": "group",
@@ -98,19 +98,19 @@ def search_rcsb_egfr_structures() -> list[str]:
     r.raise_for_status()
     data = r.json()
     ids = [h["identifier"] for h in data.get("result_set", [])]
-    print(f"  RCSB: {len(ids)} EGFR X-ray yapısı bulundu")
+    print(f"  RCSB: found {len(ids)} EGFR X-ray structures")
     return ids
 
 
 def get_entry_ligands(pdb_id: str) -> list[dict]:
-    """Bir PDB entry'sindeki non-polymer (small molecule) ligandları döndürür."""
+    """Returns the non-polymer (small molecule) ligands in a PDB entry."""
     url = f"{RCSB_DATA}/entry/{pdb_id}"
     try:
         r = requests.get(url, timeout=30)
         if r.status_code != 200:
             return []
         data = r.json()
-        # nonpolymer entity listesi
+        # nonpolymer entity list
         np_ids = data.get("rcsb_entry_container_identifiers", {}).get(
             "non_polymer_entity_ids", []
         ) or []
@@ -140,18 +140,18 @@ def get_entry_ligands(pdb_id: str) -> list[dict]:
 
 def get_rcsb_binding_affinity(pdb_id: str, comp_id: str) -> dict | None:
     """
-    RCSB'nin binding affinity veritabanından (BindingDB + ChEMBL + MOAD aggregate)
-    Kd/Ki/IC50 verisi çeker.
+    Fetches Kd/Ki/IC50 data from RCSB's binding affinity database
+    (BindingDB + ChEMBL + MOAD aggregate).
     """
     url = f"{RCSB_DATA}/nonpolymer_entity_instance/{pdb_id}/A/1"
-    # nonpolymer instance'larını gezmek yerine doğrudan binding affinity endpoint'i dene
+    # Instead of walking nonpolymer instances, try the binding affinity endpoint directly
     url2 = f"https://data.rcsb.org/rest/v1/core/entry/{pdb_id}"
     try:
         r = requests.get(url2, timeout=20)
         if r.status_code != 200:
             return None
-        # rcsb_binding_affinity alanı entry-level'da değil, nonpolymer_entity_instance'da
-        # Alternatif: rcsb_entry_info içindeki binding affinity bazen burada
+        # The rcsb_binding_affinity field is not at entry-level, it's on nonpolymer_entity_instance
+        # Alternative: binding affinity sometimes appears inside rcsb_entry_info
         return None
     except Exception:
         return None
@@ -159,12 +159,12 @@ def get_rcsb_binding_affinity(pdb_id: str, comp_id: str) -> dict | None:
 
 def query_chembl_for_pdb(pdb_id: str, comp_id: str) -> list[dict]:
     """
-    ChEMBL API üzerinden bir PDB ligandının EGFR üzerindeki Kd/Ki verilerini çeker.
+    Fetches Kd/Ki data for a PDB ligand against EGFR via the ChEMBL API.
     PDB comp_id -> ChEMBL molecule cross-reference -> binding assay.
     """
     results = []
     try:
-        # 1) PDB ligand kodu -> ChEMBL molecule
+        # 1) PDB ligand code -> ChEMBL molecule
         url = f"{CHEMBL_BASE}/molecule.json?xref_src=PDB&xref_id={comp_id}&format=json"
         r = requests.get(url, timeout=20)
         if r.status_code != 200:
@@ -194,7 +194,7 @@ def query_chembl_for_pdb(pdb_id: str, comp_id: str) -> list[dict]:
             rel  = a.get("standard_relation", "=")
             if val is None:
                 continue
-            # nM -> pM dönüşümü
+            # nM -> pM conversion
             val_f = float(val)
             if unit == "nM":
                 val_pM = val_f * 1000
@@ -218,7 +218,7 @@ def query_chembl_for_pdb(pdb_id: str, comp_id: str) -> list[dict]:
 
 
 def query_bindingdb_pdb(pdb_id: str) -> list[dict]:
-    """BindingDB REST API: PDB ID'ye göre binding data çeker."""
+    """BindingDB REST API: fetches binding data by PDB ID."""
     results = []
     try:
         url = (
@@ -254,8 +254,8 @@ def query_bindingdb_pdb(pdb_id: str) -> list[dict]:
 
 def query_rcsb_binding_affinity_v2(pdb_id: str) -> list[dict]:
     """
-    RCSB'nin /rest/v1/core/entry/{id} endpoint'indeki
-    rcsb_binding_affinity aggregate datasını okur.
+    Reads the rcsb_binding_affinity aggregate data from RCSB's
+    /rest/v1/core/entry/{id} endpoint.
     """
     url = f"https://data.rcsb.org/graphql"
     query = """
@@ -298,8 +298,8 @@ def query_rcsb_binding_affinity_v2(pdb_id: str) -> list[dict]:
             elif unit in ("mM", "mmol/L"):
                 val_pM = val_f * 1e9
             else:
-                # unit bazen boş ya da farklı
-                val_pM = val_f  # bilinmiyor, ham değer
+                # unit is sometimes blank or something else
+                val_pM = val_f  # unknown, use the raw value
             results.append({
                 "comp_id": comp,
                 "affinity_type": typ,
@@ -312,7 +312,7 @@ def query_rcsb_binding_affinity_v2(pdb_id: str) -> list[dict]:
 
 
 def get_entry_resolution(pdb_id: str) -> float:
-    """PDB entry'sinin çözünürlüğünü döndürür (Angstrom)."""
+    """Returns the resolution of the PDB entry (Angstrom)."""
     url = f"https://data.rcsb.org/graphql"
     query = '{ entry(entry_id: "%s") { rcsb_entry_info { resolution_combined } } }' % pdb_id
     try:
@@ -341,29 +341,29 @@ def main():
 
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
 
-    print("=== EGFR inhibitör kompleksi tarama ===")
-    print(f"Parametreler: res ≤ {args.res_cutoff} Å, MW {args.mw_min}-{args.mw_max} Da")
+    print("=== EGFR inhibitor complex survey ===")
+    print(f"Parameters: res ≤ {args.res_cutoff} Å, MW {args.mw_min}-{args.mw_max} Da")
 
-    # 1. RCSB'den tüm EGFR yapılarını al
-    print("\n[1] RCSB PDB taranıyor...")
+    # 1. Get all EGFR structures from RCSB
+    print("\n[1] Searching RCSB PDB...")
     all_ids = search_rcsb_egfr_structures()
 
-    # 2. Her yapı için ligand + affinite verisi
-    print(f"\n[2] {len(all_ids)} yapı için ligand ve affinite verisi çekiliyor...")
+    # 2. Ligand + affinity data for every structure
+    print(f"\n[2] Fetching ligand and affinity data for {len(all_ids)} structures...")
     rows = []
     known_ids = {k["pdb_id"] for k in KNOWN}
 
     for i, pdb_id in enumerate(all_ids):
-        # İlerleme
+        # Progress
         if i % 20 == 0:
-            print(f"  {i}/{len(all_ids)} işlendi, {len(rows)} aday bulundu...")
+            print(f"  {i}/{len(all_ids)} processed, {len(rows)} candidates found so far...")
 
-        # a) RCSB binding affinity (GraphQL) — en hızlı yol
+        # a) RCSB binding affinity (GraphQL) — fastest path
         rcsb_affs = query_rcsb_binding_affinity_v2(pdb_id)
         if not rcsb_affs:
-            continue  # affinite verisi olmayan yapıları atla
+            continue  # skip structures without affinity data
 
-        # b) Ligand bilgisi
+        # b) Ligand info
         ligands = get_entry_ligands(pdb_id)
         drug_ligands = [
             l for l in ligands
@@ -372,17 +372,17 @@ def main():
         if not drug_ligands:
             continue
 
-        # c) Çözünürlük filtresi
+        # c) Resolution filter
         resolution = get_entry_resolution(pdb_id)
         if resolution > args.res_cutoff:
             continue
 
-        # d) Affinite eşleştir
+        # d) Match affinity
         for lig in drug_ligands:
-            # RCSB affiniteleri içinde bu ligandı ara
+            # Look for this ligand among the RCSB affinities
             matched = [a for a in rcsb_affs if a.get("comp_id", "") == lig["comp_id"]]
             if not matched:
-                # comp_id boşsa tüm affiniteleri al
+                # if comp_id is blank, take all affinities
                 matched = [a for a in rcsb_affs if not a.get("comp_id")]
 
             for aff in matched:
@@ -403,7 +403,7 @@ def main():
 
         time.sleep(0.05)  # rate limit
 
-    # 3. Bilinen 4 yapıyı ekle (RCSB'de affinite olmasa bile)
+    # 3. Add the 4 known structures (even if RCSB has no affinity data)
     for k in KNOWN:
         if not any(r["pdb_id"] == k["pdb_id"] for r in rows):
             rows.append({
@@ -420,25 +420,25 @@ def main():
 
     df = pd.DataFrame(rows)
     if df.empty:
-        print("\n[!] Hiç sonuç bulunamadı.")
+        print("\n[!] No results found.")
         return
 
-    # 4. Kd > Ki > IC50 öncelik sırası; duplicate pdb_id için en iyi affinity_type seç
+    # 4. Priority order Kd > Ki > IC50; pick the best affinity_type for duplicate pdb_id
     priority = {"KD": 0, "KI": 1, "IC50": 2, "EC50": 3}
     df["priority"] = df["affinity_type"].str.upper().map(priority).fillna(99)
     df = df.sort_values(["pdb_id", "priority", "affinity_pM"])
     df = df.drop_duplicates(subset=["pdb_id", "ligand_id"], keep="first")
     df = df.drop(columns=["priority"])
 
-    # 5. log10(Kd pM) ekle
+    # 5. Add log10(Kd pM)
     import numpy as np
     df["log10_affinity_pM"] = np.log10(df["affinity_pM"].clip(lower=1e-3))
 
-    # 6. Kaydet ve özetle
+    # 6. Save and summarize
     df.to_csv(args.out, index=False)
-    print(f"\n=== Sonuç: {len(df)} aday yapı ===")
+    print(f"\n=== Result: {len(df)} candidate structures ===")
     print(df[["pdb_id","ligand_id","affinity_type","affinity_pM","resolution_A"]].to_string(index=False))
-    print(f"\nCSV kaydedildi: {args.out}")
+    print(f"\nCSV saved: {args.out}")
 
 
 if __name__ == "__main__":

@@ -1,151 +1,151 @@
-# EGFR Atomistic Frustration Pipeline — Proje Durum Raporu
+# EGFR Atomistic Frustration Pipeline — Project Status Report
 
-**Tarih:** 19 Haziran 2026  
-**Repo:** `/home/tugba/egfr_atomic_resolution`  
-**Ortam:** `conda activate frustrato` (Python 3.10)
+**Date:** June 19, 2026
+**Repo:** `/home/tugba/egfr_atomic_resolution`
+**Environment:** `conda activate frustrato` (Python 3.10)
 
 ---
 
-## 1. Ne Yapıyorduk: Bilimsel Hedef
+## 1. What We're Doing: Scientific Goal
 
-### Referans Makale
+### Reference Paper
 
-**Chen et al. (2020), *Nature Communications* 11, 5944**  
-*"Surveying biomolecular frustration at atomic resolution"*  
+**Chen et al. (2020), *Nature Communications* 11, 5944**
+*"Surveying biomolecular frustration at atomic resolution"*
 DOI: [10.1038/s41467-020-19560-9](https://doi.org/10.1038/s41467-020-19560-9)
 
-Makale, protein enerji peyzajının "ne kadar optimize edildiğini" ölçen **atomistik frustrasyon** kavramını sunuyor. Bir amino asit çiftinin (i, j) kendi native ortamında ne kadar stabil olduğu, aynı konumdaki rastgele yerleştirilmiş amino asit çiftleriyle karşılaştırılarak hesaplanıyor.
+The paper introduces the concept of **atomistic frustration**, which measures how "optimized" a protein's energy landscape is. How stable an amino acid pair (i, j) is in its native environment is computed by comparison against randomly placed amino acid pairs at the same location.
 
-### Paper'ın EGFR Analizi (Figure 5)
+### The Paper's EGFR Analysis (Figure 5)
 
-Makalede EGFR kinaz domaininin 4 inhibitör kompleksi için şu gözlem yapılmış:
+The paper makes the following observation for 4 EGFR kinase domain–inhibitor complexes:
 
-> **Güçlü bağlanan inhibitörler → ligand etrafındaki kontaklar daha az frustrasyonlu**  
-> Zayıf bağlayan inhibitörler → daha frustrasyonlu ligand-protein arayüzü
+> **Stronger-binding inhibitors → contacts around the ligand are less frustrated**
+> Weaker-binding inhibitors → more frustrated ligand-protein interface
 
-Paper bu analizi sadece **görselleştirme** amacıyla yapmış (4 yapı). Korelasyon analizi yapmamışlar ve orijinal kod **hiç yayınlanmamış**.
+The paper did this analysis purely for **visualization** purposes (4 structures). They did not perform a correlation analysis, and the original code **was never published**.
 
 ---
 
-## 2. Bizim Katkımız: Üzerine Ne Koyduk
+## 2. Our Contribution: What We Built On Top
 
-### Genişletme
+### Extension
 
-| Boyut | Paper | Bu Proje |
+| Dimension | Paper | This Project |
 |---|---|---|
-| Yapı sayısı | 4 | **25** |
-| Hedef | Görselleştirme | **Affinite-frustrasyon korelasyonu** |
-| Kod | Yayınlanmamış | **Bağımsız reimplementasyon** |
-| Affinite | Sadece Kd | Kd + IC50 (karma, log-dönüşüm) |
-| Kovalan inhibitörler | Dahil | **Çıkarıldı** (3IKA, 4LQM, 5XDK) |
+| Number of structures | 4 | **25** |
+| Goal | Visualization | **Affinity–frustration correlation** |
+| Code | Unpublished | **Independent reimplementation** |
+| Affinity | Kd only | Kd + IC50 (mixed, log-transformed) |
+| Covalent inhibitors | Included | **Excluded** (3IKA, 4LQM, 5XDK) |
 
-### Temel Matematiksel Reimplementasyon
+### Core Mathematical Reimplementation
 
-**Denklem 1 — Frustrasyon indeksi (Z-skoru):**
+**Equation 1 — Frustration index (Z-score):**
 ```
 F_ij = (E_ij_native − mean(E_ij_decoy)) / std(E_ij_decoy)
 ```
-- `F > 0.78`  → **minimally frustrated** (native çok stabil)
+- `F > 0.78`  → **minimally frustrated** (native is highly stable)
 - `F < −1.0`  → **highly frustrated**
-- Arada       → neutral
+- In between  → neutral
 
-**Denklem 2 — Many-body pairwise enerji düzeltmesi:**
+**Equation 2 — Many-body pairwise energy correction:**
 ```
 E_ij = e_ij + 0.5 × Σ_{k∈contacts(i), k≠j} e_ik
              + 0.5 × Σ_{l∈contacts(j), l≠i} e_jl
 ```
-- `e_ij`: doğrudan çift enerjisi (REF2015, `fa_rep` hariç)
-- Arka plan kontakları her iki residue'nun komşularından yarı katkı alır
+- `e_ij`: direct pairwise energy (REF2015, excluding `fa_rep`)
+- Background contacts each get half-weighted contributions from the neighbors of both residues
 
 ---
 
-## 3. 25 EGFR–İnhibitör Kompleksi
+## 3. 25 EGFR–Inhibitor Complexes
 
-### Affinite Dağılımı
+### Affinity Distribution
 
-| Özellik | Değer |
+| Property | Value |
 |---|---|
-| Toplam yapı | 25 |
-| Kd (termodinamik) | 8 |
-| IC50 (enzim) | 17 |
-| Affinite aralığı | 0.8 pM – 10 mM |
-| log10(pM) aralığı | −0.10 – 7.00 (**~7 log birim**) |
-| Kristal çözünürlüğü | 1.70 – 2.93 Å |
-| Kaynak | 4 paper + 21 BindingDB |
+| Total structures | 25 |
+| Kd (thermodynamic) | 8 |
+| IC50 (enzymatic) | 17 |
+| Affinity range | 0.8 pM – 10 mM |
+| log10(pM) range | −0.10 – 7.00 (**~7 orders of magnitude**) |
+| Crystal resolution | 1.70 – 2.93 Å |
+| Source | 4 papers + 21 BindingDB |
 
-### Özel Durumlar
+### Special Cases
 
-- **7JXM (EAI045):** Allosterik inhibitör. Protein A/B/C/D zincirlerinde; ligand `9LL` yalnızca B ve D'de → `chain=B` override.
-- **Çıkarılan yapılar:** 4LQM/DJK, 5XDK/8JC, 3IKA/0UN → kovalan inhibitörler, frustrasyon hesabı için uygun değil.
+- **7JXM (EAI045):** Allosteric inhibitor. Protein has chains A/B/C/D; ligand `9LL` is present only in B and D → `chain=B` override.
+- **Excluded structures:** 4LQM/DJK, 5XDK/8JC, 3IKA/0UN → covalent inhibitors, not suitable for frustration calculation.
 
 ---
 
-## 4. Yazılan Kod (~1754 satır)
+## 4. Code Written (~1754 lines)
 
-### `src/frustration.py` (542 satır) — Çekirdek Motor
+### `src/frustration.py` (542 lines) — Core Engine
 
-| Fonksiyon | Açıklama |
-|-----------|----------|
-| `get_protein_contacts` | Cα–Cα ≤ 10 Å kontak listesi |
+| Function | Description |
+|-----------|-----------|
+| `get_protein_contacts` | Cα–Cα ≤ 10 Å contact list |
 | `get_ligand_contacts` | Ligand heavy-atom – Cα ≤ 10 Å |
-| `pairwise_energy` | Direkt e_ij (REF2015, fa_rep hariç) |
-| `contact_energy_eq2` | Tam Denklem 2 |
-| `native_aa_frequency` | Native AA frekans dağılımı |
+| `pairwise_energy` | Direct e_ij (REF2015, excluding fa_rep) |
+| `contact_energy_eq2` | Full Equation 2 |
+| `native_aa_frequency` | Native AA frequency distribution |
 | `generate_decoy` | AA shuffle → side-chain repack → 1 decoy |
-| `run_frustration_survey` | N decoy Z-skoru → DataFrame |
-| `summarize_ligand_frustration` | Ligand arayüzü özeti |
+| `run_frustration_survey` | N decoys → Z-score DataFrame |
+| `summarize_ligand_frustration` | Ligand interface summary |
 
-### `src/prepare_structures.py` (509 satır) — Yapı Hazırlama
+### `src/prepare_structures.py` (509 lines) — Structure Preparation
 
-**Şelale (her yapı için):**
+**Pipeline (per structure):**
 
 ```
-Ham PDB  →  clean_pdb()  →  extract_ligand_pdb()
+Raw PDB  →  clean_pdb()  →  extract_ligand_pdb()
                                     ↓
-           RCSB CIF  →  cif_to_mol2() [CCD atom isimleri]
+           RCSB CIF  →  cif_to_mol2() [CCD atom names]
                                     ↓
                      molfile_to_params.py  →  .params
                                     ↓
-                           PyRosetta pose yükle
+                           Load pose in PyRosetta
 ```
 
-**Yedekleme:** CIF başarısız olursa SDF(RDKit) → son çare PDB(obabel)
+**Fallback:** If CIF fails → SDF(RDKit) → last resort PDB(obabel)
 
-### `src/run_pipeline.py` (436 satır) — Ana Runner
+### `src/run_pipeline.py` (436 lines) — Main Runner
 
-- `--mode validate`: 1LYZ lizozim validasyonu
-- `--mode single`: Tek yapı analizi
-- `--mode all`: 25 EGFR → Pearson r + scatter plot
+- `--mode validate`: 1LYZ lysozyme validation
+- `--mode single`: single-structure analysis
+- `--mode all`: 25 EGFR structures → Pearson r + scatter plot
 
-### `src/test_frustration.py` (267 satır) — 9 Birim Test
-
----
-
-## 5. Çözülen Teknik Engeller
-
-### 5.1 PyRosetta Kurulumu
-**Sorun:** Wheel platform uyumsuzluğu.  
-**Çözüm:** tar.bz2 → manuel extract → `pip install .` from `setup/`.
-
-### 5.2 `rosetta_py` Eksikliği
-**Sorun:** `molfile_to_params.py` `rosetta_py` modülünü gerektiriyor, PyRosetta paketinde yok.  
-**Çözüm:** Saf Python modülü RosettaCommons/rosetta GitHub'dan indirildi → `src/rosetta_py/`.
-
-### 5.3 OpenBabel mol2 Valans Hatası
-**Sorun:** Aromatik atomlara `ar` bağ tipi → `assign_rosetta_types` crash.  
-**Çözüm:** RDKit ile Kekulé formuna çevrilen SDF kullanıldı.
-
-### 5.4 `fill_missing_atoms` Hatası (6 yapı)
-**Sorun:** Params atom isimleri (`C1`, `C2`) ≠ PDB HETATM isimleri (`C16`, `C17`).  
-**Çözüm:** RCSB CIF'ten `_chem_comp_atom.atom_id` ile mol2 üretildi → **25/25 pose yükleme başarılı**.
-
-### 5.5 Çok Zincirli Yapılar
-**Sorun:** HETATM filtresi zincir gözetmiyordu → birden fazla ligand kopyası dahil oluyordu.  
-**Çözüm:** `chain == target_chain` koşulu eklendi.
+### `src/test_frustration.py` (267 lines) — 9 Unit Tests
 
 ---
 
-## 6. Test Sonuçları
+## 5. Technical Obstacles Resolved
+
+### 5.1 PyRosetta Installation
+**Problem:** Wheel platform incompatibility.
+**Solution:** tar.bz2 → manual extraction → `pip install .` from `setup/`.
+
+### 5.2 Missing `rosetta_py`
+**Problem:** `molfile_to_params.py` requires the `rosetta_py` module, which isn't included in the PyRosetta package.
+**Solution:** Downloaded the pure-Python module from the RosettaCommons/rosetta GitHub repo → `src/rosetta_py/`.
+
+### 5.3 OpenBabel mol2 Valence Error
+**Problem:** Aromatic atoms get `ar` bond type → crashes `assign_rosetta_types`.
+**Solution:** Used an SDF converted to Kekulé form with RDKit instead.
+
+### 5.4 `fill_missing_atoms` Error (6 structures)
+**Problem:** Params atom names (`C1`, `C2`) ≠ PDB HETATM names (`C16`, `C17`).
+**Solution:** Generated mol2 from the RCSB CIF's `_chem_comp_atom.atom_id` → **25/25 poses load successfully**.
+
+### 5.5 Multi-Chain Structures
+**Problem:** The HETATM filter didn't account for chain, so multiple ligand copies were being included.
+**Solution:** Added a `chain == target_chain` condition.
+
+---
+
+## 6. Test Results
 
 ```
 test_build_contact_partner_map_basic      ✅ PASSED
@@ -155,41 +155,41 @@ test_summarize_ligand_frustration_basic   ✅ PASSED
 test_get_protein_contacts_count           ✅ PASSED
 test_pairwise_energy_symmetric            ✅ PASSED
 test_native_aa_frequency_sums_to_one      ✅ PASSED
-test_decoy_backbone_unchanged             ❌ FAILED  (0.78 Å > 0.05 Å tolerans)
+test_decoy_backbone_unchanged             ❌ FAILED  (0.78 Å > 0.05 Å tolerance)
 test_frustration_survey_small             ✅ PASSED
 
-8/9 geçiyor
+8/9 passing
 ```
 
-**Kalan hata:** PyRosetta 2026.25'te `FastRelax.set_movemap(mm)` + `mm.set_bb(False)` backbone'u tam donduramıyor. Düzeltme: `FastRelax` → `MinMover(chi-only)`.
+**Remaining failure:** In PyRosetta 2026.25, `FastRelax.set_movemap(mm)` + `mm.set_bb(False)` doesn't fully freeze the backbone. Fix: switch `FastRelax` → `MinMover` (chi-only).
 
 ---
 
-## 7. Aşama Durumları
+## 7. Stage Status
 
-| Aşama | Durum |
+| Stage | Status |
 |-------|-------|
-| Aşama 0: PyRosetta kurulumu | ✅ Tamamlandı |
-| Aşama 1: 25 PDB hazırlık (params + pose) | ✅ Tamamlandı — 25/25 |
-| Aşama 2: Frustrasyon motoru (Eq.1, Eq.2) | ✅ Tamamlandı |
-| Birim testler | ✅ 8/9 geçiyor |
-| Aşama 3: Lizozim validasyonu | 🔲 Bekliyor |
-| Aşama 4: EGFR analizi + korelasyon | 🔲 Bekliyor |
+| Stage 0: PyRosetta installation | ✅ Done |
+| Stage 1: 25 PDB preparation (params + pose) | ✅ Done — 25/25 |
+| Stage 2: Frustration engine (Eq.1, Eq.2) | ✅ Done |
+| Unit tests | ✅ 8/9 passing |
+| Stage 3: Lysozyme validation | 🔲 Pending |
+| Stage 4: EGFR analysis + correlation | 🔲 Pending |
 
 ---
 
-## 8. Sıradaki Adımlar
+## 8. Next Steps
 
 ```bash
-# 1. FastRelax → MinMover düzeltmesi (frustration.py ~5 satır)
+# 1. FastRelax → MinMover fix (frustration.py, ~5 lines)
 
-# 2. Validasyon
+# 2. Validation
 python src/run_pipeline.py --mode validate --n_decoys 50
 
-# 3. Tam analiz
+# 3. Full analysis
 python src/run_pipeline.py --mode all --n_decoys 200
 ```
 
 ---
 
-*Bu proje, Chen et al. (2020)'nin atomistik frustrasyonunu EGFR–inhibitör komplekslerine uygulayan bağımsız bir reimplementasyondur. Orijinal yazarların kodu yayınlanmamıştır.*
+*This project is an independent reimplementation applying Chen et al. (2020)'s atomistic frustration to EGFR–inhibitor complexes. The original authors' code was never published.*

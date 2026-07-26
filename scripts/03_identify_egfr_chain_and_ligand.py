@@ -1,22 +1,22 @@
 """
-Aşama 3: Her PDB için doğru EGFR zincirini ve doğru ligand kopyasını
-motif-tabanlı yapısal doğrulamayla belirler.
+Stage 3: Determines the correct EGFR chain and the correct ligand copy for
+each PDB via motif-based structural validation.
 
-Adımlar:
-1. Her PDB'nin her protein zincirinde standart EGFR kinaz domain katalitik
-   motiflerinin (K745 VAIK, E762 aC-helix, HRD 835-837, DFG 855-857,
-   hinge ~790-793) doğru konumda ve doğru kimlikte olup olmadığını kontrol
-   eder (numaralandırma tutarlılığı doğrulaması).
-2. Ligandın (Aşama 1'de belirlenen birincil aday) hangi zincire, ATP
-   bağlanma cebine ne kadar yakın olduğunu hesaplar (K745, E762, hinge,
-   HRD-Asp837, DFG-Asp855'e minimum ağır atom mesafeleri).
-3. Çok-zincirli yapılarda (2JIU, 3IKA, 5GTY, 5YU9) hangi zincir/ligand
-   kopyasının kullanılacağına dair seçim gerekçesini üretir.
-4. Sonuçları config/ligand_overrides.yaml ve
-   results/metadata/chain_ligand_selection.csv olarak kaydeder.
+Steps:
+1. For every protein chain in each PDB, checks whether the standard EGFR
+   kinase-domain catalytic motifs (K745 VAIK, E762 aC-helix, HRD 835-837,
+   DFG 855-857, hinge ~790-793) are present at the right position with the
+   right identity (numbering-consistency verification).
+2. Computes how close the ligand (the primary candidate identified in
+   Stage 1) is to each chain's ATP binding pocket (minimum heavy-atom
+   distances to K745, E762, hinge, HRD-Asp837, DFG-Asp855).
+3. For multi-chain structures (2JIU, 3IKA, 5GTY, 5YU9), produces the
+   rationale for which chain/ligand copy is selected.
+4. Saves the results to config/ligand_overrides.yaml and
+   results/metadata/chain_ligand_selection.csv.
 
-Bu script yapıyı DEĞİŞTİRMEZ, sadece hangi zincir/ligand kopyasının
-Aşama 4'te kullanılacağına karar verir.
+This script does NOT modify the structure; it only decides which
+chain/ligand copy will be used in Stage 4.
 """
 
 from __future__ import annotations
@@ -45,10 +45,10 @@ AA3TO1 = {
     "TYR": "Y", "VAL": "V",
 }
 
-# EGFR kinaz domain katalitik motifleri (UniProt P00533 / klinik mutasyon
-# numaralandırması, ör. T790M, L858R ile aynı numaralandırma - Aşama 1'de
-# SIFTS hizalamasıyla doğrulandı). Mutant pozisyonlarda (790, 858, 719, 719...)
-# beklenen kimlik yerine mutant kimliğe de izin verilir.
+# EGFR kinase domain catalytic motifs (UniProt P00533 / clinical mutation
+# numbering, i.e. the same numbering used for T790M, L858R — verified via
+# SIFTS alignment in Stage 1). At mutant positions (790, 858, 719, ...) the
+# mutant identity is allowed in place of the expected wild-type identity.
 MOTIF_POSITIONS = {
     745: {"expected": "K", "name": "VAIK_Lys"},
     762: {"expected": "E", "name": "alphaC_Glu"},
@@ -59,11 +59,12 @@ MOTIF_POSITIONS = {
     856: {"expected": "F", "name": "DFG_Phe"},
     857: {"expected": "G", "name": "DFG_Gly"},
 }
-# Bilinen klinik/mühendislik mutasyon pozisyonları (motif doğrulamasında
-# bu pozisyonlarda beklenenden farklı kimlik görülürse HATA sayılmaz).
+# Known clinical/engineered mutation positions (if motif validation sees a
+# different identity than expected at these positions, it is not counted as
+# an error).
 KNOWN_MUTATION_POSITIONS = {719, 790, 858, 865, 866, 867, 948}
 
-HINGE_RANGE = range(788, 796)  # hinge bölgesi (~788-795), gatekeeper T790 dahil
+HINGE_RANGE = range(788, 796)  # hinge region (~788-795), includes gatekeeper T790
 POCKET_REFERENCE_ATOMS = {
     "VAIK_Lys745": 745,
     "alphaC_Glu762": 762,
@@ -73,7 +74,7 @@ POCKET_REFERENCE_ATOMS = {
 
 
 def get_chain_residue_map(chain) -> dict[int, str]:
-    """Zincirdeki her residue numarasını 1-harf koduna eşler (sadece standart AA)."""
+    """Maps every residue number in the chain to its 1-letter code (standard AAs only)."""
     out = {}
     for res in chain:
         if is_aa(res, standard=True):
@@ -82,18 +83,19 @@ def get_chain_residue_map(chain) -> dict[int, str]:
 
 
 def calibrate_numbering_offset(res_map: dict[int, str]) -> int | None:
-    """HRD (His-Arg-Asp) ve DFG (Asp-Phe-Gly) motiflerini dizi aramasıyla
-    bulup, standart numaralandırmaya (HRD=835-837, DFG=855-857) göre
-    numaralandırma ofsetini hesaplar. Farklı depozitörler EGFR'yi farklı
-    referans noktalarına göre numaralandırabildiği için (ör. sinyal peptidi
-    dahil/hariç), pozisyonları sabit varsaymak yerine her zincir için
-    motifi arayıp doğruluyoruz. İki motif de bulunup aynı ofseti
-    vermiyorsa None döner (belirsiz -> manuel inceleme)."""
+    """Locates the HRD (His-Arg-Asp) and DFG (Asp-Phe-Gly) motifs by sequence
+    search and computes the numbering offset relative to the standard
+    numbering (HRD=835-837, DFG=855-857). Since different depositors can
+    number EGFR relative to different reference points (e.g. including/
+    excluding the signal peptide), we search for and confirm the motif for
+    every chain instead of assuming fixed positions. Returns None if both
+    motifs are found but disagree on the offset (ambiguous -> manual
+    review)."""
     positions = sorted(res_map.keys())
     hrd_offsets = [
         835 - p for p in positions
         if res_map.get(p) == "H" and res_map.get(p + 1) == "R" and res_map.get(p + 2) == "D"
-        and 700 <= p <= 900  # kinaz domaini dışında yanlış-pozitifleri engelle
+        and 700 <= p <= 900  # avoid false positives outside the kinase domain
     ]
     dfg_offsets = [
         855 - p for p in positions
@@ -106,12 +108,12 @@ def calibrate_numbering_offset(res_map: dict[int, str]) -> int | None:
         return hrd_offsets[0]
     if len(dfg_offsets) == 1 and not hrd_offsets:
         return dfg_offsets[0]
-    return None  # belirsiz: motif bulunamadı veya birden fazla/çakışan aday var
+    return None  # ambiguous: motif not found, or multiple/conflicting candidates
 
 
 def check_motifs(res_map: dict[int, str]) -> dict:
-    """Bir zincirde EGFR katalitik motiflerinin doğru olup olmadığını,
-    önce numaralandırma ofsetini kalibre ederek kontrol eder."""
+    """Checks whether the EGFR catalytic motifs are correct in a chain, first
+    calibrating the numbering offset."""
     offset = calibrate_numbering_offset(res_map)
     results: dict = {"_numbering_offset": offset}
     if offset is None:
@@ -146,8 +148,8 @@ def check_motifs(res_map: dict[int, str]) -> dict:
 def get_ligand_heavy_atoms(
     structure, ligand_comp_id: str
 ) -> list[tuple[str, str, np.ndarray, float, int]]:
-    """Yapıdaki her ligand kopyası için (chain_id, resseq, coords,
-    mean_occupancy, n_altloc_atoms) döndürür."""
+    """Returns (chain_id, resseq, coords, mean_occupancy, n_altloc_atoms) for
+    every ligand copy in the structure."""
     out = []
     for chain in structure[0]:
         for res in chain:
@@ -162,7 +164,7 @@ def get_ligand_heavy_atoms(
 
 
 def chain_completeness(chain) -> tuple[int, int]:
-    """(modellenmiş standart-AA residue sayısı, CA'sı eksik residue sayısı)."""
+    """(number of modeled standard-AA residues, number of residues missing a CA)."""
     n_modeled = 0
     n_missing_ca = 0
     for res in chain:
@@ -224,8 +226,9 @@ def analyze_pdb(pdb_id: str, ligand_comp_id: str, raw_pdb_dir: Path) -> dict:
             chain = model[chain_id]
             offset = chain_reports.get(chain_id, {}).get("_numbering_offset")
             if offset is None:
-                # Bu zincirde motif kalibrasyonu başarısız oldu; ofset
-                # varsayılamaz, bu zincir cep-mesafesi hesabına dahil edilmez.
+                # Motif calibration failed for this chain; the offset cannot
+                # be assumed, so this chain is excluded from the pocket
+                # distance calculation.
                 per_chain_dists[chain_id] = {"mean_pocket_dist": None, "calibration": "FAILED"}
                 continue
             d_k745 = min_dist_to_residue(chain, 745 - offset, coords)
@@ -272,7 +275,7 @@ def analyze_pdb(pdb_id: str, ligand_comp_id: str, raw_pdb_dir: Path) -> dict:
 
 
 def select_best_copy(analysis: dict, egfr_chains_expected: list[str]) -> dict:
-    """Çok kopyalı yapılarda hangi zincir/ligand çiftinin kullanılacağına karar verir."""
+    """Decides which chain/ligand pair to use for multi-copy structures."""
     valid_egfr_chains = [
         c for c in analysis["protein_chains"]
         if analysis["chain_motif_reports"].get(c, {}).get("_all_ok")
@@ -287,12 +290,13 @@ def select_best_copy(analysis: dict, egfr_chains_expected: list[str]) -> dict:
             "selected_ligand_chain": None,
             "selected_ligand_resnum": None,
             "selection_status": "NO_POCKET_LIGAND_FOUND",
-            "reason": "Hiçbir ligand kopyası ATP cebine (< 10 Å motif ortalaması) yeterince yakın değil.",
+            "reason": "No ligand copy is sufficiently close to the ATP pocket (< 10 Å motif average).",
         }
 
-    # Öncelik sırası: (1) cep mesafesi (Aşama 3 talimatı: 1 Å tolerans içindekiler
-    # "eşdeğer" sayılır), eşdeğerler arasında (2) en eksiksiz zincir (en az eksik
-    # CA), (3) en yüksek ligand occupancy, (4) en az alternatif konformasyon atomu.
+    # Priority order: (1) pocket distance (Stage 3 rule: copies within 1 Å
+    # tolerance are considered "equivalent"), and among equivalent copies:
+    # (2) the most complete chain (fewest missing CA), (3) highest ligand
+    # occupancy, (4) fewest alternate-conformation atoms.
     min_dist = min(lig["mean_pocket_distance_A"] for lig in pocket_ligands)
     near_best = [
         lig for lig in pocket_ligands
@@ -310,17 +314,17 @@ def select_best_copy(analysis: dict, egfr_chains_expected: list[str]) -> dict:
     n_valid_motif_chains = len(valid_egfr_chains)
 
     tiebreak_note = (
-        f" {len(near_best)} kopya mesafe bakımından eşdeğerdi (± 1 Å); "
-        f"tamlık (eksik CA: {best['chain_n_missing_ca']}), occupancy "
-        f"({best['mean_occupancy']:.2f}) ve altloc ({best['n_altloc_atoms']} atom) "
-        f"ile ayırt edildi."
+        f" {len(near_best)} copies were equivalent in distance (± 1 Å); "
+        f"disambiguated by completeness (missing CA: {best['chain_n_missing_ca']}), "
+        f"occupancy ({best['mean_occupancy']:.2f}) and altloc "
+        f"({best['n_altloc_atoms']} atom(s))."
         if len(near_best) > 1
         else ""
     )
     reason = (
-        f"Seçilen ligand kopyası (zincir {best['ligand_chain']}, resnum {best['ligand_resnum']}) "
-        f"ATP cebi referans noktalarına en yakın (ortalama {best['mean_pocket_distance_A']:.2f} Å), "
-        f"en yakın protein zinciri {best['closest_protein_chain']}.{tiebreak_note}"
+        f"Selected ligand copy (chain {best['ligand_chain']}, resnum {best['ligand_resnum']}) "
+        f"is closest to the ATP pocket reference points (mean {best['mean_pocket_distance_A']:.2f} Å), "
+        f"nearest protein chain {best['closest_protein_chain']}.{tiebreak_note}"
     )
     if len(pocket_ligands) > 1:
         others = [
@@ -328,7 +332,7 @@ def select_best_copy(analysis: dict, egfr_chains_expected: list[str]) -> dict:
             for lig in pocket_ligands
             if lig is not best
         ]
-        reason += f" Diğer cep-içi kopyalar (kullanılmadı): {', '.join(others)}."
+        reason += f" Other in-pocket copies (not used): {', '.join(others)}."
 
     return {
         "selected_chain": best["closest_protein_chain"],
@@ -363,11 +367,11 @@ def main() -> None:
     rows = []
     overrides = {}
     for i, r in enumerate(inv.itertuples(), start=1):
-        log.info("[%d/%d] %s analiz ediliyor...", i, len(inv), r.pdb_id)
+        log.info("[%d/%d] analyzing %s...", i, len(inv), r.pdb_id)
         try:
             analysis = analyze_pdb(r.pdb_id, r.ligand_comp_id, args.raw_pdb_dir)
         except Exception as exc:
-            log.error("  %s işlenirken hata: %s", r.pdb_id, exc)
+            log.error("  error processing %s: %s", r.pdb_id, exc)
             rows.append(
                 {
                     "pdb_id": r.pdb_id,
@@ -381,7 +385,7 @@ def main() -> None:
         selection = select_best_copy(analysis, egfr_chains_expected)
 
         motif_summary = {
-            chain_id: f"{rep['_n_ok']}/{rep['_n_checked']} OK ({rep['_n_missing']} eksik)"
+            chain_id: f"{rep['_n_ok']}/{rep['_n_checked']} OK ({rep['_n_missing']} missing)"
             for chain_id, rep in analysis["chain_motif_reports"].items()
         }
 
@@ -411,17 +415,17 @@ def main() -> None:
     )
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     out_df.to_csv(output_csv, index=False)
-    log.info("Seçim tablosu yazıldı: %s (%d satır)", output_csv, len(out_df))
+    log.info("Selection table written: %s (%d rows)", output_csv, len(out_df))
 
     if not args.pdb_id:
         args.overrides_yaml.parent.mkdir(parents=True, exist_ok=True)
         with open(args.overrides_yaml, "w") as f:
             yaml.dump(overrides, f, sort_keys=True, default_flow_style=False)
-        log.info("Ligand override kayıtları yazıldı: %s", args.overrides_yaml)
+        log.info("Ligand override records written: %s", args.overrides_yaml)
 
     n_ok = (out_df["selection_status"] == "OK").sum()
     n_failed = len(out_df) - n_ok
-    log.info("Özet: OK=%d, DİĞER=%d (toplam %d)", n_ok, n_failed, len(out_df))
+    log.info("Summary: OK=%d, OTHER=%d (total %d)", n_ok, n_failed, len(out_df))
     if n_failed:
         problem_cols = ["pdb_id", "selection_status", "reason"]
         print(out_df.loc[out_df["selection_status"] != "OK", problem_cols].to_string(index=False))
