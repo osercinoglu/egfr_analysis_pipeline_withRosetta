@@ -1,2 +1,0 @@
-ligand_comp_id,status,method,n_pdbs_using_ligand,pdbs_using_ligand,is_covalent,atom_names_all_match,atom_name_mismatches,pyrosetta_loaded,pyrosetta_scored,ref2015_score,pyrosetta_error
-F62,OK,CCD_CIF,1,5GMP,True,True,,True,True,2.7454095658164475,

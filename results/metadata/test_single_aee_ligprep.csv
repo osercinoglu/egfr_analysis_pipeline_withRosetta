@@ -1,2 +1,0 @@
-ligand_comp_id,status,method,n_pdbs_using_ligand,pdbs_using_ligand,is_covalent,atom_names_all_match,atom_name_mismatches,pyrosetta_loaded,pyrosetta_scored,ref2015_score,pyrosetta_error
-AEE,OK,CCD_CIF,4,"2ITP,2ITT,2J6M,2JIU",False,True,,True,True,1.3817998371789666,
