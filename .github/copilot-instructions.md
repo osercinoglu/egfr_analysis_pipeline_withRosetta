@@ -35,7 +35,7 @@ python scripts/05_prepare_ligand.py --ligand-id 634 --skip-pyrosetta-test
 
 # Stage 6 — frustration analysis (requires PyRosetta conda env `frustrato`)
 python src/run_pipeline.py --mode validate --n_decoys 50      # lysozyme sanity check
-python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50
+python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50 --n-jobs 2
 python src/run_pipeline.py --mode all --n_decoys 200          # full run (multi-day)
 python src/run_pipeline.py --mode all --pdb-ids 1XKK,5GMP --n_decoys 50 --n-jobs 2
 python src/run_pipeline.py --mode all --n_decoys 200 --results-dir runs/method-a/results --checkpoints-dir runs/method-a/checkpoints
@@ -101,8 +101,9 @@ Stage 5 uses CCD CIF as the first source so that param atom names match the crys
 
 **Performance**  
 ~4–5 min per decoy on a ~1700-contact structure. Always prototype at `--n_decoys 50` on a single structure before running `--mode all`.
-`--mode all` uses spawned workers and defaults to logical CPU count minus two;
+`--mode all` uses spawned workers and defaults to all available logical CPUs;
 override it with `--n-jobs N` when a lower concurrency limit is required.
+In `--mode single`, `--n-jobs N` instead parallelizes decoys for the selected PDB.
 Use `--results-dir` and `--checkpoints-dir` together to isolate result and resume
 files for comparative runs.
 

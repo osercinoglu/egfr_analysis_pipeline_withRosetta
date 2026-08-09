@@ -8,7 +8,7 @@ Usage examples:
   python src/run_pipeline.py --mode validate --n_decoys 50
 
   # Single-structure test:
-  python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50
+    python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50 --n-jobs 2
 
   # All EGFR structures (full analysis):
   python src/run_pipeline.py --mode all --n_decoys 200
@@ -40,8 +40,8 @@ _WORKER_SCOREFXN = None
 
 
 def default_worker_count() -> int:
-    """Reserve two logical CPUs for the operating system and interactive work."""
-    return max(1, (os.cpu_count() or 1) - 2)
+    """Use all available logical CPUs by default."""
+    return max(1, os.cpu_count() or 1)
 
 
 def resolve_worker_count(n_jobs: int | None, candidate_count: int) -> int:
@@ -77,6 +77,7 @@ def _worker_run_single(task: dict) -> dict | None:
         scorefxn=_WORKER_SCOREFXN,
         seed=task["seed"],
         rosetta_ligand_comp_id=task["rosetta_ligand_comp_id"],
+        n_jobs_decoys=1,
     )
     if summary is None:
         return None
@@ -179,6 +180,7 @@ def run_single_structure(
     scorefxn,
     seed: int = 0,
     rosetta_ligand_comp_id: str | None = None,
+    n_jobs_decoys: int = 1,
 ) -> dict | None:
     """
     Runs the frustration analysis for a single EGFR-inhibitor complex.
@@ -265,6 +267,9 @@ def run_single_structure(
         exclude_fa_rep=cfg["frustration"]["exclude_fa_rep"],
         checkpoint_path=str(ckpt_file),
         checkpoint_every=cfg["checkpoint"]["save_every_n_decoys"],
+        n_jobs=n_jobs_decoys,
+        worker_pose_paths=(str(processed_pdb), str(params_file)),
+        score_function=cfg["energy"]["score_function"],
     )
     elapsed = time.time() - t0
     logger.info(f"  {n_decoys} decoys completed — {elapsed/60:.1f} min")
@@ -552,7 +557,10 @@ def main():
         dest="n_jobs",
         type=int,
         default=None,
-        help="Spawned Stage 6 workers (default: logical CPUs minus 2).",
+        help=(
+            "Spawned workers: decoy workers in single mode and structure workers "
+            "in all mode (default: all available logical CPUs)."
+        ),
     )
     parser.add_argument(
         "--pdb-ids",
@@ -590,6 +598,7 @@ def main():
             args.pdb_id, row.iloc[0]["ligand_comp_id"], cfg, n_decoys, scorefxn,
             seed=cfg["frustration"]["seed"],
             rosetta_ligand_comp_id=row.iloc[0]["rosetta_ligand_comp_id"],
+            n_jobs_decoys=args.n_jobs or default_worker_count(),
         )
         logger.info(f"Result: {summary}")
 

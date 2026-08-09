@@ -29,13 +29,13 @@ skip_if_no_pyrosetta = pytest.mark.skipif(
 # Tests that don't require PyRosetta
 # ---------------------------------------------------------------------------
 
-def test_resolve_worker_count_reserves_two_cores(monkeypatch):
+def test_resolve_worker_count_uses_all_cores(monkeypatch):
     from src import run_pipeline
 
     monkeypatch.setattr(run_pipeline.os, "cpu_count", lambda: 8)
 
-    assert run_pipeline.default_worker_count() == 6
-    assert run_pipeline.resolve_worker_count(None, candidate_count=10) == 6
+    assert run_pipeline.default_worker_count() == 8
+    assert run_pipeline.resolve_worker_count(None, candidate_count=10) == 8
     assert run_pipeline.resolve_worker_count(None, candidate_count=3) == 3
     assert run_pipeline.resolve_worker_count(2, candidate_count=10) == 2
     with pytest.raises(ValueError, match="n_jobs"):

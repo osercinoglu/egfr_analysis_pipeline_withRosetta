@@ -237,7 +237,7 @@ Always launch the driver as a script, **not** with `python -m src.run_pipeline`.
 
 ```bash
 python src/run_pipeline.py --mode validate --n_decoys 50
-python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50
+python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50 --n-jobs 2
 python src/run_pipeline.py --mode all --n_decoys 50
 python src/run_pipeline.py --mode all --n_decoys 200
 # Limit an all-mode run to selected structures and explicitly use two workers
@@ -253,10 +253,14 @@ Runtime is substantial: one decoy on a ~1700-contact structure costs roughly
 with `--mode validate`, `--mode single`, or `--mode all --n_decoys 50` first.
 
 `--mode all` uses spawned worker processes, initializing PyRosetta separately in
-each process. It defaults to `max(1, logical_CPU_count - 2)` workers to leave two
-logical CPUs available. Use `--n-jobs N` (or `--n_jobs N`) to override that count.
+each process. It defaults to all available logical CPUs. Use `--n-jobs N` (or
+`--n_jobs N`) to override that count.
 Use `--pdb-ids ID1,ID2` to restrict an all-mode run without changing the candidate
 tables; this is useful for a parallel smoke test.
+
+For `--mode single`, `--n-jobs N` parallelizes decoy generation for that one
+structure. For `--mode all`, it parallelizes structures instead; each structure
+then generates decoys sequentially to avoid nested worker pools.
 
 Stage 6 writes per-structure parquet files, the all-mode summary, and plots under
 `--results-dir` (default: `paths.results` in `config.yaml`). Use

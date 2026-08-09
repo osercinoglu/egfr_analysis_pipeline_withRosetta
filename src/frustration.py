@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import copy
 import logging
+import multiprocessing as mp
 import os
 import pickle
 import random
@@ -27,6 +28,8 @@ import numpy as np
 import pandas as pd
 
 logger = logging.getLogger(__name__)
+
+_DECOY_WORKER_STATE: dict[str, Any] = {}
 
 # PyRosetta — warn if not installed, works fine after import otherwise
 try:
@@ -381,6 +384,161 @@ def generate_decoy(
 # 4. Main frustration survey
 # ---------------------------------------------------------------------------
 
+def _decoy_worker_init(
+    processed_pdb: str,
+    params_file: str,
+    score_function: str,
+    contacts: list[tuple[int, int]],
+    exclude_fa_rep: bool,
+) -> None:
+    """Initialize an isolated PyRosetta pose for spawned decoy workers."""
+    import pyrosetta
+    from pyrosetta import Pose, Vector1
+
+    pyrosetta.init("-mute all")
+    pose = Pose()
+    residue_set = pyrosetta.generate_nonstandard_residue_set(
+        pose, Vector1([params_file])
+    )
+    pyrosetta.pose_from_file(pose, residue_set, processed_pdb)
+    scorefxn = pyrosetta.create_score_function(score_function)
+    _DECOY_WORKER_STATE.update(
+        pose=pose,
+        scorefxn=scorefxn,
+        contacts=contacts,
+        partner_map=build_contact_partner_map(contacts),
+        aa_freq=native_aa_frequency(pose),
+        exclude_fa_rep=exclude_fa_rep,
+    )
+
+
+def _generate_decoy_batch(
+    decoy_indices: list[int],
+    seed: int,
+) -> list[tuple[int, dict[tuple[int, int], float]]]:
+    """Generate one deterministic batch of decoys in a spawned worker."""
+    if not _DECOY_WORKER_STATE:
+        raise RuntimeError("Decoy worker was not initialized")
+
+    pose = _DECOY_WORKER_STATE["pose"]
+    scorefxn = _DECOY_WORKER_STATE["scorefxn"]
+    contacts = _DECOY_WORKER_STATE["contacts"]
+    partner_map = _DECOY_WORKER_STATE["partner_map"]
+    aa_freq = _DECOY_WORKER_STATE["aa_freq"]
+    exclude_fa_rep = _DECOY_WORKER_STATE["exclude_fa_rep"]
+    batch = []
+    for decoy_index in decoy_indices:
+        decoy = generate_decoy(pose, scorefxn, aa_freq, seed=seed + decoy_index)
+        scorefxn(decoy)
+        energies = {}
+        for i, j in contacts:
+            energies[(i, j)] = contact_energy_eq2(
+                decoy,
+                scorefxn,
+                i,
+                j,
+                partner_map.get(i, []),
+                partner_map.get(j, []),
+                exclude_fa_rep,
+            )
+        batch.append((decoy_index, energies))
+    return batch
+
+
+def _generate_decoy_batch_task(
+    task: tuple[list[int], int],
+) -> list[tuple[int, dict[tuple[int, int], float]]]:
+    """Unpack a pool task for incremental parallel result consumption."""
+    return _generate_decoy_batch(*task)
+
+
+def _checkpoint_decoy_energies(
+    checkpoint_path: str | None,
+    decoy_energies: dict[tuple[int, int], list[float]],
+    completed_decoys: int,
+) -> None:
+    if checkpoint_path is None:
+        return
+    Path(checkpoint_path).parent.mkdir(parents=True, exist_ok=True)
+    with open(checkpoint_path, "wb") as checkpoint_file:
+        pickle.dump(
+            {
+                "decoy_energies": decoy_energies,
+                "completed_decoys": completed_decoys,
+            },
+            checkpoint_file,
+        )
+
+
+def _generate_parallel_decoys(
+    decoy_energies: dict[tuple[int, int], list[float]],
+    start_decoy: int,
+    n_decoys: int,
+    seed: int,
+    n_jobs: int,
+    processed_pdb: str,
+    params_file: str,
+    score_function: str,
+    contacts: list[tuple[int, int]],
+    exclude_fa_rep: bool,
+    checkpoint_path: str | None,
+    checkpoint_every: int,
+) -> None:
+    """Fill decoy energies with spawned workers and report incremental progress."""
+    indices = list(range(start_decoy, n_decoys))
+    if not indices:
+        return
+
+    worker_count = min(n_jobs, len(indices))
+    logger.info(
+        "Generating %s decoys with %s spawned workers.", len(indices), worker_count
+    )
+    tasks = [([decoy_index], seed) for decoy_index in indices]
+
+    try:
+        from tqdm.auto import tqdm
+    except ImportError:
+        tqdm = None
+
+    context = mp.get_context("spawn")
+    with context.Pool(
+        processes=worker_count,
+        initializer=_decoy_worker_init,
+        initargs=(
+            processed_pdb,
+            params_file,
+            score_function,
+            contacts,
+            exclude_fa_rep,
+        ),
+    ) as pool:
+        completed_decoys = start_decoy
+        progress = (
+            tqdm(total=len(indices), desc="Parallel decoys", unit="decoy")
+            if tqdm is not None
+            else None
+        )
+        try:
+            for batch in pool.imap(_generate_decoy_batch_task, tasks):
+                for _, energies in batch:
+                    for contact, energy in energies.items():
+                        decoy_energies[contact].append(energy)
+                completed_decoys += len(batch)
+                if progress is not None:
+                    progress.update(len(batch))
+                if (
+                    completed_decoys % checkpoint_every == 0
+                    or completed_decoys == n_decoys
+                ):
+                    _checkpoint_decoy_energies(
+                        checkpoint_path,
+                        decoy_energies,
+                        completed_decoys,
+                    )
+        finally:
+            if progress is not None:
+                progress.close()
+
 def run_frustration_survey(
     pose: "Pose",
     scorefxn: "ScoreFunction",
@@ -390,6 +548,9 @@ def run_frustration_survey(
     exclude_fa_rep: bool = True,
     checkpoint_path: str | None = None,
     checkpoint_every: int = 50,
+    n_jobs: int = 1,
+    worker_pose_paths: tuple[str, str] | None = None,
+    score_function: str | None = None,
 ) -> pd.DataFrame:
     """
     Computes the frustration index (Eq. 1) for every contact pair.
@@ -409,6 +570,9 @@ def run_frustration_survey(
         seed: initial random seed
         checkpoint_path: path to the checkpoint file (None → no saving)
         checkpoint_every: how often (in decoys) to checkpoint
+        n_jobs: number of spawned workers for decoys (1 → sequential)
+        worker_pose_paths: processed PDB and ligand params paths for workers
+        score_function: Rosetta score function name used by spawned workers
 
     Returns:
         DataFrame with columns:
@@ -451,36 +615,48 @@ def run_frustration_survey(
 
     # --- 3. Decoy loop ---
     aa_freq = native_aa_frequency(pose)
-
-    for d_idx in _tqdm(
-        range(start_decoy, n_decoys),
-        desc="Decoys",
-        initial=start_decoy,
-        total=n_decoys,
-    ):
-        decoy_seed = seed + d_idx
-        decoy = generate_decoy(pose, scorefxn, aa_freq, seed=decoy_seed)
-        scorefxn(decoy)
-
-        for i, j in contacts:
-            pi = partner_map.get(i, [])
-            pj = partner_map.get(j, [])
-            e = contact_energy_eq2(
-                decoy, scorefxn, i, j, pi, pj, exclude_fa_rep
+    if n_jobs < 1:
+        raise ValueError("n_jobs must be at least 1")
+    if n_jobs > 1:
+        if worker_pose_paths is None or score_function is None:
+            raise ValueError(
+                "Parallel decoys require worker_pose_paths and score_function"
             )
-            decoy_energies[(i, j)].append(e)
-
-        # Checkpoint
-        if (
-            checkpoint_path
-            and (d_idx + 1) % checkpoint_every == 0
+        _generate_parallel_decoys(
+            decoy_energies,
+            start_decoy,
+            n_decoys,
+            seed,
+            n_jobs,
+            *worker_pose_paths,
+            score_function,
+            contacts,
+            exclude_fa_rep,
+            checkpoint_path,
+            checkpoint_every,
+        )
+    else:
+        for d_idx in _tqdm(
+            range(start_decoy, n_decoys),
+            desc="Decoys",
+            initial=start_decoy,
+            total=n_decoys,
         ):
-            Path(checkpoint_path).parent.mkdir(parents=True, exist_ok=True)
-            with open(checkpoint_path, "wb") as f:
-                pickle.dump(
-                    {"decoy_energies": decoy_energies,
-                     "completed_decoys": d_idx + 1},
-                    f
+            decoy_seed = seed + d_idx
+            decoy = generate_decoy(pose, scorefxn, aa_freq, seed=decoy_seed)
+            scorefxn(decoy)
+
+            for i, j in contacts:
+                pi = partner_map.get(i, [])
+                pj = partner_map.get(j, [])
+                e = contact_energy_eq2(
+                    decoy, scorefxn, i, j, pi, pj, exclude_fa_rep
+                )
+                decoy_energies[(i, j)].append(e)
+
+            if (d_idx + 1) % checkpoint_every == 0:
+                _checkpoint_decoy_energies(
+                    checkpoint_path, decoy_energies, d_idx + 1
                 )
 
     # --- 4. Eq. 1: Z-score ---

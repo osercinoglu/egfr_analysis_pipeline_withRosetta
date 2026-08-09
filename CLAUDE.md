@@ -30,7 +30,7 @@ python scripts/05_prepare_ligand.py --ligand-id 634     # script 05
 
 # Stage 6 — frustration analysis
 python src/run_pipeline.py --mode validate --n_decoys 50            # 1LYZ lysozyme sanity check
-python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50
+python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50 --n-jobs 2
 python src/run_pipeline.py --mode all --n_decoys 200                # full run
 python src/run_pipeline.py --mode all --pdb-ids 1XKK,5GMP --n_decoys 50 --n-jobs 2
 python src/run_pipeline.py --mode all --n_decoys 200 --results-dir runs/method-a/results --checkpoints-dir runs/method-a/checkpoints
@@ -41,8 +41,9 @@ python -m pytest src/test_frustration.py::test_decoy_backbone_unchanged -v   # s
 ```
 
 Cost: roughly 4–5 min per decoy on a ~1700-contact structure. `--mode all --n_decoys 200` over 61 structures is a multi-day job — always prototype at `--n_decoys 50` or on a single structure.
-All-mode runs use spawned PyRosetta workers and default to logical CPU count minus two;
+All-mode runs use spawned PyRosetta workers and default to all available logical CPUs;
 pass `--n-jobs N` to reduce or explicitly set concurrency.
+For a single structure, `--n-jobs N` parallelizes decoys rather than structures.
 Pass `--results-dir` and `--checkpoints-dir` together to keep a comparative run's
 results and resume state separate from the defaults.
 
