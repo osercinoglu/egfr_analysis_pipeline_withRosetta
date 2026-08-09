@@ -1,76 +1,217 @@
 # EGFR Atomistic Frustration Pipeline
 
-Independent reimplementation extending Figure 5 of Chen et al. (2020)
-from 4 structures to 61 EGFR–inhibitor complexes (51 unique ligands,
-including 15 covalent inhibitors) for a more robust frustration–affinity
-correlation.
+Independent reimplementation of the atomistic frustration method from Chen et al.
+(2020), extended from the paper's 4 EGFR-inhibitor complexes to 61 structures
+(51 unique ligands, including 15 covalent inhibitors) to test a
+frustration-affinity correlation that the paper never computed.
 
 ## Reference
-Mingchen Chen et al., "Surveying biomolecular frustration at atomic resolution,"
-*Nat. Commun.* 11, 5944 (2020). DOI: [10.1038/s41467-020-19560-9](https://doi.org/10.1038/s41467-020-19560-9)
 
-## Installation
+Mingchen Chen et al., "Surveying biomolecular frustration at atomic resolution,"
+*Nat. Commun.* 11, 5944 (2020).
+DOI: [10.1038/s41467-020-19560-9](https://doi.org/10.1038/s41467-020-19560-9)
+
+## Current Repository State
+
+- Stages 1-5 have already been run for the current 61-structure set.
+- `data/processed/` contains 61 cleaned complexes.
+- `data/ligands/params/` contains params and conformer files for the 51 unique ligands.
+- Stage 6 has **not** been run for the 61-structure set yet: there is no checked-in
+  `results/egfr_frustration_summary.csv`, no correlation plot, and no `checkpoints/` directory.
+- 15 structures are flagged as covalent in `results/preparation_summary.csv`, but Stage 6
+  does not currently model covalent bonding and existing ligand params do not contain
+  ligand-specific `CONNECT` records.
+
+## Environment Setup
+
+Run everything from the repository root. `config.yaml` uses paths relative to the
+current working directory, and `src/run_pipeline.py` imports `frustration` as a
+top-level module.
+
+This repository now includes a reproducible conda spec:
 
 ```bash
+conda env create -f environment.yml
 conda activate frustrato
+```
 
-pip install numpy scipy matplotlib pandas biopython requests pyyaml tqdm pyarrow pytest
-pip install openbabel-wheel
-pip install pyrosetta-installer
+If the environment already exists:
+
+```bash
+conda env update -n frustrato -f environment.yml --prune
+conda activate frustrato
+```
+
+The environment file includes the notebook and preparation dependencies used in
+this repository, including `biopython`, `rdkit`, and the Python `openbabel`
+bindings via `openbabel-wheel`. PyRosetta still needs a separate install:
+
+```bash
 python -c "import pyrosetta_installer; pyrosetta_installer.install_pyrosetta()"
-
-# Verify
-python -c "import pyrosetta; pyrosetta.init(); print('PyRosetta OK')"
+python -c "import pyrosetta; pyrosetta.init('-mute all'); print('PyRosetta OK')"
 ```
 
-## Directory Structure
+## Data Sync Across Codespaces and a Workstation
 
-```
-egfr_atomic_resolution/
-├── config.yaml                          # All tunable parameters
-├── config/
-│   ├── pdb_reference_table.csv          # Curated list of 61 PDB IDs + paper reference values
-│   └── ligand_overrides.yaml            # Per-structure chain/ligand-copy selection (Stage 3 output)
-├── scripts/                             # Structure/ligand preparation pipeline (Stages 1-5)
-│   ├── 01_collect_metadata.py           # RCSB Data API metadata + QC tables
-│   ├── 02_download_structures.py        # Raw PDB/mmCIF download + integrity checks
-│   ├── 03_identify_egfr_chain_and_ligand.py  # Motif-based chain/ligand-copy selection
-│   ├── 04_prepare_complex.py            # Cleaned complex PDBs (data/processed/)
-│   └── 05_prepare_ligand.py             # Ligand .params generation + validation
-├── results/
-│   ├── metadata/
-│   │   ├── egfr_ligand_inventory.csv    # 61 structures: ligand, affinity, provenance
-│   │   ├── chain_ligand_selection.csv   # Stage 3 selection rationale
-│   │   ├── ligand_parameterization_status.csv  # Stage 5 per-ligand validation
-│   │   └── qc_*.csv                     # Ambiguity/warning subsets
-│   ├── preparation_summary.csv          # Stage 4 per-structure summary
-│   ├── egfr_frustration_summary.csv     # Stage 6 analysis output
-│   ├── egfr_correlation.png             # Fig. 5e-style scatter plot
-│   └── validation_lysozyme.png          # Lysozyme validation figure
-├── data/
-│   ├── raw_pdb/, raw_cif/               # Raw files from RCSB
-│   ├── processed/                       # Cleaned complexes (selected chain + target ligand)
-│   └── ligands/
-│       ├── *.cif / *.mol2               # CCD-derived ligand files
-│       └── params/                      # Rosetta .params files (one per unique ligand)
-├── checkpoints/       # Decoy intermediate results (for resume)
-├── src/
-│   ├── frustration.py          # Core engine: Eq. 1, Eq. 2, decoy generation
-│   ├── prepare_structures.py   # Shared helpers (CIF/SDF → mol2, molfile_to_params) used by scripts/05
-│   ├── run_pipeline.py         # Frustration analysis runner (validate/single/all)
-│   ├── search_egfr_structures.py  # Legacy RCSB/ChEMBL candidate search, superseded by scripts/01
-│   └── test_frustration.py    # Unit tests
-└── notebooks/
-    └── egfr_frustration_pipeline.ipynb
+For cross-machine use, the most practical approach is to keep code in Git and
+sync large derived data with DVC backed by Google Cloud Storage.
+
+### What to sync with DVC
+
+Track these directories:
+
+- `results/`
+- `checkpoints/`
+- `data/processed/`
+- `data/ligands/params/`
+
+Do not bother syncing these raw-download directories:
+
+- `data/raw_pdb/`
+- `data/raw_cif/`
+
+Those can be regenerated by rerunning the preparation pipeline.
+
+### Install DVC with Google Cloud Storage support
+
+On both your workstation and any Codespace where you plan to work:
+
+```bash
+pip install "dvc[gs]"
 ```
 
-## Usage
+### Install the Google Cloud CLI
 
-### Stages 1–5 — Structure & Ligand Preparation
+You need the `gcloud` CLI if you want to authenticate with user credentials via
+Application Default Credentials.
 
-Already run for the current 61-structure set; outputs are checked into
-`results/`, `data/processed/`, and `data/ligands/params/`. To regenerate or
-extend the set:
+For Linux (including GitHub Codespaces), a practical user-local install is:
+
+```bash
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz
+tar -xf google-cloud-cli-linux-x86_64.tar.gz
+./google-cloud-sdk/install.sh
+```
+
+Then open a new shell or source the generated shell config, and verify:
+
+```bash
+gcloud version
+```
+
+If you prefer, you can instead install `gcloud` using your system package
+manager or another official method documented by Google Cloud.
+
+### One-time repository setup
+
+Create a Google Cloud Storage bucket and choose a prefix, for example:
+
+- bucket: `egfr-analysis-data`
+- prefix: `egfr-pipeline`
+
+Then initialize DVC in the repository and add the GCS remote:
+
+```bash
+dvc init
+git add .dvc .dvcignore
+git commit -m "Initialize DVC"
+
+dvc remote add -d storage gs://egfr-analysis-data/egfr-pipeline
+```
+
+### Configure Google Cloud authentication
+
+The simplest path on a workstation is Application Default Credentials via the
+Google Cloud CLI:
+
+```bash
+gcloud init
+gcloud auth application-default login
+```
+
+On Codespaces or for a non-interactive setup, use a service account key JSON and
+point DVC at it with either an environment variable or local DVC config:
+
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/gcs-service-account.json
+```
+
+or
+
+```bash
+dvc remote modify --local storage credentialpath /path/to/gcs-service-account.json
+```
+
+If your project name is not discovered automatically, set it explicitly:
+
+```bash
+dvc remote modify storage projectname your-gcp-project-id
+```
+
+Do not commit secrets or service account keys.
+
+### Start tracking this repository's derived data
+
+```bash
+dvc add results
+dvc add checkpoints
+dvc add data/processed
+dvc add data/ligands/params
+
+git add results.dvc checkpoints.dvc data/processed.dvc data/ligands/params.dvc .gitignore
+git commit -m "Track analysis data with DVC"
+```
+
+### Push the initial dataset
+
+```bash
+dvc push
+git push
+```
+
+### Daily workflow
+
+Before starting work on either machine:
+
+```bash
+git pull
+dvc pull
+```
+
+After generating new outputs or checkpoints:
+
+```bash
+dvc push
+git push
+```
+
+That explicit push/pull workflow is more reliable than trying to run a
+background two-way sync daemon inside Codespaces, which may stop after idle
+timeout or Codespace shutdown.
+
+### What works without PyRosetta
+
+- `scripts/01_collect_metadata.py`
+- `scripts/02_download_structures.py`
+- `scripts/03_identify_egfr_chain_and_ligand.py`
+- `scripts/04_prepare_complex.py`
+- `scripts/05_prepare_ligand.py --skip-pyrosetta-test`
+- The non-PyRosetta tests in `src/test_frustration.py`
+
+### What still requires PyRosetta
+
+- `scripts/05_prepare_ligand.py` without `--skip-pyrosetta-test`
+- `python src/run_pipeline.py --mode validate ...`
+- `python src/run_pipeline.py --mode single ...`
+- `python src/run_pipeline.py --mode all ...`
+- The PyRosetta-marked tests in `src/test_frustration.py`
+
+## Commands
+
+There is no dedicated build step and no lint target in this repository. The main
+entry points are the stage scripts and the pytest suite.
+
+### Stages 1-5 - structure and ligand preparation
 
 ```bash
 python scripts/01_collect_metadata.py
@@ -78,100 +219,168 @@ python scripts/02_download_structures.py
 python scripts/03_identify_egfr_chain_and_ligand.py
 python scripts/04_prepare_complex.py
 python scripts/05_prepare_ligand.py
-
-# Single-structure test mode is available on each script, e.g.:
-python scripts/01_collect_metadata.py --pdb-id 5GMP
 ```
 
-### Stage 6 — Validation on Lysozyme
+Single-item debug modes:
+
+```bash
+python scripts/01_collect_metadata.py --pdb-id 5GMP
+python scripts/02_download_structures.py --pdb-id 5GMP
+python scripts/03_identify_egfr_chain_and_ligand.py --pdb-id 5GMP
+python scripts/04_prepare_complex.py --pdb-id 5GMP
+python scripts/05_prepare_ligand.py --ligand-id 634 --skip-pyrosetta-test
+```
+
+### Stage 6 - frustration analysis
+
+Always launch the driver as a script, **not** with `python -m src.run_pipeline`.
 
 ```bash
 python src/run_pipeline.py --mode validate --n_decoys 50
-# Output: results/validation_lysozyme.png
-# Expected: buried core contacts → mostly minimally frustrated
-```
-
-### Stage 6 — Full EGFR Analysis
-
-```bash
-# Single structure:
 python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50
-
-# Quick prototype (all 61 structures):
 python src/run_pipeline.py --mode all --n_decoys 50
-
-# Full analysis:
 python src/run_pipeline.py --mode all --n_decoys 200
+# Limit an all-mode run to selected structures and explicitly use two workers
+python src/run_pipeline.py --mode all --pdb-ids 1XKK,5GMP --n_decoys 50 --n-jobs 2
+# Keep a comparative run and its resume checkpoints outside the default folders
+python src/run_pipeline.py --mode all --n_decoys 200 \
+  --results-dir runs/method-a/results \
+  --checkpoints-dir runs/method-a/checkpoints
 ```
 
-The candidate list for `--mode all`/`single` is built from the Stage 1/4/5
-outputs (`load_candidates()` in `src/run_pipeline.py`), so it always
-reflects the current 61-structure set — nothing is hardcoded.
+Runtime is substantial: one decoy on a ~1700-contact structure costs roughly
+4-5 minutes, so a full `--mode all --n_decoys 200` run is multi-day. Prototype
+with `--mode validate`, `--mode single`, or `--mode all --n_decoys 50` first.
 
-Interrupted runs resume automatically from checkpoints in `checkpoints/`.
+`--mode all` uses spawned worker processes, initializing PyRosetta separately in
+each process. It defaults to `max(1, logical_CPU_count - 2)` workers to leave two
+logical CPUs available. Use `--n-jobs N` (or `--n_jobs N`) to override that count.
+Use `--pdb-ids ID1,ID2` to restrict an all-mode run without changing the candidate
+tables; this is useful for a parallel smoke test.
 
-Each decoy costs roughly 4–5 minutes on a mid-size structure (~1700
-protein-protein contacts); budget accordingly for `n_decoys` × structure
-count.
+Stage 6 writes per-structure parquet files, the all-mode summary, and plots under
+`--results-dir` (default: `paths.results` in `config.yaml`). Use
+`--checkpoints-dir` (default: `paths.checkpoints`) with the same custom run root
+to keep decoy-resume state separate. The preparation scripts already expose their
+own output arguments, such as `--output-dir` or `--output-csv`.
 
-### Unit Tests
+### Tests
 
 ```bash
 python -m pytest src/test_frustration.py -v
+python -m pytest src/test_frustration.py::test_decoy_backbone_unchanged -v
 ```
 
-## Key Parameters (config.yaml)
+If PyRosetta is not installed, the PyRosetta-marked tests are skipped automatically.
 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `contacts.protein_protein_cutoff_A` | 10.0 | Cα–Cα cutoff for protein contacts (Å) |
-| `contacts.ligand_protein_cutoff_A` | 10.0 | Ligand heavy-atom–Cα cutoff (Å) |
-| `frustration.n_decoys` | 50 | Number of decoys (full run: 200–1000) |
-| `frustration.seed` | 42 | Random seed for reproducibility |
-| `frustration.exclude_fa_rep` | true | Exclude fa_rep from energy (per paper) |
-| `frustration.thresholds.minimally_frustrated` | 0.78 | F_ij > 0.78 |
-| `frustration.thresholds.highly_frustrated` | -1.00 | F_ij < -1.0 |
-| `chain_selection.default` | A | Fallback chain; actual per-structure chain/ligand selection is driven by `config/ligand_overrides.yaml` |
+## High-Level Architecture
+
+The codebase has two halves that communicate only through files on disk.
+
+### Half 1 - `scripts/01` through `scripts/05`
+
+This is the preparation pipeline. Each stage reads the previous stage's CSV/YAML
+output and writes the next one.
+
+| Stage | Main output |
+|-------|-------------|
+| 01 | `results/metadata/egfr_ligand_inventory.csv` |
+| 02 | `data/raw_pdb/`, `data/raw_cif/`, `results/metadata/download_manifest.csv` |
+| 03 | `config/ligand_overrides.yaml`, `results/metadata/chain_ligand_selection.csv` |
+| 04 | `data/processed/{PDB}_clean.pdb`, `results/preparation_summary.csv` |
+| 05 | `data/ligands/params/{LIG}.params`, `results/metadata/ligand_parameterization_status.csv` |
+
+### Half 2 - `src/frustration.py` and `src/run_pipeline.py`
+
+- `src/frustration.py` is the engine: contact generation, Eq. 2 many-body energies,
+  decoy generation, Eq. 1 Z-scores, and class assignment.
+- `src/run_pipeline.py` is the driver: pose loading, candidate selection, checkpointing,
+  validation, spawned parallel per-structure runs, and the final affinity correlation plot.
+
+The contract between the two halves is `load_candidates()` in `src/run_pipeline.py`.
+It inner-joins:
+
+- `results/metadata/egfr_ligand_inventory.csv`
+- `results/preparation_summary.csv`
+- `results/metadata/ligand_parameterization_status.csv`
+
+Only rows where both the prepared complex and the ligand params have `status == "OK"`
+are kept. To add or remove structures, edit `config/pdb_reference_table.csv` and rerun
+the preparation stages; there is no hardcoded structure list in the analysis code.
+
+## Key Conventions and Gotchas
+
+### `ligand_comp_id` versus `rosetta_ligand_comp_id`
+
+Some CCD codes collide with Rosetta residue names (for example `634` becomes `Z34`).
+Stage 4 may rewrite the ligand `resName` in the cleaned PDB, but reporting and
+metadata still use the real CCD code. `.params` lookup and pose loading use the
+Rosetta-safe identifier.
+
+### `config/ligand_overrides.yaml` is generated output
+
+This file is produced by Stage 3 and is the source of truth for EGFR chain choice
+and ligand-copy selection. `config.yaml`'s `chain_selection.default` is only a fallback.
+
+### Frustration thresholds are hardcoded
+
+`config.yaml` contains a `frustration.thresholds` block, but the live thresholds are
+currently hardcoded in `src/frustration.py` and duplicated in the plotting logic in
+`src/run_pipeline.py`.
+
+### Decoy backbones must be restored explicitly
+
+`MutateResidue` perturbs the carbonyl oxygen even when the backbone is notionally
+fixed. `generate_decoy()` therefore hard-restores `N`, `CA`, `C`, and `O` coordinates
+from the native pose after repack/minimization, and `test_decoy_backbone_unchanged`
+exists specifically to guard that invariant.
+
+### Stage 5 can be run without PyRosetta validation
+
+`scripts/05_prepare_ligand.py` supports `--skip-pyrosetta-test`. That is the intended
+path in environments where the ligand params should be regenerated but PyRosetta is
+not installed yet.
+
+### Covalent handling is incomplete
+
+Stage 4 records covalent link information from mmCIF `_struct_conn`, but Stage 6 does
+not currently apply covalent chemistry and the checked-in params files do not include
+ligand-specific `CONNECT` records. The 15 covalent complexes are presently analyzed
+as if they were non-covalent.
+
+### Resume semantics
+
+`run_frustration_survey()` checkpoints decoy energies under `checkpoints/`, but
+`run_single_structure()` also short-circuits if
+`results/{PDB}_{LIG}_frustration.parquet` already exists. To rerun a structure with
+more decoys, delete both the result parquet and the matching checkpoint.
 
 ## Methods Summary
 
-### Frustration Index (Eq. 1)
-```
-F_ij = (E_ij_native − mean(E_ij_decoy)) / std(E_ij_decoy)
-```
-Large positive F → minimally frustrated (native contact far more stable than random).
+### Frustration index (Eq. 1)
 
-### Many-Body Energy Correction (Eq. 2)
-```
-E_ij = e_ij + 0.5 * Σ_{k ∈ contacts(i), k≠j} e_ik
-             + 0.5 * Σ_{l ∈ contacts(j), l≠i} e_jl
+```text
+F_ij = (mean(E_ij_decoy) - E_ij_native) / std(E_ij_decoy)
 ```
 
-### Decoy Generation
-1. Compute global amino acid frequency distribution from the native sequence
-2. Randomly substitute every position via `MutateResidue`
-3. Repack side chains (`PackRotamersMover`, backbone fixed) + 1 pass of
-   chi-only `MinMover` to resolve clashes
-4. Explicitly restore all backbone atoms (N, CA, C, O) from the native pose —
-   `MutateResidue` rebuilds the carbonyl O from idealized geometry, which can
-   drift ~0.5–0.8 Å from the (non-ideal) crystallographic position
+### Many-body correction (Eq. 2)
 
-### Structure Set (61 structures / 51 unique ligands)
-- Selected via `scripts/01-03` from RCSB (metadata validation, motif-based
-  EGFR chain identification, ATP-pocket-based ligand-copy selection for
-  multi-chain/multi-copy structures)
-- **Covalent inhibitors are included** (15 structures, e.g. 3IKA, 5HG7-9,
-  5J9Y/Z, 5UG8/9/C, 5YU9) — `scripts/04` records the covalent bond via
-  mmCIF `_struct_conn`, and `scripts/05` adds a CONNECT record to the
-  ligand's `.params`
-- Affinity values (`affinity_pM` in `egfr_ligand_inventory.csv`) are a mix
-  of Kd/Ki and IC50, log-transformed for correlation; the Kd/Ki vs. IC50
-  distinction from the original 25-structure candidate set is not currently
-  tracked through the new metadata pipeline
+```text
+E_ij = e_ij
+     + 0.5 * Σ_{k ∈ contacts(i), k≠j} e_ik
+     + 0.5 * Σ_{l ∈ contacts(j), l≠i} e_jl
+```
+
+### Decoy generation
+
+1. Estimate the amino-acid composition from the native structure.
+2. Randomize the full protein sequence on the native backbone.
+3. Repack side chains.
+4. Run chi-only minimization.
+5. Restore backbone atom coordinates from the native pose.
 
 ## Disclaimer
 
-This is an independent reimplementation; the original authors' code has not
-been published. Numerical results may differ from the paper; the goal is a
-qualitatively correct tool (strong inhibitor → more minimal frustration,
-weak inhibitor → less).
+This is an independent reimplementation. The original paper's code was not
+published, so exact numerical agreement is not expected; the target is qualitatively
+correct behavior.

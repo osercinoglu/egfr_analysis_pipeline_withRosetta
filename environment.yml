@@ -1,0 +1,20 @@
+name: frustrato
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - biopython
+  - requests
+  - pyyaml
+  - tqdm
+  - pyarrow
+  - pytest
+  - rdkit
+  - pip
+  - pip:
+      - openbabel-wheel
+      - pyrosetta-installer

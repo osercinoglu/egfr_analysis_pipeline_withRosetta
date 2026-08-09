@@ -5,7 +5,7 @@ Chen et al., Nature Communications 11, 5944 (2020)
 DOI: 10.1038/s41467-020-19560-9
 
 Eq. 1: Frustration index (Z-score)
-    F_ij = (E_ij_native - mean(E_ij_decoy)) / std(E_ij_decoy)
+    F_ij = (mean(E_ij_decoy) - E_ij_native) / std(E_ij_decoy)
 
 Eq. 2: Many-body pairwise energy correction
     E_ij = e_ij
@@ -495,7 +495,7 @@ def run_frustration_survey(
         if sigma < 1e-9:
             f_idx = 0.0
         else:
-            f_idx = (e_nat - mu) / sigma
+            f_idx = (mu - e_nat) / sigma
 
         # Frustration class
         if f_idx > 0.78:

@@ -29,6 +29,42 @@ skip_if_no_pyrosetta = pytest.mark.skipif(
 # Tests that don't require PyRosetta
 # ---------------------------------------------------------------------------
 
+def test_resolve_worker_count_reserves_two_cores(monkeypatch):
+    from src import run_pipeline
+
+    monkeypatch.setattr(run_pipeline.os, "cpu_count", lambda: 8)
+
+    assert run_pipeline.default_worker_count() == 6
+    assert run_pipeline.resolve_worker_count(None, candidate_count=10) == 6
+    assert run_pipeline.resolve_worker_count(None, candidate_count=3) == 3
+    assert run_pipeline.resolve_worker_count(2, candidate_count=10) == 2
+    with pytest.raises(ValueError, match="n_jobs"):
+        run_pipeline.resolve_worker_count(0, candidate_count=10)
+
+
+def test_with_output_directories_preserves_input_paths():
+    from src.run_pipeline import with_output_directories
+
+    cfg = {
+        "paths": {
+            "results": "results",
+            "checkpoints": "checkpoints",
+            "candidates_csv": "results/metadata/inventory.csv",
+        }
+    }
+
+    updated = with_output_directories(
+        cfg,
+        results_dir="runs/method-a/results",
+        checkpoints_dir="runs/method-a/checkpoints",
+    )
+
+    assert cfg["paths"]["results"] == "results"
+    assert updated["paths"]["results"] == "runs/method-a/results"
+    assert updated["paths"]["checkpoints"] == "runs/method-a/checkpoints"
+    assert updated["paths"]["candidates_csv"] == cfg["paths"]["candidates_csv"]
+
+
 def test_build_contact_partner_map_basic():
     """build_contact_partner_map should produce the correct partner list."""
     from src.frustration import build_contact_partner_map
@@ -262,6 +298,12 @@ def test_frustration_survey_small(tmp_path):
     assert set(df["frustration_class"]).issubset(valid_classes)
     # F_index should be a real number
     assert not df["F_index"].isna().any(), "Found NaN F_index values"
+    expected_f = np.where(
+        df["decoy_std"] < 1e-9,
+        0.0,
+        (df["decoy_mean"] - df["E_native"]) / df["decoy_std"],
+    )
+    assert np.allclose(df["F_index"], expected_f)
 
 
 if __name__ == "__main__":

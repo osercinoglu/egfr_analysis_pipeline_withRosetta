@@ -12,10 +12,15 @@ Usage examples:
 
   # All EGFR structures (full analysis):
   python src/run_pipeline.py --mode all --n_decoys 200
+
+    # Restrict an all-mode run and use two spawned workers:
+    python src/run_pipeline.py --mode all --pdb-ids 1XKK,5GMP --n_decoys 50 --n-jobs 2
 """
 
 import argparse
 import logging
+import multiprocessing as mp
+import os
 import sys
 import time
 from pathlib import Path
@@ -31,10 +36,88 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+_WORKER_SCOREFXN = None
+
+
+def default_worker_count() -> int:
+    """Reserve two logical CPUs for the operating system and interactive work."""
+    return max(1, (os.cpu_count() or 1) - 2)
+
+
+def resolve_worker_count(n_jobs: int | None, candidate_count: int) -> int:
+    """Resolve a requested worker count without starting idle workers."""
+    if candidate_count < 1:
+        raise ValueError("candidate_count must be at least 1")
+    if n_jobs is not None and n_jobs < 1:
+        raise ValueError("n_jobs must be at least 1")
+    requested = n_jobs if n_jobs is not None else default_worker_count()
+    return min(requested, candidate_count)
+
+
+def _worker_init(score_function: str) -> None:
+    """Initialize an isolated PyRosetta runtime for a spawned worker."""
+    import pyrosetta
+
+    global _WORKER_SCOREFXN
+    pyrosetta.init("-mute all")
+    _WORKER_SCOREFXN = pyrosetta.create_score_function(score_function)
+
+
+def _worker_run_single(task: dict) -> dict | None:
+    """Run one structure in a spawned PyRosetta worker."""
+    if _WORKER_SCOREFXN is None:
+        raise RuntimeError("PyRosetta worker was not initialized")
+
+    pdb_id = task["pdb_id"]
+    summary = run_single_structure(
+        pdb_id=pdb_id,
+        ligand_comp_id=task["ligand_comp_id"],
+        cfg=task["cfg"],
+        n_decoys=task["n_decoys"],
+        scorefxn=_WORKER_SCOREFXN,
+        seed=task["seed"],
+        rosetta_ligand_comp_id=task["rosetta_ligand_comp_id"],
+    )
+    if summary is None:
+        return None
+
+    affinity_pM = task["affinity_pM"]
+    result = {
+        "pdb_id": pdb_id,
+        "ligand_comp_id": task["ligand_comp_id"],
+        "affinity_pM": affinity_pM,
+        "log10_affinity_pM": np.log10(max(affinity_pM, 1e-3)),
+        **summary,
+    }
+    logger.info(
+        "%s: Ligand pocket: %s min-frust / %s total contacts",
+        pdb_id,
+        summary["n_minimally_frustrated"],
+        summary["n_contacts_total"],
+    )
+    return result
+
 
 def load_config(path: str) -> dict:
     with open(path) as f:
         return yaml.safe_load(f)
+
+
+def with_output_directories(
+    cfg: dict,
+    results_dir: str | None = None,
+    checkpoints_dir: str | None = None,
+) -> dict:
+    """Return a config copy with optional Stage 6 output directory overrides."""
+    if results_dir is None and checkpoints_dir is None:
+        return cfg
+
+    updated_cfg = {**cfg, "paths": {**cfg["paths"]}}
+    if results_dir is not None:
+        updated_cfg["paths"]["results"] = str(Path(results_dir))
+    if checkpoints_dir is not None:
+        updated_cfg["paths"]["checkpoints"] = str(Path(checkpoints_dir))
+    return updated_cfg
 
 
 def load_candidates(cfg: dict) -> pd.DataFrame:
@@ -303,51 +386,70 @@ def run_validation(cfg: dict, n_decoys: int):
     return df
 
 
-def run_all_egfr(cfg: dict, n_decoys: int):
+def run_all_egfr(
+    cfg: dict,
+    n_decoys: int,
+    n_jobs: int | None = None,
+    pdb_ids: set[str] | None = None,
+):
     """
     Frustration analysis + correlation plot for all EGFR structures listed
     by load_candidates() (Stage 1-5 outputs, currently 61 structures / 51
     unique ligands).
+
+    Uses spawned processes so each worker initializes an independent PyRosetta
+    runtime. By default, two logical CPUs remain available for the system.
     """
-    import pyrosetta
     import matplotlib
     matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-    from scipy import stats
 
     df_cands = load_candidates(cfg)
-    scorefxn = pyrosetta.create_score_function(cfg["energy"]["score_function"])
+    if pdb_ids is not None:
+        df_cands = df_cands[df_cands["pdb_id"].isin(pdb_ids)].copy()
+        missing_ids = pdb_ids - set(df_cands["pdb_id"])
+        if missing_ids:
+            raise ValueError(
+                "Requested PDB IDs are not ready for analysis: "
+                + ", ".join(sorted(missing_ids))
+            )
+    if df_cands.empty:
+        raise ValueError("No structures are ready for analysis")
+
+    worker_count = resolve_worker_count(n_jobs, len(df_cands))
+    logger.info(
+        "Processing %s structures with %s spawned workers (CPU count: %s).",
+        len(df_cands),
+        worker_count,
+        os.cpu_count() or 1,
+    )
+
+    tasks = [
+        {
+            "pdb_id": row.pdb_id,
+            "ligand_comp_id": row.ligand_comp_id,
+            "rosetta_ligand_comp_id": row.rosetta_ligand_comp_id,
+            "affinity_pM": row.affinity_pM,
+            "cfg": cfg,
+            "n_decoys": n_decoys,
+            "seed": cfg["frustration"]["seed"],
+        }
+        for row in df_cands.itertuples(index=False)
+    ]
 
     results = []
-    for _, row in df_cands.iterrows():
-        pdb_id         = row["pdb_id"]
-        ligand_comp_id = row["ligand_comp_id"]
-        rosetta_id     = row["rosetta_ligand_comp_id"]
-        aff_pM         = row["affinity_pM"]
-
-        logger.info(f"\n{'='*50}")
-        logger.info(f"Processing: {pdb_id} (ligand={ligand_comp_id}, "
-                    f"affinity={aff_pM:.1f} pM)")
-
-        summary = run_single_structure(
-            pdb_id, ligand_comp_id, cfg, n_decoys, scorefxn,
-            seed=cfg["frustration"]["seed"],
-            rosetta_ligand_comp_id=rosetta_id,
-        )
-        if summary is None:
-            continue
-
-        results.append({
-            "pdb_id": pdb_id,
-            "ligand_comp_id": ligand_comp_id,
-            "affinity_pM": aff_pM,
-            "log10_affinity_pM": np.log10(max(aff_pM, 1e-3)),
-            **summary,
-        })
-        logger.info(f"  Ligand pocket: {summary['n_minimally_frustrated']} min-frust / "
-                    f"{summary['n_contacts_total']} total contacts")
+    context = mp.get_context("spawn")
+    with context.Pool(
+        processes=worker_count,
+        initializer=_worker_init,
+        initargs=(cfg["energy"]["score_function"],),
+    ) as pool:
+        for result in pool.imap_unordered(_worker_run_single, tasks):
+            if result is not None:
+                results.append(result)
 
     df_res = pd.DataFrame(results)
+    if not df_res.empty:
+        df_res = df_res.sort_values("pdb_id").reset_index(drop=True)
 
     # Save
     results_dir = Path(cfg["paths"]["results"])
@@ -434,23 +536,50 @@ def main():
     )
     parser.add_argument("--pdb_id", default=None)
     parser.add_argument("--n_decoys", type=int, default=None)
+    parser.add_argument(
+        "--results-dir",
+        default=None,
+        help="Directory for Stage 6 result files and plots (default: config paths.results).",
+    )
+    parser.add_argument(
+        "--checkpoints-dir",
+        default=None,
+        help="Directory for Stage 6 checkpoint files (default: config paths.checkpoints).",
+    )
+    parser.add_argument(
+        "--n-jobs",
+        "--n_jobs",
+        dest="n_jobs",
+        type=int,
+        default=None,
+        help="Spawned Stage 6 workers (default: logical CPUs minus 2).",
+    )
+    parser.add_argument(
+        "--pdb-ids",
+        default=None,
+        help="Comma-separated PDB IDs to analyze in --mode all.",
+    )
     args = parser.parse_args()
 
-    cfg = load_config(args.config)
+    cfg = with_output_directories(
+        load_config(args.config),
+        results_dir=args.results_dir,
+        checkpoints_dir=args.checkpoints_dir,
+    )
     n_decoys = args.n_decoys or cfg["frustration"]["n_decoys"]
 
-    # Initialize PyRosetta
-    import pyrosetta
-    pyrosetta.init("-mute all")
-    logger.info("PyRosetta initialized.")
-
     if args.mode == "validate":
+        import pyrosetta
+        pyrosetta.init("-mute all")
+        logger.info("PyRosetta initialized.")
         run_validation(cfg, n_decoys)
 
     elif args.mode == "single":
         if not args.pdb_id:
             parser.error("--pdb_id is required for --mode single")
         import pyrosetta
+        pyrosetta.init("-mute all")
+        logger.info("PyRosetta initialized.")
         scorefxn = pyrosetta.create_score_function(cfg["energy"]["score_function"])
         df_cands = load_candidates(cfg)
         row = df_cands[df_cands["pdb_id"] == args.pdb_id]
@@ -465,7 +594,12 @@ def main():
         logger.info(f"Result: {summary}")
 
     elif args.mode == "all":
-        run_all_egfr(cfg, n_decoys)
+        pdb_ids = (
+            {pdb_id.strip() for pdb_id in args.pdb_ids.split(",") if pdb_id.strip()}
+            if args.pdb_ids
+            else None
+        )
+        run_all_egfr(cfg, n_decoys, n_jobs=args.n_jobs, pdb_ids=pdb_ids)
 
 
 if __name__ == "__main__":

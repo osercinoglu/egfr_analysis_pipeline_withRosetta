@@ -32,6 +32,8 @@ python scripts/05_prepare_ligand.py --ligand-id 634     # script 05
 python src/run_pipeline.py --mode validate --n_decoys 50            # 1LYZ lysozyme sanity check
 python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50
 python src/run_pipeline.py --mode all --n_decoys 200                # full run
+python src/run_pipeline.py --mode all --pdb-ids 1XKK,5GMP --n_decoys 50 --n-jobs 2
+python src/run_pipeline.py --mode all --n_decoys 200 --results-dir runs/method-a/results --checkpoints-dir runs/method-a/checkpoints
 
 # Tests (must run from repo root — tests import `src.frustration`)
 python -m pytest src/test_frustration.py -v
@@ -39,6 +41,10 @@ python -m pytest src/test_frustration.py::test_decoy_backbone_unchanged -v   # s
 ```
 
 Cost: roughly 4–5 min per decoy on a ~1700-contact structure. `--mode all --n_decoys 200` over 61 structures is a multi-day job — always prototype at `--n_decoys 50` or on a single structure.
+All-mode runs use spawned PyRosetta workers and default to logical CPU count minus two;
+pass `--n-jobs N` to reduce or explicitly set concurrency.
+Pass `--results-dir` and `--checkpoints-dir` together to keep a comparative run's
+results and resume state separate from the defaults.
 
 ## Architecture
 
@@ -90,7 +96,7 @@ Net effect: identical backbone, identical ligand, scrambled sequence, relaxed si
 - **Decoy backbones must be bit-identical to native.** `MutateResidue` rebuilds the carbonyl O from idealized geometry and drifts ~0.5–0.8 Å from the crystallographic position, so `generate_decoy()` explicitly restores N/CA/C/O from the native pose after repack+MinMover. This is not a minimizer artifact and cannot be fixed by movemap settings alone; `test_decoy_backbone_unchanged` guards it at 0.05 Å.
 - **Ligand atom names must match exactly.** The CCD-CIF-first ordering in Stage 5 exists because params atom names generated any other way (`C1`, `C2`…) don't match the PDB HETATM names (`C16`, `C17`…) and `fill_missing_atoms` then fails. Stage 5 validates the names against *every* processed PDB using that ligand — preserve that check when touching ligand prep.
 - **`src/molfile_to_params.py` needs the vendored `src/rosetta_py/`** (not shipped with PyRosetta). `run_molfile_to_params()` sets `PYTHONPATH` to `src/` and runs with `cwd=params_dir`; don't "clean up" either.
-- **The Z-score sign convention looks inverted — verify before trusting any results.** Rosetta energies are negative-is-favorable, so a well-optimized native contact has `E_native < mean(E_decoy)`, making `(E_native − mu)` negative and F negative — which `frustration.py:501` labels `highly_frustrated`. Contacts scoring `F > 0.78` are ones where the native is *worse* than the decoy average. The docstring at `frustration.py:9` states the opposite intent. This propagates: `n_minimally_frustrated` is the x-axis of the correlation plot, so a flipped sign silently correlates affinity against the wrong quantity. `config/pdb_reference_table.csv` settles it empirically — across the 61 structures the paper reports 772 minimally frustrated contacts vs 6 highly frustrated (means 12.7 and 0.1); if a validation run produces the mirror image of that ratio, the sign is flipped. Fix is one line: negate the numerator at `frustration.py:489`, or swap the two comparisons at `frustration.py:501`. Not yet checked against the paper's own Eq. 1 — the paper is not in the repo, and the equations in `README.md` and the docstrings are transcriptions.
+- **Z-score sign convention.** Rosetta energies are negative-is-favorable, so `run_frustration_survey()` computes `F = (mean(E_decoy) - E_native) / std(E_decoy)`. More favorable native contacts therefore have positive F and are classified as minimally frustrated. The 1LYZ 50-decoy check produced 43% minimally and 10% highly frustrated contacts; its core minimal fraction (48%) exceeded its surface fraction (38%).
 - **Frustration thresholds are hardcoded** at `src/frustration.py:501` (`> 0.78`, `< -1.0`) and duplicated in `run_pipeline.py`'s plot and in the tests. `config.yaml`'s `frustration.thresholds` block is currently **not read by any code** — change both places, or wire the config through.
 - **Resume semantics.** `run_frustration_survey` pickles decoy energies to `checkpoints/` every `checkpoint.save_every_n_decoys` decoys. Separately, `run_single_structure` short-circuits entirely if `results/{PDB}_{LIG}_frustration.parquet` already exists. Re-running with a *larger* `--n_decoys` will not extend a completed structure — delete the parquet (and the checkpoint) to force recomputation.
 - **Covalent inhibitors are only half-handled.** Stage 4 records the CYS797 linkage from `_struct_conn` into `preparation_summary.csv` (15 structures flagged `is_covalent`), but the CONNECT-record step described in `scripts/05_prepare_ligand.py`'s docstring and in `README.md` **is not implemented** — no code writes it and no `.params` on disk contains one. Stage 6 has no covalent handling at all; those 15 complexes are currently scored as non-covalent.
@@ -104,6 +110,6 @@ Net effect: identical backbone, identical ligand, scrambled sequence, relaxed si
 `README.md` is current. These describe the superseded 25-structure pipeline and will mislead:
 
 - `PROJECT_STATUS.md` — 25 structures, covalent inhibitors *excluded*, old `/home/tugba/...` paths, a "FastRelax → MinMover" next-step that has already been done, and a stage numbering (Stage 0–4) that doesn't match the current Stage 1–6 scheme.
-- `notebooks/egfr_frustration_pipeline.ipynb` — hardcodes `os.chdir("/home/tugba/egfr_atomic_resolution")` and calls `process_structure(row["pdb_id"], row["ligand_id"], ...)` against a `ligand_id` column that no longer exists (it's `ligand_comp_id` now).
+- `notebooks/egfr_frustration_pipeline.ipynb` has been updated for the 61-structure pipeline, but its full Stage 4 survey remains expensive and should be run only after a single-structure prototype.
 - `src/search_egfr_structures.py` — legacy RCSB/ChEMBL/BindingDB candidate search, superseded by `scripts/01`. Likewise `results/egfr_*candidates.csv`.
 - `src/prepare_structures.py` — still live, but only as a helper library for `scripts/05` (`cif_to_mol2`, `download_ligand_cif`, `run_molfile_to_params`, …). Its own `process_structure()` / `main()` are the old 25-structure entry point.
