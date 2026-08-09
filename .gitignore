@@ -13,6 +13,9 @@ build/
 .coverage
 htmlcov/
 
+#google-cloud-sdk
+google-cloud-sdk/
+
 # Jupyter
 .ipynb_checkpoints/
 *.ipynb_checkpoints
@@ -40,3 +43,9 @@ checkpoints/*.pickle
 
 # Logs
 *.log
+
+# Results (keep them locally, but don't commit to repo)
+results/
+/results
+/data
+/checkpoints
