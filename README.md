@@ -5,6 +5,42 @@ Independent reimplementation of the atomistic frustration method from Chen et al
 (51 unique ligands, including 15 covalent inhibitors) to test a
 frustration-affinity correlation that the paper never computed.
 
+## Quick Start
+
+On a machine with nothing installed:
+
+```bash
+git clone <repo-url>
+cd egfr_analysis_pipeline_withRosetta
+./setup.sh
+```
+
+`setup.sh` bootstraps everything in seven idempotent stages: Miniforge, the
+`frustrato` conda environment, PyRosetta, the Google Cloud CLI, credentials, the
+DVC-tracked data, and a verification pass. Re-run it at any time — each stage detects
+what is already done, so an interrupted setup resumes rather than restarting.
+
+There is **one** step it cannot automate: `gcloud auth application-default login` opens
+a browser and waits for you to sign in. Everything else is unattended. For genuinely
+unattended runs (CI, or a collaborator with a shared key) use a service-account key:
+
+```bash
+./setup.sh --credentials /path/to/key.json --yes
+```
+
+Useful variants:
+
+```bash
+./setup.sh --skip-auth --no-data          # code only, no cloud access needed
+./setup.sh --quota-project my-gcp-project # avoids the ADC quota-project prompt
+./setup.sh --skip-pyrosetta               # skip the 1.7 GB download for now
+./setup.sh --help                         # all flags
+```
+
+Expect 25-40 minutes on a fresh machine, dominated by the PyRosetta download.
+The sections below document what each stage does, and how to perform the steps by
+hand if you would rather not use the script.
+
 ## Reference
 
 Mingchen Chen et al., "Surveying biomolecular frustration at atomic resolution,"
@@ -272,6 +308,80 @@ Optionally, pin the project for DVC itself so it does not depend on discovery:
 
 ```bash
 dvc remote modify storage projectname githubrepodvcs
+```
+
+### Giving a collaborator access to the data bucket
+
+Two ways. Prefer the first.
+
+#### Option A — grant their Google account (recommended)
+
+No shared secret, revocable per person, and their actions are attributable in the audit
+log. Run these once, as the bucket owner:
+
+```bash
+# Read + write objects: exactly what `dvc pull` and `dvc push` need.
+gcloud storage buckets add-iam-policy-binding gs://egfr-analysis-pipeline-withrosetta \
+    --member="user:collaborator@example.com" \
+    --role="roles/storage.objectUser"
+
+# Lets them use your project as their ADC quota project, so they do not need
+# a GCP project of their own. Skip if they already have one.
+gcloud projects add-iam-policy-binding githubrepodvcs \
+    --member="user:collaborator@example.com" \
+    --role="roles/serviceusage.serviceUsageConsumer"
+```
+
+`roles/storage.objectUser` covers read, write, and delete of objects plus listing.
+Use `roles/storage.objectViewer` instead if you want them read-only (`dvc pull` but not
+`dvc push`). This bucket has uniform bucket-level access enabled, so IAM is the only
+mechanism in play — object ACLs are disabled and cannot be used.
+
+The collaborator then just runs:
+
+```bash
+./setup.sh --quota-project githubrepodvcs
+```
+
+To revoke, swap `add-iam-policy-binding` for `remove-iam-policy-binding`.
+
+#### Option B — share a service-account key
+
+Use this when the collaborator cannot be added to the GCP project, or for CI. The key
+is a **long-lived credential in a file**: anyone holding it has the granted access,
+there is no per-person attribution, and revoking it cuts off everyone at once.
+
+```bash
+# Create a service account and give it object read/write on the bucket only
+gcloud iam service-accounts create egfr-dvc \
+    --project githubrepodvcs \
+    --display-name "EGFR pipeline DVC access"
+
+gcloud storage buckets add-iam-policy-binding gs://egfr-analysis-pipeline-withrosetta \
+    --member="serviceAccount:egfr-dvc@githubrepodvcs.iam.gserviceaccount.com" \
+    --role="roles/storage.objectUser"
+
+# Generate the key file to hand over
+gcloud iam service-accounts keys create ~/egfr-dvc-key.json \
+    --iam-account="egfr-dvc@githubrepodvcs.iam.gserviceaccount.com"
+```
+
+Send `egfr-dvc-key.json` over a private channel — never email, chat, or a git repo.
+The collaborator runs:
+
+```bash
+./setup.sh --credentials /path/to/egfr-dvc-key.json
+```
+
+which writes the path into `.dvc/config.local` (gitignored, never shared) and requires
+no gcloud install, no browser login, and no quota project — a service account carries
+its own project.
+
+Rotate or delete the key when the collaboration ends:
+
+```bash
+gcloud iam service-accounts keys list --iam-account="egfr-dvc@githubrepodvcs.iam.gserviceaccount.com"
+gcloud iam service-accounts keys delete KEY_ID --iam-account="egfr-dvc@githubrepodvcs.iam.gserviceaccount.com"
 ```
 
 #### Non-interactive setups (Codespaces, CI)

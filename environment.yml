@@ -17,4 +17,11 @@ dependencies:
   - pip
   - pip:
       - openbabel-wheel
+      # DVC with Google Cloud Storage support — required for `dvc pull`/`dvc push`
+      # against the gs:// remote in .dvc/config.
+      - dvc[gs]
+      # NOTE: pyrosetta-installer is retained only because it is small and some
+      # docs reference it. Its install_pyrosetta() entry point is BROKEN (it
+      # resolves a placeholder wheel that 404s). setup.sh installs PyRosetta by
+      # resolving the newest versioned wheel directly; see README.
       - pyrosetta-installer

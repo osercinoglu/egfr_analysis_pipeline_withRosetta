@@ -10,12 +10,25 @@ Independent reimplementation of the atomistic frustration method from Chen et al
 
 ## Environment
 
+**`./setup.sh` does all of this.** It is the one-command bootstrap for a fresh clone —
+Miniforge, the env, PyRosetta, gcloud, credentials, `dvc pull`, then verification. Every
+stage is idempotent and individually skippable (`--skip-conda`, `--skip-pyrosetta`,
+`--skip-auth`, `--no-data`, `--skip-tests`, `--credentials PATH`, `--yes`). Reach for it
+before hand-running any of the steps below; the manual commands are documented because
+they are what the script automates, not because they are the normal path.
+
 ```bash
 conda env create -f environment.yml     # creates env `frustrato` (python 3.10)
 conda activate frustrato
 # or, if it already exists:
 conda env update -n frustrato -f environment.yml --prune
 ```
+
+Two things `setup.sh` does deliberately differently from the line above: it omits
+`--prune` (pruning can tear out the pip-installed PyRosetta, which is absent from
+`environment.yml`, forcing a 1.7 GB re-download), and it refuses to `dvc pull` when
+`dvc status` shows locally modified outputs, because a pull would check out the
+last-added version and destroy un-added results.
 
 `environment.yml` is the only dependency manifest — there is no `requirements.txt`. It installs `pyrosetta-installer`, **not PyRosetta itself**. PyRosetta is a separate step:
 
