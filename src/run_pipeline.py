@@ -78,6 +78,7 @@ def _worker_run_single(task: dict) -> dict | None:
         seed=task["seed"],
         rosetta_ligand_comp_id=task["rosetta_ligand_comp_id"],
         n_jobs_decoys=1,
+        structures_dir=task.get("structures_dir"),
     )
     if summary is None:
         return None
@@ -108,9 +109,10 @@ def with_output_directories(
     cfg: dict,
     results_dir: str | None = None,
     checkpoints_dir: str | None = None,
+    structures_dir: str | None = None,
 ) -> dict:
     """Return a config copy with optional Stage 6 output directory overrides."""
-    if results_dir is None and checkpoints_dir is None:
+    if results_dir is None and checkpoints_dir is None and structures_dir is None:
         return cfg
 
     updated_cfg = {**cfg, "paths": {**cfg["paths"]}}
@@ -118,7 +120,21 @@ def with_output_directories(
         updated_cfg["paths"]["results"] = str(Path(results_dir))
     if checkpoints_dir is not None:
         updated_cfg["paths"]["checkpoints"] = str(Path(checkpoints_dir))
+    if structures_dir is not None:
+        updated_cfg["paths"]["saved_structures"] = str(Path(structures_dir))
     return updated_cfg
+
+
+def structure_output_directory(
+    cfg: dict,
+    pdb_id: str,
+    ligand_comp_id: str,
+) -> Path | None:
+    """Return the per-structure directory where native/decoy PDBs should be written."""
+    structures_root = cfg["paths"].get("saved_structures")
+    if not structures_root:
+        return None
+    return Path(structures_root) / f"{pdb_id}_{ligand_comp_id}"
 
 
 def load_candidates(cfg: dict) -> pd.DataFrame:
@@ -181,6 +197,7 @@ def run_single_structure(
     seed: int = 0,
     rosetta_ligand_comp_id: str | None = None,
     n_jobs_decoys: int = 1,
+    structures_dir: str | None = None,
 ) -> dict | None:
     """
     Runs the frustration analysis for a single EGFR-inhibitor complex.
@@ -191,12 +208,15 @@ def run_single_structure(
     sees (see scripts/04_prepare_complex.py and config/ligand_overrides.yaml)
     — usually identical to ligand_comp_id, except for the rare cases with an
     internal Rosetta residue/patch name collision (e.g. 5HG8: '634' -> 'Z34').
+    If structures_dir is set, the native pose and generated decoy poses are
+    written there as PDB files.
     """
     import pyrosetta
     from frustration import (
         get_protein_contacts,
         get_ligand_contacts,
         run_frustration_survey,
+        save_pose_pdb,
         summarize_ligand_frustration,
     )
 
@@ -211,6 +231,12 @@ def run_single_structure(
     params_file   = params_dir / f"{rosetta_ligand_comp_id}.params"
     ckpt_file     = ckpt_dir / f"{pdb_id}_{ligand_comp_id}_ckpt.pkl"
     result_file   = results_dir / f"{pdb_id}_{ligand_comp_id}_frustration.parquet"
+    if structures_dir is None:
+        structure_dir = structure_output_directory(cfg, pdb_id, ligand_comp_id)
+    else:
+        structure_dir = Path(structures_dir)
+    native_pdb_path = structure_dir / "native.pdb" if structure_dir is not None else None
+    decoy_dir = structure_dir / "decoys" if structure_dir is not None else None
 
     # Load the result if it's already complete
     if result_file.exists():
@@ -224,6 +250,15 @@ def run_single_structure(
             lig_contacts = get_ligand_contacts(pose, lig_resnum, lig_cutoff)
         else:
             lig_contacts = []
+        if native_pdb_path is not None:
+            save_pose_pdb(pose, native_pdb_path)
+        if decoy_dir is not None:
+            logger.warning(
+                "%s: decoy PDB saving was requested, but the existing parquet result "
+                "prevents reconstructing decoy structures. Delete the result and "
+                "checkpoint to regenerate decoys with PDB output.",
+                pdb_id,
+            )
         return summarize_ligand_frustration(df, lig_contacts)
 
     if not processed_pdb.exists() or not params_file.exists():
@@ -237,6 +272,8 @@ def run_single_structure(
     except Exception as e:
         logger.error(f"{pdb_id}: Pose loading error: {e}")
         return None
+    if native_pdb_path is not None:
+        save_pose_pdb(pose, native_pdb_path)
 
     logger.info(f"  Total residues: {pose.total_residue()}")
 
@@ -270,6 +307,7 @@ def run_single_structure(
         n_jobs=n_jobs_decoys,
         worker_pose_paths=(str(processed_pdb), str(params_file)),
         score_function=cfg["energy"]["score_function"],
+        decoy_structures_dir=str(decoy_dir) if decoy_dir is not None else None,
     )
     elapsed = time.time() - t0
     logger.info(f"  {n_decoys} decoys completed — {elapsed/60:.1f} min")
@@ -293,6 +331,7 @@ def run_validation(cfg: dict, n_decoys: int):
     from frustration import (
         get_protein_contacts,
         run_frustration_survey,
+        save_pose_pdb,
     )
     import matplotlib
     matplotlib.use("Agg")
@@ -309,6 +348,10 @@ def run_validation(cfg: dict, n_decoys: int):
     # Load the pose (no ligand)
     pose = pyrosetta.pose_from_pdb(str(pdb_path))
     logger.info(f"Lysozyme: {pose.total_residue()} residues loaded")
+    structure_dir = None
+    if cfg["paths"].get("saved_structures"):
+        structure_dir = Path(cfg["paths"]["saved_structures"]) / "1LYZ_validation"
+        save_pose_pdb(pose, structure_dir / "native.pdb")
 
     scorefxn = pyrosetta.create_score_function(
         cfg["energy"]["score_function"]
@@ -320,6 +363,8 @@ def run_validation(cfg: dict, n_decoys: int):
         cfg["contacts"]["seq_sep_min"],
     )
     logger.info(f"  {len(contacts)} contacts")
+    checkpoints_dir = Path(cfg["paths"]["checkpoints"])
+    checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     df = run_frustration_survey(
         pose=pose,
@@ -329,9 +374,12 @@ def run_validation(cfg: dict, n_decoys: int):
         seed=cfg["frustration"]["seed"],
         exclude_fa_rep=cfg["frustration"]["exclude_fa_rep"],
         checkpoint_path=str(
-            Path(cfg["paths"]["checkpoints"]) / "1LYZ_validation_ckpt.pkl"
+            checkpoints_dir / "1LYZ_validation_ckpt.pkl"
         ),
         checkpoint_every=cfg["checkpoint"]["save_every_n_decoys"],
+        decoy_structures_dir=(
+            str(structure_dir / "decoys") if structure_dir is not None else None
+        ),
     )
 
     # Burial estimate via SASA (Biopython)
@@ -378,7 +426,7 @@ def run_validation(cfg: dict, n_decoys: int):
     logger.info(f"Validation figure saved: {fig_path}")
 
     df.to_parquet(
-        Path(cfg["paths"]["checkpoints"]) / "1LYZ_frustration.parquet",
+        checkpoints_dir / "1LYZ_frustration.parquet",
         index=False,
     )
 
@@ -437,6 +485,11 @@ def run_all_egfr(
             "cfg": cfg,
             "n_decoys": n_decoys,
             "seed": cfg["frustration"]["seed"],
+            "structures_dir": (
+                str(structure_output_directory(cfg, row.pdb_id, row.ligand_comp_id))
+                if cfg["paths"].get("saved_structures")
+                else None
+            ),
         }
         for row in df_cands.itertuples(index=False)
     ]
@@ -552,6 +605,14 @@ def main():
         help="Directory for Stage 6 checkpoint files (default: config paths.checkpoints).",
     )
     parser.add_argument(
+        "--save-structures-dir",
+        default=None,
+        help=(
+            "Directory where native and decoy PDBs should be saved. Files are "
+            "written under per-structure subdirectories; omitted means no PDB saving."
+        ),
+    )
+    parser.add_argument(
         "--n-jobs",
         "--n_jobs",
         dest="n_jobs",
@@ -573,6 +634,7 @@ def main():
         load_config(args.config),
         results_dir=args.results_dir,
         checkpoints_dir=args.checkpoints_dir,
+        structures_dir=args.save_structures_dir,
     )
     n_decoys = args.n_decoys or cfg["frustration"]["n_decoys"]
 

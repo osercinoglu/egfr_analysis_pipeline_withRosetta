@@ -380,6 +380,13 @@ def generate_decoy(
     return decoy
 
 
+def save_pose_pdb(pose: "Pose", output_path: str | Path) -> None:
+    """Write a pose to a PDB file, creating parent directories as needed."""
+    path = Path(output_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    pose.dump_pdb(str(path))
+
+
 # ---------------------------------------------------------------------------
 # 4. Main frustration survey
 # ---------------------------------------------------------------------------
@@ -390,6 +397,7 @@ def _decoy_worker_init(
     score_function: str,
     contacts: list[tuple[int, int]],
     exclude_fa_rep: bool,
+    decoy_structures_dir: str | None,
 ) -> None:
     """Initialize an isolated PyRosetta pose for spawned decoy workers."""
     import pyrosetta
@@ -409,6 +417,7 @@ def _decoy_worker_init(
         partner_map=build_contact_partner_map(contacts),
         aa_freq=native_aa_frequency(pose),
         exclude_fa_rep=exclude_fa_rep,
+        decoy_structures_dir=decoy_structures_dir,
     )
 
 
@@ -426,9 +435,15 @@ def _generate_decoy_batch(
     partner_map = _DECOY_WORKER_STATE["partner_map"]
     aa_freq = _DECOY_WORKER_STATE["aa_freq"]
     exclude_fa_rep = _DECOY_WORKER_STATE["exclude_fa_rep"]
+    decoy_structures_dir = _DECOY_WORKER_STATE["decoy_structures_dir"]
     batch = []
     for decoy_index in decoy_indices:
         decoy = generate_decoy(pose, scorefxn, aa_freq, seed=seed + decoy_index)
+        if decoy_structures_dir is not None:
+            save_pose_pdb(
+                decoy,
+                Path(decoy_structures_dir) / f"decoy_{decoy_index + 1:04d}.pdb",
+            )
         scorefxn(decoy)
         energies = {}
         for i, j in contacts:
@@ -483,6 +498,7 @@ def _generate_parallel_decoys(
     exclude_fa_rep: bool,
     checkpoint_path: str | None,
     checkpoint_every: int,
+    decoy_structures_dir: str | None,
 ) -> None:
     """Fill decoy energies with spawned workers and report incremental progress."""
     indices = list(range(start_decoy, n_decoys))
@@ -510,6 +526,7 @@ def _generate_parallel_decoys(
             score_function,
             contacts,
             exclude_fa_rep,
+            decoy_structures_dir,
         ),
     ) as pool:
         completed_decoys = start_decoy
@@ -539,6 +556,7 @@ def _generate_parallel_decoys(
             if progress is not None:
                 progress.close()
 
+
 def run_frustration_survey(
     pose: "Pose",
     scorefxn: "ScoreFunction",
@@ -551,6 +569,7 @@ def run_frustration_survey(
     n_jobs: int = 1,
     worker_pose_paths: tuple[str, str] | None = None,
     score_function: str | None = None,
+    decoy_structures_dir: str | None = None,
 ) -> pd.DataFrame:
     """
     Computes the frustration index (Eq. 1) for every contact pair.
@@ -573,6 +592,7 @@ def run_frustration_survey(
         n_jobs: number of spawned workers for decoys (1 → sequential)
         worker_pose_paths: processed PDB and ligand params paths for workers
         score_function: Rosetta score function name used by spawned workers
+        decoy_structures_dir: directory where decoy PDBs should be written
 
     Returns:
         DataFrame with columns:
@@ -634,6 +654,7 @@ def run_frustration_survey(
             exclude_fa_rep,
             checkpoint_path,
             checkpoint_every,
+            decoy_structures_dir,
         )
     else:
         for d_idx in _tqdm(
@@ -644,6 +665,11 @@ def run_frustration_survey(
         ):
             decoy_seed = seed + d_idx
             decoy = generate_decoy(pose, scorefxn, aa_freq, seed=decoy_seed)
+            if decoy_structures_dir is not None:
+                save_pose_pdb(
+                    decoy,
+                    Path(decoy_structures_dir) / f"decoy_{d_idx + 1:04d}.pdb",
+                )
             scorefxn(decoy)
 
             for i, j in contacts:

@@ -9,6 +9,7 @@ Usage:
 """
 
 import sys
+from pathlib import Path
 import pytest
 import numpy as np
 
@@ -57,12 +58,43 @@ def test_with_output_directories_preserves_input_paths():
         cfg,
         results_dir="runs/method-a/results",
         checkpoints_dir="runs/method-a/checkpoints",
+        structures_dir="runs/method-a/structures",
     )
 
     assert cfg["paths"]["results"] == "results"
     assert updated["paths"]["results"] == "runs/method-a/results"
     assert updated["paths"]["checkpoints"] == "runs/method-a/checkpoints"
+    assert updated["paths"]["saved_structures"] == "runs/method-a/structures"
     assert updated["paths"]["candidates_csv"] == cfg["paths"]["candidates_csv"]
+
+
+def test_structure_output_directory_uses_saved_structures_root():
+    from src.run_pipeline import structure_output_directory
+
+    cfg = {"paths": {"saved_structures": "saved_structures"}}
+
+    assert structure_output_directory(cfg, "5GMP", "F62").as_posix() == (
+        "saved_structures/5GMP_F62"
+    )
+
+
+def test_save_pose_pdb_creates_parent_directory(tmp_path):
+    from src.frustration import save_pose_pdb
+
+    class FakePose:
+        def __init__(self):
+            self.paths = []
+
+        def dump_pdb(self, path):
+            self.paths.append(path)
+            Path(path).write_text("ATOM\n", encoding="utf-8")
+
+    pose = FakePose()
+    output_path = tmp_path / "nested" / "native.pdb"
+    save_pose_pdb(pose, output_path)
+
+    assert pose.paths == [str(output_path)]
+    assert output_path.read_text(encoding="utf-8") == "ATOM\n"
 
 
 def test_build_contact_partner_map_basic():

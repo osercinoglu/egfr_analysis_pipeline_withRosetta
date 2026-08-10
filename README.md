@@ -242,6 +242,9 @@ python src/run_pipeline.py --mode all --n_decoys 50
 python src/run_pipeline.py --mode all --n_decoys 200
 # Limit an all-mode run to selected structures and explicitly use two workers
 python src/run_pipeline.py --mode all --pdb-ids 1XKK,5GMP --n_decoys 50 --n-jobs 2
+# Save the native pose plus every generated decoy PDB for later inspection
+python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50 \
+  --save-structures-dir runs/method-a/structures
 # Keep a comparative run and its resume checkpoints outside the default folders
 python src/run_pipeline.py --mode all --n_decoys 200 \
   --results-dir runs/method-a/results \
@@ -267,6 +270,10 @@ Stage 6 writes per-structure parquet files, the all-mode summary, and plots unde
 `--checkpoints-dir` (default: `paths.checkpoints`) with the same custom run root
 to keep decoy-resume state separate. The preparation scripts already expose their
 own output arguments, such as `--output-dir` or `--output-csv`.
+Use `--save-structures-dir` to write `native.pdb` plus `decoys/decoy_XXXX.pdb`
+under one subdirectory per analyzed structure. If a parquet result already
+exists, the native pose can still be dumped, but decoy PDBs require deleting the
+existing parquet and checkpoint so the decoys are regenerated.
 
 ### Tests
 

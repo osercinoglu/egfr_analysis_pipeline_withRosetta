@@ -39,6 +39,7 @@ python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50 --n-jobs 2
 python src/run_pipeline.py --mode all --n_decoys 200          # full run (multi-day)
 python src/run_pipeline.py --mode all --pdb-ids 1XKK,5GMP --n_decoys 50 --n-jobs 2
 python src/run_pipeline.py --mode all --n_decoys 200 --results-dir runs/method-a/results --checkpoints-dir runs/method-a/checkpoints
+python src/run_pipeline.py --mode single --pdb_id 5GMP --n_decoys 50 --save-structures-dir runs/method-a/structures
 
 # Tests (run from repo root)
 python -m pytest src/test_frustration.py -v
@@ -106,6 +107,8 @@ override it with `--n-jobs N` when a lower concurrency limit is required.
 In `--mode single`, `--n-jobs N` instead parallelizes decoys for the selected PDB.
 Use `--results-dir` and `--checkpoints-dir` together to isolate result and resume
 files for comparative runs.
+Use `--save-structures-dir` when native and decoy PDBs should be persisted; each
+structure gets `native.pdb` plus `decoys/decoy_XXXX.pdb`.
 
 ## Project Status Tracking
 
