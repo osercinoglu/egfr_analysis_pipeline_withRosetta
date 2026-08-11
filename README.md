@@ -5,6 +5,19 @@ Independent reimplementation of the atomistic frustration method from Chen et al
 (51 unique ligands, including 15 covalent inhibitors) to test a
 frustration-affinity correlation that the paper never computed.
 
+**The repository holds two implementations.**
+
+| | |
+|---|---|
+| `src/` + `scripts/` | The original EGFR-specific pipeline. All 61 structures have been run. Still works, still the source of every stored result. |
+| `atomfrust/` | A target-agnostic rewrite — any protein-ligand, protein-only or protein-protein complex. Built to `plans/frustratometer-ng-plan.md`. |
+
+The rewrite exists because a set of diagnostics run against the original pipeline
+found that it computes a well-defined quantity which is **not** the published one.
+That finding, and the evidence for it, is summarised under
+[What the diagnostics found](#what-the-diagnostics-found) — read it before
+interpreting any number in `results/`.
+
 ## Quick Start
 
 On a machine with nothing installed:
@@ -55,11 +68,9 @@ DOI: [10.1038/s41467-020-19560-9](https://doi.org/10.1038/s41467-020-19560-9)
   Note that the directory also holds stale `{PDB}_{LIG}.params` files left over from the
   superseded 25-structure pipeline; only the 51 listed in
   `results/metadata/ligand_parameterization_status.csv` are current.
-- Stage 6 has been run for **19 of the 61 structures**, all at `--n_decoys 50`:
-  1XKK, 2ITO, 2RGP, 3POZ, 3W2O, 3W2Q, 3W2S, 3W32, 3W33, 4JQ7, 4LI5, 5C8M, 5CAO,
-  5CAP, 5CAV, 5EM8, 5GMP, 5GTY, 5UGB. Each has a
-  `results/{PDB}_{LIG}_frustration.parquet` and a matching `checkpoints/*_ckpt.pkl`.
-  `results/egfr_frustration_summary.csv` and `results/egfr_correlation.png` cover all 19.
+- Stage 6 has been run for **all 61 structures**, at `--n_decoys 50` (completed
+  2026-08-11). Each has a `results/{PDB}_{LIG}_frustration.parquet` and a matching
+  `checkpoints/*_ckpt.pkl`; `results/egfr_frustration_summary.csv` holds all 61 rows.
   The 1LYZ validation has also been run (`results/validation_lysozyme.png`).
   These outputs are DVC-tracked, not committed — run `dvc pull` to obtain them.
 - Keep new runs at `--n_decoys 50` unless recomputing all 19. A different decoy count
@@ -71,35 +82,163 @@ DOI: [10.1038/s41467-020-19560-9](https://doi.org/10.1038/s41467-020-19560-9)
 
 ### Interpreting the correlation
 
-The current 19-structure result is **Pearson r = -0.297, p = 0.217** — not significant.
-More importantly, the plotted metric `n_minimally_frustrated` is confounded by pocket
-size and should not be read as a frustration result on its own. The ligand-pocket
-contact count varies from 476 to 733 across these structures, and every count metric
-inherits that variation. Ranked by Spearman correlation against `log10(affinity_pM)`:
+**At the full 61 structures, nothing is significant.** Against `log10(affinity_pM)`:
 
-| metric | Spearman rho | p |
+| metric | Pearson r | p | Spearman rho | p |
+|---|---:|---:|---:|---:|
+| `n_minimally_frustrated` | +0.038 | 0.77 | +0.023 | 0.86 |
+| `n_neutral` | -0.121 | 0.35 | -0.126 | 0.33 |
+| `n_contacts_total` | -0.068 | 0.60 | -0.086 | 0.51 |
+| `frac_minimally` | +0.131 | 0.31 | +0.171 | 0.19 |
+
+An earlier version of this file reported a 19-structure result in which `n_neutral`
+(rho = -0.541, p = 0.017) and `n_contacts_total` (rho = -0.521, p = 0.022) reached
+p < 0.05. **Those are withdrawn.** They were found while examining four descriptors at
+an n where the 5% critical value for a *single* pre-specified test is already r = 0.456,
+and they do not survive the full set. The n = 19 subset was also a deliberately chosen
+WT non-covalent series, so part of the shift is composition rather than sample size.
+
+The pocket-size confound is still structurally present — `n_contacts_total` ranges 476
+to 733, and every count metric inherits that variation — it simply no longer produces a
+significant correlation to be confounded by.
+
+**For contrast, the paper's own counts do carry signal on these same 61 structures.**
+`config/pdb_reference_table.csv` records Chen et al.'s per-structure minimally-frustrated
+counts; against log2(affinity_pM) they give **r = -0.388, p = 0.002**. The published
+quantity has a real relationship here while this pipeline's has none — which is what the
+diagnostics below explain.
+
+## What the diagnostics found
+
+Four checks were run against the stored results before any new code was written. Each is
+reproducible from `analysis/`, and each is recorded in `project_status/`.
+
+**1. The many-body equation collapses.** With `B_i` the sum of `e_ik` over *all* of i's
+contact partners, the published Eq. 2 reduces algebraically:
+
+```text
+E_ij = e_ij + 0.5*(B_i - e_ij) + 0.5*(B_j - e_ij) = 0.5*(B_i + B_j)
+```
+
+`e_ij` cancels exactly, so the "per-contact" energy carries no pair-specific information —
+it is the mean of two per-residue totals. Fitting `E_native` as `a_i + a_j` gives
+**R^2 = 1.000000 on 38/38 structures** (max residual 8.6e-14 against a 3.59 kcal/mol
+spread). Only ~4% of the per-contact index variance is pair-specific.
+
+The exclusions are in the published paper, verified against the source — so this is a
+property of the published equation, not a transcription error. It also explains the
+pocket-size confound: if a contact's value is fixed by its two residues, contact counts
+are graph-degree statistics.
+
+**2. The counts are of the wrong object.** The paper's counts are **ligand-residue**
+contacts — "a strong inhibitor XTF-262 (PDB 5GMP) forms more than ten minimally
+frustrating interactions with its pocket", and the reference table gives 5GMP = 16,
+5EM8 = 4, range 4-23. This pipeline counts protein-protein pairs in a 10 A pocket shell:
+266-407, uncorrelated with the paper at r = 0.163, p = 0.51. A sweep of 189
+selector/threshold configurations closed none of the gap.
+
+**3. The index is ligand-blind.** Delete the ligand from 5GMP and re-run at the same
+seed: pocket-contact Pearson r = **0.9904**, and `E_native` is **bit-identical**
+(max |delta| = 0.000e+00). This is structural — `get_protein_contacts` excludes
+non-protein residues, so the ligand is in no partner list and cannot reach `E_native`.
+Its entire influence runs through side-chain repacking in the decoys.
+
+**4. Four protocol deviations from the paper**, each quoted in
+`project_status/2026-08-11_0130_a4-paper-check-ligand-is-a-node.md`:
+
+| | paper | this pipeline |
 |---|---|---|
-| `n_neutral` | -0.541 | 0.017 |
-| `n_contacts_total` | -0.521 | 0.022 |
-| `n_highly_frustrated` | -0.455 | 0.050 |
-| `frac_minimally` | +0.351 | 0.141 |
-| `n_minimally_frustrated` | -0.347 | 0.145 |
-| `frac_highly` | -0.172 | 0.482 |
+| decoy sequence | *"randomly shuffle the protein sequence"* (a permutation) | i.i.d. draw from the composition |
+| relaxation | *"a short Monte-Carlo relaxation"* | one chi-only MinMover pass |
+| native reference | *"obtained in a similar fashion by omitting the shuffling step"* — the native is repacked too | crystal pose scored as deposited |
+| sequence separation | no criterion stated | `\|i-j\| >= 4` applied |
 
-The two metrics reaching p < 0.05 are pocket size and the count of *neutral* contacts —
-the ones that are not frustrated in either direction. A frustration-driven effect would
-not rank that way. Dividing pocket size out reverses the sign: `frac_minimally` is
-+0.351 overall and +0.745 (p = 0.008) on the 11 WT non-covalent structures, meaning a
-*less* frustrated pocket binds *more weakly*, opposite to the paper's hypothesis.
-The clearest single case is ligand 03P, which appears in both 3POZ (23 pM) and 3W2O
-(8400 pM): despite a 365-fold affinity difference their `frac_minimally` values are
-0.5007 and 0.4964.
+The native-reference asymmetry alone is large: repacking the native collapses
+`frac_highly` from 0.068 to 0.010 on 5GMP and more than doubles `mean_F`.
 
-Treat this as a hypothesis to test rather than a conclusion — n is small, the set mixes
-WT with T790M/L858R and covalent complexes, and several metrics were tested without
-correction. Prefer `frac_minimally`, or regress the raw count on affinity with
-`n_contacts_total` as a covariate. Both `_plot_correlation()` and the notebook still
-plot the raw count.
+**None of this makes the stored results wrong** — they are a faithful, reproducible
+computation. They are a computation of something other than what the paper reports.
+
+## The `atomfrust` package
+
+The target-agnostic rewrite. Any protein-ligand, protein-only or protein-protein complex;
+no EGFR-specific anything.
+
+```bash
+pip install -e . --no-deps     # --no-deps is deliberate; see below
+atomfrust --help
+```
+
+Eleven subcommands:
+
+```bash
+atomfrust prepare --pdb my_complex.pdb --ligand B:501 -o prepared/
+atomfrust generate-decoys --spec S.yaml --run-dir R --n-decoys 250   # no index computed
+atomfrust analyze --run-dir R --shell-A 5.0 --index rank_percentile  # no PyRosetta at all
+atomfrust run | validate | converge | strata | report | calibrate | verify
+atomfrust metrics-selftest
+```
+
+**Two design choices carry most of the value.**
+
+*Direct pair energies are stored; `E_ij` never is.* The many-body formula, contact
+definition, shell, index function and `exclude_fa_rep` are therefore all chosen at
+analysis time, against a finished run, with no Rosetta call. Re-analysing under different
+settings is free; only a change to how decoys were *generated* requires regeneration, and
+the run directory says which is which and exits 3 rather than guessing.
+
+*Decoy i is seeded `base_seed + i`.* So results do not depend on worker count or sharding,
+and the first N decoys of a 1000-decoy run **are** the ensemble an N-decoy run would have
+produced — making the convergence sweep one run rather than eight.
+
+`--no-deps` is deliberate: every runtime dependency is already satisfied by
+`environment.yml`, and letting pip resolve them risks it touching the conda environment's
+PyRosetta — a 1.7 GB reinstall. PyRosetta is absent from `dependencies` for the same
+reason; naming it sends pip to PyPI, where the placeholder wheel 404s.
+
+### What is established, and what is not
+
+The package has ~844 tests (`pytest -m unit` is PyRosetta-free and runs in ~45 s;
+`-m integration` needs PyRosetta and `dvc pull`). Test count is not evidence of
+scientific validity, so the two are separated here.
+
+**Established** — the new engine reproduces the old one at four independent levels:
+contacts (exactly 1772 for 5GMP), native energies (r = 1.0000000000), whole decoys
+regenerated against a stored checkpoint through a stochastic packing step
+(max |delta| 1.2e-05), and class counts (**exact for all 61 structures**). The ligand is
+now a node, and 5GMP has 27 ligand-incident contacts at a 6 A shell where the prototype
+had none. Mutating a pocket residue shifts pocket energies by 21.41 REU while the same
+substitution 31 A away shifts exactly 0.000.
+
+**Not established:**
+
+- **The chemotype axis — the intended novel contribution — is untested.** Its
+  positive-control gate currently *fails*: the native ligand does not rank high within its
+  own decoy ensemble (AUROC 0.333). The gate correctly refuses to emit a cross-axis
+  redundancy number. Three hand-written fixture molecules is not evidence either way; it
+  needs a real property-matched library.
+- **The protein-protein interface gate (S0.2) is unmeasured** — no multi-chain structure
+  exists under `data/`. The case is implemented and skips; 1BRS, 1AY7 and 1JTG are pinned.
+- **Reference-count reproduction is smoke-scale only.** Ligand-incident counts are now the
+  right kind of object and the range overlaps the published 4-23, but they run
+  systematically low and move with decoy count. A full run is ~82 core-hours.
+- **Pocket-restricted repacking misses its own bar** (rho = 0.82/0.86 against >= 0.95), and
+  buys no measurable speed-up — 1.08-1.14x, consistent with a direct measurement showing
+  packing is not the bottleneck.
+- **Covalent complexes fail the pose validity gate by construction**: a 1.81 A S-C bond
+  reads as a steric clash to a checker with no covalent concept.
+
+`project_status/2026-08-11_1000_all-plan-steps-implemented.md` is the full version of this
+list, with evidence for each line.
+
+### Environment-dependent behaviour
+
+`smina`, `gnina`, `posebusters` and `dimorphite_dl` are **not installed** here. The
+affected components degrade explicitly rather than silently: the pose axis is a
+*perturbation* ensemble rather than a docking ensemble, the validity gate runs an 8-check
+built-in subset that reports `checker="builtin_subset"`, and protonation runs an RDKit
+fallback reporting `method="rdkit_tautomer"`. None can be mistaken for the real thing, and
+installing any of them requires no code change.
 
 ## Environment Setup
 
@@ -496,8 +635,42 @@ timeout or Codespace shutdown.
 
 ## Commands
 
-There is no dedicated build step and no lint target in this repository. The main
-entry points are the stage scripts and the pytest suite.
+There is no dedicated build step and no lint target in this repository. The main entry
+points are the stage scripts, the `atomfrust` console script, and the pytest suites.
+
+### `atomfrust` — the target-agnostic package
+
+```bash
+pip install -e . --no-deps
+
+# a custom PDB, end to end, no metadata pipeline
+atomfrust run --pdb my_complex.pdb --ligand B:501 --run-dir runs/mine --n-decoys 250
+
+# generate decoys only — computes no frustration index at all
+atomfrust generate-decoys --spec S.yaml --run-dir R --n-decoys 1000 --save-structures
+
+# re-analyse a finished run under different settings; makes zero PyRosetta calls
+atomfrust analyze --run-dir R --shell-A 5.0  --index rank_percentile -o analyses/s5
+atomfrust analyze --run-dir R --manybody pair_retained                -o analyses/retained
+atomfrust analyze --run-dir R --n-decoys 250                          -o analyses/n250
+
+# region-focused decoys: mutate the pocket, repack a wider shell
+atomfrust generate-decoys --spec S.yaml --run-dir R --scope contact_shell \
+  --mutate-sel 'protein and within_ca(10.0, ligand)' \
+  --repack-sel 'protein and within(12.0, ligand)'
+
+# protein-only and protein-protein need no mode flag — the spec decides
+atomfrust run --spec specs/1LYZ.yaml --run-dir runs/1lyz    # ligands: []
+atomfrust run --spec specs/1BRS.yaml --run-dir runs/1brs    # chain_interface
+
+atomfrust validate --list                 # the F1-F6 cases and what each proves
+atomfrust validate --case F4              # holo vs apo: is the index ligand-blind?
+atomfrust metrics-selftest                # the S0.3 cross-environment hash
+atomfrust converge | strata | report | calibrate | verify
+```
+
+Tests: `pytest -m unit` is PyRosetta-free and runs in ~45 s; `pytest -m integration`
+needs PyRosetta and `dvc pull`.
 
 ### Stages 1-5 - structure and ligand preparation
 
@@ -586,18 +759,65 @@ existing parquet and checkpoint so the decoys are regenerated.
 
 ### Tests
 
+Two suites, run separately.
+
 ```bash
+# atomfrust — three tiers, selected by marker
+python -m pytest -m unit          # ~760 tests, no PyRosetta, no network, ~45 s
+python -m pytest -m integration   # ~85 tests, needs PyRosetta and `dvc pull`
+python -m pytest                  # everything, ~7 min
+
+# the legacy pipeline
 python -m pytest src/test_frustration.py -v
 python -m pytest src/test_frustration.py::test_decoy_backbone_unchanged -v
 ```
 
-If PyRosetta is not installed, the PyRosetta-marked tests are skipped automatically.
+Both must be run from the repository root. If PyRosetta is not installed, the
+PyRosetta-marked tests skip automatically — so a green `-m unit` run on a machine without
+it is not evidence the PyRosetta paths work.
 
 ## High-Level Architecture
 
-The codebase has two halves that communicate only through files on disk.
+Two implementations, described in turn.
 
-### Half 1 - `scripts/01` through `scripts/05`
+### `atomfrust/` — the target-agnostic package
+
+```text
+spec.py        one hand-writable YAML replaces the three-CSV EGFR join
+pose.py        the only module importing PyRosetta; nodes keyed by PDB position
+graph.py       typed nodes, KD-tree neighbours, superset graph  (PyRosetta-free)
+energy.py      REF2015 pair energies + the selectable many-body registry
+regions.py     selector language: chain / resi / resn / within / layer / ...
+execute.py     one flat work queue, spawn workers, disjoint shards
+runstore.py    the run-directory contract — see below
+decoys/        identity (axis A), pose (axis B), chemotype (axis D)
+analyze/       z-scores, classification, descriptors, convergence, strata
+metrics/       screening + inference, everything returns an Estimate
+report/        confound-aware reporting that can refuse to print a headline
+chem/ dock/    parametrisation, decoy libraries, pose backends, validity gate
+validation/    the F1-F6 cases with stored expectations
+cli/           one module per subcommand; main.py stays a table of names
+```
+
+The run directory is the interface between generation and analysis:
+
+```text
+runs/<run_id>/manifest.json, settings.resolved.yaml, env.json
+  systems/<system_id>/
+    inputs/    the exact bytes scored, plus params and digests
+    graph/     nodes.parquet, pairs.parquet
+    native/    native_energies.parquet, raw_energy.json
+    decoys/    energies/part-<shard>-<seq>.parquet, index.parquet
+    analyses/<analysis_id>/  contacts.parquet, summary.json
+```
+
+`decoys/energies/` stores **direct** pair energies — never `E_ij`. That single choice is
+what lets the many-body formula, contact definition, shell, index function and
+`exclude_fa_rep` all be re-chosen afterwards without touching Rosetta.
+
+### The legacy pipeline — two halves communicating through files on disk
+
+#### Half 1 - `scripts/01` through `scripts/05`
 
 This is the preparation pipeline. Each stage reads the previous stage's CSV/YAML
 output and writes the next one.
@@ -610,7 +830,7 @@ output and writes the next one.
 | 04 | `data/processed/{PDB}_clean.pdb`, `results/preparation_summary.csv` |
 | 05 | `data/ligands/params/{LIG}.params`, `results/metadata/ligand_parameterization_status.csv` |
 
-### Half 2 - `src/frustration.py` and `src/run_pipeline.py`
+#### Half 2 - `src/frustration.py` and `src/run_pipeline.py`
 
 - `src/frustration.py` is the engine: contact generation, Eq. 2 many-body energies,
   decoy generation, Eq. 1 Z-scores, and class assignment.
@@ -642,11 +862,16 @@ Rosetta-safe identifier.
 This file is produced by Stage 3 and is the source of truth for EGFR chain choice
 and ligand-copy selection. `config.yaml`'s `chain_selection.default` is only a fallback.
 
-### Frustration thresholds are hardcoded
+### Frustration thresholds are hardcoded (legacy pipeline only)
 
-`config.yaml` contains a `frustration.thresholds` block, but the live thresholds are
-currently hardcoded in `src/frustration.py` and duplicated in the plotting logic in
-`src/run_pipeline.py`.
+`config.yaml` contains a `frustration.thresholds` block that **no code reads**. The live
+thresholds are hardcoded in three places: `src/frustration.py`, the plotting logic in
+`src/run_pipeline.py`, and again in `src/test_frustration.py` — so the test confirms only
+that it agrees with itself.
+
+Fixed in `atomfrust`: the numbers live once, as pydantic defaults, and the classification
+rule lives once in `atomfrust/analyze/classify.py`. A test AST-scans the package and fails
+if both literals appear anywhere else. It has already caught one regression.
 
 ### Decoy backbones must be restored explicitly
 
@@ -663,10 +888,21 @@ not installed yet.
 
 ### Covalent handling is incomplete
 
-Stage 4 records covalent link information from mmCIF `_struct_conn`, but Stage 6 does
-not currently apply covalent chemistry and the checked-in params files do not include
-ligand-specific `CONNECT` records. The 15 covalent complexes are presently analyzed
-as if they were non-covalent.
+Stage 4 records covalent link information from mmCIF `_struct_conn`, but Stage 6 does not
+apply covalent chemistry. Verified: **zero of the 112 checked-in `.params` files contain a
+`CONNECT` record**, despite `scripts/05_prepare_ligand.py`'s docstring claiming the script
+adds them. The 15 covalent complexes are analysed as if they were non-covalent.
+
+`atomfrust` narrows the gap without closing it. Anchors are recovered from
+`_struct_conn` or the Stage-4 summary (`atomfrust prepare --covalent-from`), the anchor
+residue is frozen against mutation, the bond is forced into the contact graph regardless
+of distance, and covalent systems are reportable as their own stratum — so they are
+**identifiable and constrained** rather than silently mis-scored. Full covalent chemistry
+(a real Rosetta bond, a patched residue type, correct valence) is deferred.
+
+One consequence worth knowing: a 1.81 A S-C covalent bond reads as a steric clash to a
+pose-validity checker that has no covalent concept, so every covalent system's pose pass
+rate is floored at zero. The gate therefore records rather than rejects.
 
 ### Resume semantics
 
@@ -688,6 +924,9 @@ value in `config.yaml` before any long run, where resumability actually matters.
 F_ij = (mean(E_ij_decoy) - E_ij_native) / std(E_ij_decoy)
 ```
 
+Rosetta energies are negative-is-favourable, so a more favourable native contact gives a
+*positive* index and is classified as minimally frustrated.
+
 ### Many-body correction (Eq. 2)
 
 ```text
@@ -696,16 +935,51 @@ E_ij = e_ij
      + 0.5 * Σ_{l ∈ contacts(j), l≠i} e_jl
 ```
 
+**This collapses.** Writing `B_i` for the sum over *all* of i's partners, the excluded
+sums are `B_i - e_ij` and `B_j - e_ij`, so `E_ij = 0.5*(B_i + B_j)` and the pair term
+cancels exactly — see [What the diagnostics found](#what-the-diagnostics-found). The
+exclusions are in the published paper, so this is a property of the equation as printed.
+
+`atomfrust` makes the formula selectable rather than assumed:
+
+| mode | formula | degenerate? |
+|---|---|---|
+| `chen_literal` | as printed above | **yes** — required for any reproduction claim |
+| `pair_retained` | sums over **all** partners, so the pair term survives | no |
+| `pair_only` | `e_ij` alone | no |
+
+Note `pair_retained - chen_literal == e_ij` exactly. Which of these is the scientific
+object going forward is an open decision, not something to inherit silently.
+
 ### Decoy generation
 
+What this pipeline does:
+
 1. Estimate the amino-acid composition from the native structure.
-2. Randomize the full protein sequence on the native backbone.
+2. Randomize the full protein sequence on the native backbone (i.i.d. draw).
 3. Repack side chains.
 4. Run chi-only minimization.
 5. Restore backbone atom coordinates from the native pose.
 
+What the paper describes: *"we randomly shuffle the protein sequence and then repack the
+resulting sequence onto the backbone"* — a **permutation**, conserving the native
+amino-acid multiset exactly — followed by *"a short Monte-Carlo relaxation"*, with the
+native contact energies *"obtained in a similar fashion by omitting the shuffling step"*,
+i.e. the native is repacked and relaxed too. 1000 decoys per contact.
+
+Step 5 is not optional and is not a minimiser artifact: `MutateResidue` rebuilds the
+carbonyl O from idealised geometry and drifts ~0.5-0.8 A from the crystallographic
+position. `atomfrust` enforces backbone identity as a runtime post-condition on every
+decoy at 1e-6 A rather than as a single test at 0.05 A.
+
 ## Disclaimer
 
-This is an independent reimplementation. The original paper's code was not
-published, so exact numerical agreement is not expected; the target is qualitatively
-correct behavior.
+This is an independent reimplementation. The original paper's code was not published, so
+exact numerical agreement was never the target; qualitatively correct behaviour was.
+
+That framing turned out to matter less than expected. The diagnostics above show the
+original pipeline computes a *different quantity* from the one the paper reports — not a
+noisier estimate of the same one — so "no exact agreement expected" was not the reason the
+numbers disagreed. `atomfrust` reproduces this pipeline exactly where the two overlap,
+which is what makes the remaining differences attributable to the method rather than to
+the implementation.
