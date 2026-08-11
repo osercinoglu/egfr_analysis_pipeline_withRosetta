@@ -138,7 +138,7 @@ Line numbers below are current but drift with edits — the function names are t
 
 1. **Contact list** (`get_protein_contacts`, `frustration.py:70`) — every protein residue pair with Cα–Cα ≤ 10 Å and |i−j| ≥ 4. Coarse and Cα-based, even though the energies below are all-atom.
 2. **Ligand-pocket residue list** (`get_ligand_contacts`, `frustration.py:111`) — protein residues whose Cα is within 10 Å of any ligand heavy atom. A list of *single residues*, not pairs, and it is **not** fed to the survey; it is only the filter applied in step 9. The ligand never appears in a contact pair — it influences results only by being present in the pose during scoring and repacking.
-3. **Direct pairwise energy `e_ij`** (`pairwise_energy`, `frustration.py:182`) — REF2015 `EnergyGraph` edge between i and j, `edge.dot(weights)`, then the weighted `fa_rep` contribution subtracted back out when `exclude_fa_rep` is set. Pairs beyond Rosetta's interaction cutoff have no edge and yield `e_ij = 0.0`, so some of the looser 10 Å Cα pairs carry only the background terms from step 4.
+3. **Direct pairwise energy `e_ij`** (`pairwise_energy`, `frustration.py:182`) — REF2015 `EnergyGraph` edge between i and j, `edge.dot(weights)`, then the weighted `fa_rep` contribution subtracted back out when `exclude_fa_rep` is set. Pairs beyond Rosetta's `EnergyGraph` range have no edge and yield `e_ij = 0.0`. Measured on 5GMP (2026-08-11), that range is wider than assumed: edge coverage is **100% out to 12 Å Cα–Cα**, 94.7% at 12–15 Å, 30.6% at 15–20 Å and 0% beyond 20 Å — so *no* 10 Å Cα pair is edgeless. Distant pairs are near-zero by magnitude (mean |e_ij| ≈ 0.02 at 10–12 Å vs 0.80 below 6 Å), not by absence of an edge.
 4. **Eq. 2 many-body correction** (`contact_energy_eq2`, `frustration.py:216`) — `E_ij = e_ij + 0.5·Σ_{k∈contacts(i),k≠j} e_ik + 0.5·Σ_{l∈contacts(j),l≠i} e_jl`. Partner lists come from `build_contact_partner_map()` (`frustration.py:253`) over the same step 1 list. This is what makes the index environment-sensitive rather than a bare pair energy.
 5. **Native reference pass** (`frustration.py:619`) — score the crystal pose once, compute `E_ij` for every contact.
 6. **Decoy ensemble** — see below. Each decoy is rescored and `E_ij` recomputed for the *same residue index pairs* (positions, not identities). One decoy contributes a sample to every contact, which is why a few hundred decoys suffice for ~1700 contacts.
@@ -178,12 +178,66 @@ Net effect: identical backbone, identical ligand, scrambled sequence, relaxed si
 ## State of the repo
 
 - Prep complete: 61/61 complexes `OK` in `preparation_summary.csv`, 51/51 ligands `OK`, 61 `_clean.pdb` files.
-- **Stage 6: 19 of 61 structures done, all at `--n_decoys 50`.** Parquets in `results/{PDB}_{LIG}_frustration.parquet` with matching `checkpoints/*_ckpt.pkl` for: 1XKK, 2ITO, 2RGP, 3POZ, 3W2O, 3W2Q, 3W2S, 3W32, 3W33, 4JQ7, 4LI5, 5C8M, 5CAO, 5CAP, 5CAV, 5EM8, 5GMP, 5GTY, 5UGB. The last six (3W2S, 3POZ, 3W32, 5UGB, 5CAV, 4LI5) were added 2026-08-10 and were chosen as a WT non-covalent series to hold the protein sequence constant while affinity varies.
-- **Keep new runs at `--n_decoys 50`** unless recomputing all 19. A larger decoy count tightens the decoy-energy σ and shifts the F scale, so mixed-`n_decoys` structures are not comparable in one correlation.
-- `results/egfr_frustration_summary.csv` currently holds all 19 rows and `egfr_correlation.png` matches it (Pearson r = −0.297, p = 0.217, n = 19 — not significant; see the pocket-size confound above before interpreting).
+- **Stage 6: 61 of 61 structures done, all at `--n_decoys 50`** (completed 2026-08-11).
+  Parquets in `results/{PDB}_{LIG}_frustration.parquet` with matching `checkpoints/*_ckpt.pkl`.
+- **The n=19 correlations did NOT survive the full set.** Measured at n=61 against
+  `log10_affinity_pM`:
+
+  | descriptor | Pearson r | p | Spearman rho | p |
+  |---|---:|---:|---:|---:|
+  | `n_minimally_frustrated` | +0.038 | 0.77 | +0.023 | 0.86 |
+  | `n_neutral` | −0.121 | 0.35 | −0.126 | 0.33 |
+  | `n_contacts_total` | −0.068 | 0.60 | −0.086 | 0.51 |
+  | `frac_minimally` | +0.131 | 0.31 | +0.171 | 0.19 |
+
+  Nothing is significant. The n=19 results this file previously recorded — `n_neutral`
+  (rho = −0.541, p = 0.017) and `n_contacts_total` (rho = −0.521, p = 0.022) — were
+  small-sample artifacts, found while examining four descriptors at n=19 where the 5%
+  critical value for a *single* pre-specified test is already r = 0.456. Treat them as
+  withdrawn.
+- **For contrast, the paper's own counts do retain signal on the same 61 structures**:
+  `config/pdb_reference_table.csv` vs log2(affinity_pM) gives r = −0.388, p = 0.002. So the
+  published quantity carries a real relationship in this exact structure set while the
+  reimplementation's carries none — see `project_status/2026-08-11_0130_a4-*.md`, which
+  identifies the cause (the paper counts ligand-residue contacts; the prototype counts
+  protein-protein pairs near the ligand).
+- `n_contacts_total` still ranges 476-733, so the pocket-size confound described below is
+  structurally present even though it no longer produces a significant correlation.
 - The 1LYZ validation has run (`checkpoints/1LYZ_frustration.parquet`, `results/validation_lysozyme.png`).
 - Plots present: `egfr_correlation.png`, `current_scatter.png`, `validation_lysozyme.png`.
 - These artifacts live in DVC, not git — `dvc pull` to obtain them, `dvc push` after producing more. **The six new parquets and checkpoints have not been `dvc push`ed yet.**
+
+## The `atomfrust` package (2026-08-11)
+
+A second, target-agnostic implementation now lives alongside the legacy pipeline in
+`atomfrust/`, built to `plans/frustratometer-ng-plan.md`. All 44 plan steps are implemented;
+~825 tests (`pytest -m unit` is PyRosetta-free and fast, `-m integration` needs PyRosetta and
+`dvc pull`). The legacy `src/` tree is untouched and still works.
+
+```bash
+pip install -e . --no-deps      # --no-deps is deliberate: pip must not touch PyRosetta
+atomfrust --help                # 11 subcommands
+atomfrust prepare | generate-decoys | analyze | run | validate
+atomfrust converge | strata | report | calibrate | verify | metrics-selftest
+```
+
+**Why it exists.** Stage A established three things about the prototype, each verified
+numerically: the published Eq. 2 collapses to `0.5*(B_i + B_j)` so the per-contact index is
+algebraically a per-residue sum; the paper counts **ligand-residue** contacts while the
+prototype counts protein-protein pairs in a shell; and the prototype's index is
+**ligand-blind** (`E_native` bit-identical holo vs apo). See
+`project_status/2026-08-11_*` for the evidence.
+
+**Two invariants the design rests on.** Direct pair energies `e_ij` are stored and `E_ij`
+never is — so the many-body formula, contact definition, shell, index function and
+`exclude_fa_rep` are all re-specifiable against a finished run with no Rosetta call. And
+decoy *i* is seeded `base_seed + i`, so an N-decoy prefix of a larger run is *exact*, which
+makes the convergence sweep one run rather than eight.
+
+**Read `project_status/2026-08-11_1000_all-plan-steps-implemented.md` before trusting any
+number from it.** It separates what is established from what is merely built — notably the
+chemotype axis's positive control currently **fails**, and S0.2 is unmeasured for want of a
+multi-chain structure.
 
 ## Project status tracking
 
