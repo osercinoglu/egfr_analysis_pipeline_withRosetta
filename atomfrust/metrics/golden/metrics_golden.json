@@ -1,0 +1,234 @@
+{
+  "cases": {
+    "adjusted_logauc": {
+      "ci_high": null,
+      "ci_low": null,
+      "method": "adjusted_logauc(lam=0.001)",
+      "n": 200,
+      "n_boot": 0,
+      "n_groups": null,
+      "p_value": null,
+      "seed": 0,
+      "value": 0.232385215986
+    },
+    "auroc_cluster_bootstrap": {
+      "ci_high": 0.873141685919,
+      "ci_low": 0.590178956008,
+      "method": "auroc+cluster_bootstrap_percentile",
+      "n": 200,
+      "n_boot": 200,
+      "n_groups": 5,
+      "p_value": null,
+      "seed": 7,
+      "value": 0.739375
+    },
+    "auroc_point": {
+      "ci_high": null,
+      "ci_low": null,
+      "method": "auroc",
+      "n": 200,
+      "n_boot": 0,
+      "n_groups": null,
+      "p_value": null,
+      "seed": 0,
+      "value": 0.739375
+    },
+    "bedroc_alpha_20": {
+      "ci_high": null,
+      "ci_low": null,
+      "method": "bedroc(alpha=20.0)",
+      "n": 200,
+      "n_boot": 0,
+      "n_groups": null,
+      "p_value": null,
+      "seed": 0,
+      "value": 0.717501006858
+    },
+    "bedroc_alpha_80.5": {
+      "ci_high": null,
+      "ci_low": null,
+      "method": "bedroc(alpha=80.5)",
+      "n": 200,
+      "n_boot": 0,
+      "n_groups": null,
+      "p_value": null,
+      "seed": 0,
+      "value": 0.946974509729
+    },
+    "benjamini_hochberg": [
+      0.0015,
+      0.003,
+      0.0095,
+      0.035625,
+      0.0603,
+      0.0638571428571,
+      0.0638571428571,
+      0.0645,
+      0.0765,
+      0.486,
+      0.581181818182,
+      0.714875,
+      0.753230769231,
+      0.813214285714,
+      1.0
+    ],
+    "bootstrap_ci_mean_score": {
+      "ci_high": 0.375688479088,
+      "ci_low": 0.042242709698,
+      "method": "cluster_bootstrap_percentile",
+      "n": 200,
+      "n_boot": 200,
+      "n_groups": 5,
+      "p_value": null,
+      "seed": 7,
+      "value": 0.187409882476
+    },
+    "enrichment_factor_1pct": {
+      "ci_high": null,
+      "ci_low": null,
+      "method": "enrichment_factor(fraction=0.01)",
+      "n": 200,
+      "n_boot": 0,
+      "n_groups": null,
+      "p_value": null,
+      "seed": 0,
+      "value": 5.0
+    },
+    "enrichment_factor_5pct": {
+      "ci_high": null,
+      "ci_low": null,
+      "method": "enrichment_factor(fraction=0.05)",
+      "n": 200,
+      "n_boot": 0,
+      "n_groups": null,
+      "p_value": null,
+      "seed": 0,
+      "value": 3.5
+    },
+    "maxT_permutation": {
+      "abs_statistic": [
+        0.212576617676,
+        0.0709644976483,
+        0.450223796557,
+        0.527064052807,
+        0.257476651121,
+        0.787108019764
+      ],
+      "config": [
+        "cfg0",
+        "cfg1",
+        "cfg2",
+        "cfg3",
+        "cfg4",
+        "cfg5"
+      ],
+      "n": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "n_perm": [
+        500,
+        500,
+        500,
+        500,
+        500,
+        500
+      ],
+      "p_adjusted": [
+        0.862275449102,
+        1.0,
+        0.127744510978,
+        0.0359281437126,
+        0.720558882236,
+        0.00199600798403
+      ],
+      "p_raw": [
+        0.291417165669,
+        0.748502994012,
+        0.0279441117764,
+        0.0119760479042,
+        0.195608782435,
+        0.00199600798403
+      ],
+      "seed": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "statistic": [
+        -0.212576617676,
+        0.0709644976483,
+        0.450223796557,
+        0.527064052807,
+        0.257476651121,
+        0.787108019764
+      ]
+    },
+    "paired_delta": {
+      "ci_high": 0.360760387495,
+      "ci_low": 0.199886624111,
+      "method": "paired_delta+group_bootstrap+sign_flip",
+      "n": 200,
+      "n_boot": 200,
+      "n_groups": 5,
+      "p_value": 0.0796019900498,
+      "seed": 7,
+      "value": 0.280273253251
+    },
+    "pearson_cluster_bootstrap": {
+      "ci_high": 0.638908826062,
+      "ci_low": 0.435637657412,
+      "method": "pearson+cluster_bootstrap_percentile",
+      "n": 200,
+      "n_boot": 200,
+      "n_groups": 5,
+      "p_value": 1.72185662255e-16,
+      "seed": 7,
+      "value": 0.539352804638
+    },
+    "pearson_point": {
+      "ci_high": null,
+      "ci_low": null,
+      "method": "pearson",
+      "n": 200,
+      "n_boot": 0,
+      "n_groups": null,
+      "p_value": 1.72185662255e-16,
+      "seed": 0,
+      "value": 0.539352804638
+    },
+    "spearman_cluster_bootstrap": {
+      "ci_high": 0.607073224739,
+      "ci_low": 0.38963618501,
+      "method": "spearman+cluster_bootstrap_percentile",
+      "n": 200,
+      "n_boot": 200,
+      "n_groups": 5,
+      "p_value": 1.80124360056e-14,
+      "seed": 7,
+      "value": 0.507192679817
+    },
+    "spearman_point": {
+      "ci_high": null,
+      "ci_low": null,
+      "method": "spearman",
+      "n": 200,
+      "n_boot": 0,
+      "n_groups": null,
+      "p_value": 1.80124360056e-14,
+      "seed": 0,
+      "value": 0.507192679817
+    }
+  },
+  "digest": "sha256:a81a5e65473946dbae33780443456896247f5a8652884c4c617eddd2907ec4d3",
+  "schema_version": 1,
+  "seed": 20260811,
+  "significant_digits": 12
+}
