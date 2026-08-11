@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atomfrust"
+version = "0.1.0.dev0"
+description = "Atomistic local frustration for protein-ligand, protein-only and protein-protein complexes"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Onur Serçinoğlu" }]
+keywords = ["frustration", "rosetta", "structural-biology", "protein-ligand"]
+
+# PyRosetta is deliberately NOT listed. It is installed from a release wheel on the
+# west.rosettacommons.org mirror (see CLAUDE.md); naming it here would make pip try to
+# resolve it from PyPI, where the placeholder wheel 404s. Everything below is already
+# satisfied by environment.yml, so the project is installed with `--no-deps` (see
+# `docs/install.md`) to guarantee pip never touches the conda env's PyRosetta.
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "pyarrow>=12",
+    "scipy>=1.10",
+    "biopython>=1.81",
+    "pydantic>=2.5",
+    "pyyaml>=6.0",
+    "tqdm>=4.64",
+    # Used only by atomfrust.report (imported lazily, so the rest of the package does not
+    # need it). Already present in environment.yml and used by the legacy src/run_pipeline.py.
+    "matplotlib>=3.7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+
+[project.scripts]
+atomfrust = "atomfrust.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["atomfrust*"]
+
+# Flat layout, deliberately, not src/. An editable install puts the discovery root on
+# sys.path; with a src/ layout that root is src/, which would make the legacy modules
+# (frustration, run_pipeline, molfile_to_params, rosetta_py, test_frustration) importable
+# as top-level names in every Python process on the machine. `import test_frustration`
+# then initialises PyRosetta as a side effect. Measured, not assumed -- see
+# project_status/2026-08-11_0415_b1-package-skeleton.md.
+#
+# The repo root leaks nothing new: every documented command already runs from here, so
+# src/, analysis/, scripts/ and tests/ are on sys.path anyway. The legacy tree stays put
+# and keeps running as scripts until the Stage F validation cases pass.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "unit: fast, no PyRosetta, no network (target < 5 s for the whole tier)",
+    "integration: requires PyRosetta; minutes",
+    "anchor: long-running validation against stored expectations; not run by default",
+]
+
+# testpaths covers only the new suite so `pytest` is fast by default. The legacy suite is
+# still run explicitly: `python -m pytest src/test_frustration.py -v` from the repo root.

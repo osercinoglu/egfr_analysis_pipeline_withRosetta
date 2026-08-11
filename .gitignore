@@ -44,8 +44,14 @@ checkpoints/*.pickle
 # Logs
 *.log
 
+# G3 decoy-library caches (DUD-E/DEKOIS 2.0/MUV/ZINC): licences permit use, not redistribution
+.cache/
+
 # Results (keep them locally, but don't commit to repo)
 results/
 /results
 /data
 /checkpoints
+
+# Local Claude Code session state
+.claude/
