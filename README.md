@@ -1,3 +1,5 @@
+## This repository has been retired following the latest pull request to the main repository. 
+
 # EGFR Atomistic Frustration Pipeline
 
 Independent reimplementation of the atomistic frustration method from Chen et al.
